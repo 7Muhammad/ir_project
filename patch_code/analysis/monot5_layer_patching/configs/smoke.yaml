@@ -1,0 +1,71 @@
+# =============================================================================
+# Smoke-test config for the monoT5 activation patching experiment
+# =============================================================================
+#
+# PURPOSE
+# -------
+# This config runs the full pipeline on a tiny number of examples.
+# It is NOT for research — it only checks that the code runs without errors
+# from start to finish.
+#
+# WHAT "smoke test" MEANS
+# ------------------------
+# A smoke test is the simplest possible end-to-end check: "does this turn on
+# without catching fire?"  We run 5 pairs, select up to 2, cache 2 examples,
+# and patch them.  If any stage crashes, we know something is broken.
+#
+# We set min_attack_delta: -999 so we select examples even if the attack
+# barely changes the score — we want the pipeline to run, not to find
+# strongly attacked examples.
+#
+# Usage:
+#   conda activate advseq2seq
+#   bash bash/run_smoke_test.sh configs/smoke.yaml
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+data:
+  prepared_pairs_path: null
+  upstream_repo_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation"
+  dataset: "dl19"
+  search_roots:
+    - "../../"
+    - "../../../"
+    - "/mnt/data"
+  queries_path: null
+  passages_path: null
+  bm25_run_path: null
+  qrels_path: null
+
+  # Only load 5 pairs — keeps the smoke test fast
+  max_pairs: 5
+  max_docs_per_query: 100
+
+attack:
+  # Same attacked TSV as the main experiment — we just use fewer rows
+  attacked_pairs_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19/relevant_start_5_bm25_19.gz.tsv"
+  attack_name: "relevant_start_5"
+  control_type: "pad"
+
+selection:
+  # Accept ALL examples regardless of attack strength.
+  # In a real experiment you would set this to e.g. 0.5.
+  # Here we want the pipeline to run even if the attack has no visible effect.
+  min_attack_delta: -999
+  # Select at most 2 examples for patching (keeps Stage 02 and 03 fast)
+  max_selected_examples: 2
+
+runtime:
+  seed: 42
+  # Batch size 1 is slower but avoids any padding-related surprises
+  batch_size_scoring: 1
+  patching_batch_size: 1
+  # Cache at most 2 examples
+  max_cached_examples: 2
+
+outputs:
+  # Write all smoke-test outputs here — separate from the real experiment
+  base_dir: "outputs_smoke"

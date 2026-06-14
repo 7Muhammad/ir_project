@@ -1,0 +1,151 @@
+# =============================================================================
+# Activation Patching Experiment: monoT5 Adversarial Ranking
+# =============================================================================
+#
+# This config drives all five pipeline stages.
+# Set upstream_repo_path to point at the cloned ECIR-24 repo, OR set
+# prepared_pairs_path directly to skip data-discovery entirely.
+
+model:
+  # HuggingFace checkpoint for monoT5-base trained on MS MARCO
+  checkpoint: "castorini/monot5-base-msmarco"
+  # Maximum token length fed to the encoder
+  max_length: 512
+  # "auto"  → GPU if available, else CPU
+  # "cuda"  → force GPU
+  # "cpu"   → force CPU
+  device: "auto"
+
+data:
+  # --- Primary shortcut --------------------------------------------------
+  # If prepared_pairs_path is set, Stage 00 loads it directly (skips BM25).
+  # The file can be JSONL/CSV/TSV with columns: qid, docid, query, passage.
+  prepared_pairs_path: null
+
+  # --- Upstream repo path -------------------------------------------------
+  # Absolute path to the cloned ECIR-24 repo.  Stage 00 will look for
+  # bm25_19.jsonl inside it.  Leave null to use search_roots instead.
+  # This is pre-configured to the repo already cloned in your workspace:
+  upstream_repo_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation"
+
+  dataset: "dl19"
+
+  # Directories searched when upstream_repo_path is null
+  search_roots:
+    - "../../"                    # relative to monot5_layer_patching/
+    - "../../../"
+    - "/mnt/data"
+
+  # Override individual file paths if auto-detection picks the wrong file
+  queries_path: null              # path to DL19 queries file
+  passages_path: null             # path to MS MARCO passage collection / docstore
+  bm25_run_path: null             # path to TREC BM25 run file
+  qrels_path: null                # path to DL19 qrels (optional, for reference)
+
+  # Maximum total (qid, docid) pairs written to pairs.jsonl
+  max_pairs: 500
+  # Maximum BM25 candidate documents considered per query
+  max_docs_per_query: 1000
+
+attack:
+  # Path to the pre-built attacked document TSV from the ECIR-24 repo.
+  # This file was produced by the original paper's injection pipeline and
+  # contains:
+  #   text_0 — original clean passage
+  #   text   — attacked passage ("relevant: "×5 prepended at the start)
+  #
+  # Using the pre-built file ensures we use exactly the same attacked text
+  # as the original paper, rather than constructing it ourselves.
+  #
+  # File naming convention:  {token}_{mode}_{n}_{run}.tsv
+  #   token = "relevant"  → the injected keyword
+  #   mode  = "start"     → injected at the beginning of the passage
+  #   n     = 5           → repeated 5 times
+  #   run   = "bm25_19"   → DL19 BM25 candidates
+  attacked_pairs_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19/relevant_start_5_bm25_19.gz.tsv"
+
+  # Human-readable description of the attack (for logging and plot labels).
+  attack_name: "relevant_start_5"
+
+  # Control type: "pad" means the attack-prefix positions in the control
+  # input are filled with tokenizer.pad_token_id (attention_mask=0).
+  # This ensures passage tokens sit at identical absolute positions in both
+  # control and attacked sequences — required for full-layer patching.
+  control_type: "pad"
+
+selection:
+  # Minimum score gap required for an example to enter the patching stage.
+  # Set to 0.0 to keep all examples where attack_score > control_score.
+  min_attack_delta: 0.0
+  # Hard cap on examples passed to patching (to limit GPU memory / runtime)
+  max_selected_examples: 200
+
+runtime:
+  seed: 42
+  # Batch size for the initial scoring pass (Stage 01)
+  batch_size_scoring: 8
+  # Batch size for patching forward passes — keep at 1 for clarity
+  patching_batch_size: 1
+  # How many selected examples to cache activations for (Stage 02)
+  max_cached_examples: 100
+
+outputs:
+  # All output sub-directories are created relative to this root
+  base_dir: "outputs"
+
+# =============================================================================
+# Multi-attack experiment configuration
+# =============================================================================
+# Used by scripts/10_run_multi_attack_pipeline.py and scripts/11_compare_attacks.py
+# The single-attack pipeline (bash/run_all.sh + scripts 00-04) is unaffected.
+
+attacks:
+  # Directory containing the pre-built attacked TSV files from the ECIR-24 repo.
+  upstream_injected_dir: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19"
+
+  # Discovery mode:
+  #   "include"  — only the named attack_names in the include list (default)
+  #   "pattern"  — glob pattern matched against attack_name
+  #   "all"      — every .gz.tsv file found in upstream_injected_dir
+  mode: "include"
+
+  # Attack names to run (only used when mode == "include").
+  # Format: {token}_{position}_{repetitions}
+  # These cover: prompt token, target label, negative label, control filler,
+  #              synonym, sub-word variant, meaningless filler.
+  include:
+    - relevant_start_5
+    - true_start_5
+    - false_start_5
+    - information_start_5
+    - bar_start_5
+    - important_start_5
+    - relevance_start_5
+
+  # Glob pattern (only used when mode == "pattern").
+  # Example: "relevant_*" to run all repetition counts for "relevant".
+  include_pattern: null
+
+  # Hard cap on the number of attacks to run (null = no cap).
+  max_attacks: null
+
+  # If true, delete outputs/attacks/{attack_name}/activations/ after Stage 03
+  # completes for that attack.  Saves ~90 MB × max_cached_examples per attack.
+  # STRONGLY RECOMMENDED when running many attacks on a disk-budget cluster.
+  cleanup_activations_after_patching: true
+
+  # max_cached_examples override for multi-attack runs.
+  # Set lower than the single-attack default (100) to get end-to-end results
+  # faster on the first sweep.  null = use runtime.max_cached_examples.
+  max_cached_examples: 30
+
+comparison:
+  # Layer index ranges for the cross-attack summary groupings.
+  # Adjust if running a different model (e.g. monoT5-large has 24 layers).
+  layer_groups:
+    early: [0, 3]    # layers 0–3 inclusive
+    mid:   [4, 7]    # layers 4–7 inclusive
+    late:  [8, 11]   # layers 8–11 inclusive
+
+  # "Late" threshold used in per-column aggregation in summary.csv.
+  late_layer_min: 8

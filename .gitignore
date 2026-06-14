@@ -1,0 +1,40 @@
+# ── Python cache ──────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+
+# ── Jupyter ────────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Activation tensors (large, ~1.8 GB) ────────────────────────────────────────
+patch_code/analysis/monot5_layer_patching/outputs/activations/*
+!patch_code/analysis/monot5_layer_patching/outputs/activations/.gitkeep
+
+# ── Smoke-test outputs (intermediate test run, not results) ────────────────────
+patch_code/analysis/monot5_layer_patching/outputs_smoke/
+
+# ── ecir24 adversarial evaluation (58 GB of runs/data – too large for GitHub) ─
+ecir24-adversarial-evaluation/
+
+# ── Slurm job logs ────────────────────────────────────────────────────────────
+slurm_logs/
+
+# ── PDF papers ────────────────────────────────────────────────────────────────
+*.pdf
+
+# ── OS / editor artifacts ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
