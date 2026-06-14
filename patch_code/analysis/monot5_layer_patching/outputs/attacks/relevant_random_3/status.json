@@ -1,0 +1,14 @@
+{
+  "attack_name": "relevant_random_3",
+  "token": "relevant",
+  "position": "random",
+  "repetitions": 3,
+  "run_name": "bm25_19",
+  "status": "success",
+  "error": null,
+  "n_pairs_loaded": 500,
+  "n_align_ok": 0,
+  "n_align_failed": 0,
+  "n_scored": 500,
+  "n_selected": 124
+}
