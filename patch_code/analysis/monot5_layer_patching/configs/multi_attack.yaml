@@ -1,0 +1,189 @@
+# =============================================================================
+# Activation Patching Experiment: monoT5 Adversarial Ranking
+# Multi-attack grid config — generated for the full token × position × reps sweep
+# =============================================================================
+#
+# Tokens     : relevant, true, false, information, bar, important, relevance
+# Positions  : start, end, random
+# Repetitions: 1, 2, 3, 4, 5
+# Total      : 7 × 3 × 5 = 105 attacks
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+data:
+  prepared_pairs_path: null
+  upstream_repo_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation"
+  dataset: "dl19"
+  search_roots:
+    - "../../"
+    - "../../../"
+    - "/mnt/data"
+  queries_path: null
+  passages_path: null
+  bm25_run_path: null
+  qrels_path: null
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+attack:
+  # Single-attack config (used by bash/run_all.sh + scripts 00-04).
+  # Not used by the multi-attack orchestrator (script 10).
+  attacked_pairs_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19/relevant_start_5_bm25_19.gz.tsv"
+  attack_name: "relevant_start_5"
+  control_type: "pad"
+
+selection:
+  min_attack_delta: 0.0
+  max_selected_examples: 200
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+  patching_batch_size: 1
+  max_cached_examples: 30
+
+outputs:
+  base_dir: "outputs"
+
+# =============================================================================
+# Multi-attack experiment configuration
+# =============================================================================
+# Used by scripts/10_run_multi_attack_pipeline.py and scripts/11_compare_attacks.py
+
+attacks:
+  upstream_injected_dir: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19"
+  mode: "include"
+  include:
+    # --- relevant ---
+    - relevant_start_1
+    - relevant_start_2
+    - relevant_start_3
+    - relevant_start_4
+    - relevant_start_5
+    - relevant_end_1
+    - relevant_end_2
+    - relevant_end_3
+    - relevant_end_4
+    - relevant_end_5
+    - relevant_random_1
+    - relevant_random_2
+    - relevant_random_3
+    - relevant_random_4
+    - relevant_random_5
+    # --- true ---
+    - true_start_1
+    - true_start_2
+    - true_start_3
+    - true_start_4
+    - true_start_5
+    - true_end_1
+    - true_end_2
+    - true_end_3
+    - true_end_4
+    - true_end_5
+    - true_random_1
+    - true_random_2
+    - true_random_3
+    - true_random_4
+    - true_random_5
+    # --- false ---
+    - false_start_1
+    - false_start_2
+    - false_start_3
+    - false_start_4
+    - false_start_5
+    - false_end_1
+    - false_end_2
+    - false_end_3
+    - false_end_4
+    - false_end_5
+    - false_random_1
+    - false_random_2
+    - false_random_3
+    - false_random_4
+    - false_random_5
+    # --- information ---
+    - information_start_1
+    - information_start_2
+    - information_start_3
+    - information_start_4
+    - information_start_5
+    - information_end_1
+    - information_end_2
+    - information_end_3
+    - information_end_4
+    - information_end_5
+    - information_random_1
+    - information_random_2
+    - information_random_3
+    - information_random_4
+    - information_random_5
+    # --- bar ---
+    - bar_start_1
+    - bar_start_2
+    - bar_start_3
+    - bar_start_4
+    - bar_start_5
+    - bar_end_1
+    - bar_end_2
+    - bar_end_3
+    - bar_end_4
+    - bar_end_5
+    - bar_random_1
+    - bar_random_2
+    - bar_random_3
+    - bar_random_4
+    - bar_random_5
+    # --- important ---
+    - important_start_1
+    - important_start_2
+    - important_start_3
+    - important_start_4
+    - important_start_5
+    - important_end_1
+    - important_end_2
+    - important_end_3
+    - important_end_4
+    - important_end_5
+    - important_random_1
+    - important_random_2
+    - important_random_3
+    - important_random_4
+    - important_random_5
+    # --- relevance ---
+    - relevance_start_1
+    - relevance_start_2
+    - relevance_start_3
+    - relevance_start_4
+    - relevance_start_5
+    - relevance_end_1
+    - relevance_end_2
+    - relevance_end_3
+    - relevance_end_4
+    - relevance_end_5
+    - relevance_random_1
+    - relevance_random_2
+    - relevance_random_3
+    - relevance_random_4
+    - relevance_random_5
+
+  include_pattern: null
+  max_attacks: null
+
+  # Delete activations/ after Stage 03 to avoid disk exhaustion.
+  # Each activation cache is ~90 MB × max_cached_examples.
+  cleanup_activations_after_patching: true
+
+  # Lower than the single-attack default (100) to keep memory manageable
+  # across 105 sequential runs.
+  max_cached_examples: 30
+
+comparison:
+  layer_groups:
+    early: [0, 3]
+    mid:   [4, 7]
+    late:  [8, 11]
+  late_layer_min: 8

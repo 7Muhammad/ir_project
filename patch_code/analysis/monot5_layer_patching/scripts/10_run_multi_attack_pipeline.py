@@ -132,6 +132,43 @@ def _write_status(attack_dir: pathlib.Path, status: dict) -> None:
         json.dump(status, fh, indent=2)
 
 
+def _is_already_successful(attack_dir: pathlib.Path) -> bool:
+    """
+    Return True if this attack already completed successfully in a previous run.
+
+    We check two things:
+      1. status.json exists and contains ``"status": "success"``.
+      2. The key output files exist (layer_patching_results.csv and at least one
+         plot), so a partial / corrupted run is not mistakenly skipped.
+    """
+    status_path = attack_dir / "status.json"
+    if not status_path.exists():
+        return False
+    try:
+        with open(status_path, encoding="utf-8") as fh:
+            st = json.load(fh)
+    except Exception:
+        return False
+
+    if st.get("status") != "success":
+        return False
+
+    # Require key outputs to be present as a sanity check.
+    required = [
+        attack_dir / "patching" / "layer_patching_results.csv",
+        attack_dir / "scores" / "all_scores.csv",
+    ]
+    if not all(p.exists() for p in required):
+        return False
+
+    # At least one plot must exist.
+    plots_dir = attack_dir / "plots"
+    if not plots_dir.is_dir() or not any(plots_dir.iterdir()):
+        return False
+
+    return True
+
+
 # ---------------------------------------------------------------------------
 # Per-attack stage logic
 # ---------------------------------------------------------------------------
@@ -638,30 +675,52 @@ def main() -> None:
     print("[10_run_multi_attack_pipeline] Discovering attacks ...")
     specs = discover_attacks(attacks_cfg)
     print(f"[10_run_multi_attack_pipeline] Found {len(specs)} attacks:")
+
+    # --- Resume: classify each spec as pending or already done ---
+    pending_specs: List[AttackSpec] = []
+    resumed_statuses: List[dict] = []
     for s in specs:
-        print(f"  {s.attack_name:35s}  {s.path.name}")
+        attack_dir = outputs_base / "attacks" / s.attack_name
+        if _is_already_successful(attack_dir):
+            status_path = attack_dir / "status.json"
+            with open(status_path, encoding="utf-8") as fh:
+                cached = json.load(fh)
+            print(f"  [RESUME] {s.attack_name:35s}  already done — skipping.")
+            resumed_statuses.append(cached)
+        else:
+            print(f"  [TODO  ] {s.attack_name:35s}  {s.path.name}")
+            pending_specs.append(s)
 
-    # --- Load model ONCE ---
-    device = resolve_device(cfg["model"]["device"])
-    print(f"\n[10_run_multi_attack_pipeline] Loading model: {cfg['model']['checkpoint']}")
-    model, tokenizer = load_monot5(cfg["model"]["checkpoint"], device)
-    true_id, false_id = get_true_false_token_ids(tokenizer)
-    print(f"[10_run_multi_attack_pipeline] Model ready. true_id={true_id}, false_id={false_id}")
+    print(
+        f"\n[10_run_multi_attack_pipeline] "
+        f"{len(pending_specs)} attacks pending, {len(resumed_statuses)} already complete."
+    )
 
-    # --- Run each attack ---
-    all_statuses: List[dict] = []
-    for spec in specs:
-        status = run_single_attack(
-            spec=spec,
-            cfg=cfg,
-            outputs_base=outputs_base,
-            model=model,
-            tokenizer=tokenizer,
-            true_id=true_id,
-            false_id=false_id,
-            device=device,
-        )
-        all_statuses.append(status)
+    all_statuses: List[dict] = list(resumed_statuses)
+
+    if not pending_specs:
+        print("[10_run_multi_attack_pipeline] Nothing to do — all attacks already complete.")
+    else:
+        # --- Load model ONCE (only if there is work to do) ---
+        device = resolve_device(cfg["model"]["device"])
+        print(f"\n[10_run_multi_attack_pipeline] Loading model: {cfg['model']['checkpoint']}")
+        model, tokenizer = load_monot5(cfg["model"]["checkpoint"], device)
+        true_id, false_id = get_true_false_token_ids(tokenizer)
+        print(f"[10_run_multi_attack_pipeline] Model ready. true_id={true_id}, false_id={false_id}")
+
+        # --- Run each pending attack ---
+        for spec in pending_specs:
+            status = run_single_attack(
+                spec=spec,
+                cfg=cfg,
+                outputs_base=outputs_base,
+                model=model,
+                tokenizer=tokenizer,
+                true_id=true_id,
+                false_id=false_id,
+                device=device,
+            )
+            all_statuses.append(status)
 
     # --- Summary ---
     print(f"\n{'='*60}")
@@ -677,10 +736,11 @@ def main() -> None:
             f"align_failed={s['n_align_failed']:3d}"
         )
 
-    n_success = sum(1 for s in all_statuses if s["status"] == "success")
-    n_failed  = sum(1 for s in all_statuses if s["status"] == "failed")
-    n_skipped = sum(1 for s in all_statuses if s["status"] == "skipped")
-    print(f"\n  Success: {n_success}  Failed: {n_failed}  Skipped: {n_skipped}")
+    n_success  = sum(1 for s in all_statuses if s["status"] == "success")
+    n_failed   = sum(1 for s in all_statuses if s["status"] == "failed")
+    n_skipped  = sum(1 for s in all_statuses if s["status"] == "skipped")
+    n_resumed  = len(resumed_statuses)
+    print(f"\n  Success: {n_success}  Failed: {n_failed}  Skipped: {n_skipped}  Resumed (already done): {n_resumed}")
     print(f"\n  Outputs: {outputs_base / 'attacks'}")
     print(f"\n  Next step: python scripts/11_compare_attacks.py --config {cfg_path}")
 
