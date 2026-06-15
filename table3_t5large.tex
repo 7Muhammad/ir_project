@@ -1,0 +1,55 @@
+\begin{table}
+    \centering
+    \footnotesize
+    \setlength{\tabcolsep}{2pt}
+    \begin{tabular}{@{}lcc@{}}
+    \toprule
+    Token & \multicolumn{2}{c}{monoT5$_\text{large}$}\\
+    \midrule
+    & \multicolumn{1}{c}{DL19} & \multicolumn{1}{c}{DL20}\\
+    \midrule
+    \midrule
+    \multicolumn{3}{l}{Prompt Tokens}\\
+    \midrule
+    true & \cellcolor{neg!3}$-3.7\sig_{\color{gray}29, r, 1}$ & \cellcolor{neg!3}$-3.0\sig_{\color{gray}30, r, 1}$\\
+    false & \cellcolor{pos!6}$+6.7\sig_{\color{gray}54, r, 5}$ & \cellcolor{pos!14}$+14.8\sig_{\color{gray}58, r, 5}$\\
+    relevant & \cellcolor{pos!14}$+14.9\sig_{\color{gray}56, s, 5}$ & \cellcolor{pos!27}$+28.5\sig_{\color{gray}59, s, 5}$\\
+    relevanttrue & \cellcolor{pos!4}$+4.3\sig_{\color{gray}52, e, 5}$ & \cellcolor{pos!10}$+10.7\sig_{\color{gray}55, e, 5}$\\
+    relevantfalse & \cellcolor{pos!9}$+9.1\sig_{\color{gray}48, s, 5}$ & \cellcolor{pos!24}$+25.5\sig_{\color{gray}53, s, 5}$\\
+    \midrule
+    \multicolumn{3}{l}{Control Tokens}\\
+    \midrule
+    bar & \cellcolor{neg!2}$-2.3\sig_{\color{gray}30, e, 1}$ & \cellcolor{pos!1}$+1.0\sig_{\color{gray}37, e, 1}$\\
+    baz & \cellcolor{neg!2}$-1.9\sig_{\color{gray}37, r, 1}$ & \cellcolor{pos!5}$+4.9\insig_{\color{gray}42, r, 1}$\\
+    information & \cellcolor{neg!4}$-4.1\sig_{\color{gray}36, r, 1}$ & \cellcolor{neg!0}$-0.2\sig_{\color{gray}38, r, 1}$\\
+    informationbar & \cellcolor{pos!27}$+28.4\sig_{\color{gray}56, s, 5}$ & \cellcolor{pos!50}$+53.0\sig_{\color{gray}60, s, 5}$\\
+    informationbaz & \cellcolor{pos!8}$+8.9\sig_{\color{gray}50, s, 5}$ & \cellcolor{pos!40}$+42.2\sig_{\color{gray}58, s, 5}$\\
+    relevantbar & \cellcolor{neg!7}$-7.3\sig_{\color{gray}39, e, 5}$ & \cellcolor{pos!2}$+1.9\sig_{\color{gray}45, e, 5}$\\
+    informationtrue & \cellcolor{pos!10}$+10.5\sig_{\color{gray}58, e, 5}$ & \cellcolor{pos!18}$+19.2\sig_{\color{gray}61, e, 5}$\\
+    \midrule
+    \multicolumn{3}{l}{Synonyms}\\
+    \midrule
+    pertinent & \cellcolor{neg!2}$-2.4\sig_{\color{gray}40, r, 2}$ & \cellcolor{pos!0}$0.0\sig_{\color{gray}43, r, 2}$\\
+    significant & \cellcolor{neg!1}$-0.9\sig_{\color{gray}47, r, 5}$ & \cellcolor{pos!4}$+4.5\sig_{\color{gray}52, r, 5}$\\
+    related & \cellcolor{neg!4}$-4.3\sig_{\color{gray}30, r, 1}$ & \cellcolor{neg!4}$-4.5\sig_{\color{gray}29, r, 1}$\\
+    associated & \cellcolor{neg!2}$-1.7\sig_{\color{gray}37, e, 5}$ & \cellcolor{pos!1}$+0.7\sig_{\color{gray}40, e, 5}$\\
+    important & \cellcolor{neg!2}$-1.9\sig_{\color{gray}47, r, 5}$ & \cellcolor{pos!4}$+4.6\sig_{\color{gray}52, r, 5}$\\
+    \midrule
+    \multicolumn{3}{l}{Sub-Words}\\
+    \midrule
+    relevancy & \cellcolor{neg!4}$-3.9\sig_{\color{gray}34, r, 1}$ & \cellcolor{neg!3}$-3.4\sig_{\color{gray}34, r, 1}$\\
+    relevance & \cellcolor{pos!4}$+4.8\sig_{\color{gray}49, s, 5}$ & \cellcolor{pos!12}$+13.2\sig_{\color{gray}52, s, 5}$\\
+    relevantly & \cellcolor{neg!1}$-0.7\sig_{\color{gray}43, r, 2}$ & \cellcolor{pos!1}$+1.3\sig_{\color{gray}46, r, 2}$\\
+    irrelevant & \cellcolor{neg!3}$-3.7\sig_{\color{gray}33, r, 1}$ & \cellcolor{neg!2}$-1.9\sig_{\color{gray}36, r, 1}$\\
+    \midrule
+    \multicolumn{3}{l}{Misspellings}\\
+    \midrule
+    relevanty & \cellcolor{neg!0}$-0.4\sig_{\color{gray}40, r, 1}$ & \cellcolor{neg!0}$-0.4\sig_{\color{gray}40, r, 1}$\\
+    relevent & \cellcolor{neg!1}$-1.5\sig_{\color{gray}37, r, 1}$ & \cellcolor{neg!1}$-1.5\sig_{\color{gray}37, r, 1}$\\
+    trues & \cellcolor{neg!4}$-4.5\sig_{\color{gray}29, r, 1}$ & \cellcolor{neg!2}$-2.6\sig_{\color{gray}32, r, 1}$\\
+    falses & \cellcolor{neg!3}$-3.4\sig_{\color{gray}33, r, 1}$ & \cellcolor{neg!2}$-1.7\sig_{\color{gray}37, r, 1}$\\
+    \bottomrule
+    \caption{monoT5-large keyword-stuffing attack results (MRC / SR). Positive MRC = attack boosted rank. \sig = significant (Bonferroni-corrected Wilcoxon).}
+    \label{tab:t5large}
+    \end{tabular}
+\end{table}

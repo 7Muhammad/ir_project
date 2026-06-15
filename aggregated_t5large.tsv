@@ -1,0 +1,151 @@
+token	model	dataset	metric	value	position	n_tok	sig
+associated	t5.large	dl19	MRC	-1.6849184620878468	end	5	1
+associated	t5.large	dl19	Success Rate	0.36769432210451136	end	5	1
+associated	t5.large	dl19	sig	1.0	end	5	1
+bar	t5.large	dl19	MRC	-2.3134150696345674	end	1	1
+bar	t5.large	dl19	Success Rate	0.3016307582430663	end	1	1
+bar	t5.large	dl19	sig	1.0	end	1	1
+baz	t5.large	dl19	MRC	-1.9267944292346149	random	1	1
+baz	t5.large	dl19	Success Rate	0.3666468277586002	random	1	1
+baz	t5.large	dl19	sig	1.0	random	1	1
+false	t5.large	dl19	MRC	6.653374598262111	random	5	1
+false	t5.large	dl19	Success Rate	0.5436257588382335	random	5	1
+false	t5.large	dl19	sig	1.0	random	5	1
+falses	t5.large	dl19	MRC	-3.4254255445780264	random	1	1
+falses	t5.large	dl19	Success Rate	0.3323175812403285	random	1	1
+falses	t5.large	dl19	sig	1.0	random	1	1
+important	t5.large	dl19	MRC	-1.8732769908344244	random	5	1
+important	t5.large	dl19	Success Rate	0.4670396381383169	random	5	1
+important	t5.large	dl19	sig	1.0	random	5	1
+information	t5.large	dl19	MRC	-4.055564813712653	random	1	1
+information	t5.large	dl19	Success Rate	0.36129032258064514	random	1	1
+information	t5.large	dl19	sig	1.0	random	1	1
+informationbar	t5.large	dl19	MRC	28.404213784073324	start	5	1
+informationbar	t5.large	dl19	Success Rate	0.5595048208546601	start	5	1
+informationbar	t5.large	dl19	sig	1.0	start	5	1
+informationbaz	t5.large	dl19	MRC	8.888275205332699	start	5	1
+informationbaz	t5.large	dl19	Success Rate	0.5008689441733127	start	5	1
+informationbaz	t5.large	dl19	sig	1.0	start	5	1
+informationtrue	t5.large	dl19	MRC	10.535888584692298	end	5	1
+informationtrue	t5.large	dl19	Success Rate	0.5754314962504464	end	5	1
+informationtrue	t5.large	dl19	sig	1.0	end	5	1
+irrelevant	t5.large	dl19	MRC	-3.699392929413165	random	1	1
+irrelevant	t5.large	dl19	Success Rate	0.3346030234495893	random	1	1
+irrelevant	t5.large	dl19	sig	1.0	random	1	1
+pertinent	t5.large	dl19	MRC	-2.413426972979407	random	2	1
+pertinent	t5.large	dl19	Success Rate	0.4003332936555172	random	2	1
+pertinent	t5.large	dl19	sig	1.0	random	2	1
+related	t5.large	dl19	MRC	-4.292179502440185	random	1	1
+related	t5.large	dl19	Success Rate	0.2975122009284609	random	1	1
+related	t5.large	dl19	sig	1.0	random	1	1
+relevance	t5.large	dl19	MRC	4.750077371741459	start	5	1
+relevance	t5.large	dl19	Success Rate	0.4917985954053089	start	5	1
+relevance	t5.large	dl19	sig	1.0	start	5	1
+relevancy	t5.large	dl19	MRC	-3.8569217950244017	random	1	1
+relevancy	t5.large	dl19	Success Rate	0.3383882871086775	random	1	1
+relevancy	t5.large	dl19	sig	1.0	random	1	1
+relevant	t5.large	dl19	MRC	14.915938578740626	start	5	1
+relevant	t5.large	dl19	Success Rate	0.5567670515414832	start	5	1
+relevant	t5.large	dl19	sig	1.0	start	5	1
+relevantbar	t5.large	dl19	MRC	-7.3099630996309966	end	5	1
+relevantbar	t5.large	dl19	Success Rate	0.386787287227711	end	5	1
+relevantbar	t5.large	dl19	sig	1.0	end	5	1
+relevantfalse	t5.large	dl19	MRC	9.139769075110106	start	5	1
+relevantfalse	t5.large	dl19	Success Rate	0.4825615998095465	start	5	1
+relevantfalse	t5.large	dl19	sig	1.0	start	5	1
+relevantly	t5.large	dl19	MRC	-0.7119866682537793	random	2	1
+relevantly	t5.large	dl19	Success Rate	0.43102011665277945	random	2	1
+relevantly	t5.large	dl19	sig	1.0	random	2	1
+relevanttrue	t5.large	dl19	MRC	4.297964528032377	end	5	1
+relevanttrue	t5.large	dl19	Success Rate	0.5206284966075467	end	5	1
+relevanttrue	t5.large	dl19	sig	1.0	end	5	1
+relevanty	t5.large	dl19	MRC	-0.3927151529579812	random	1	1
+relevanty	t5.large	dl19	Success Rate	0.3951672419950006	random	1	1
+relevanty	t5.large	dl19	sig	1.0	random	1	1
+relevent	t5.large	dl19	MRC	-1.480466611117724	random	1	1
+relevent	t5.large	dl19	Success Rate	0.37090822521128436	random	1	1
+relevent	t5.large	dl19	sig	1.0	random	1	1
+significant	t5.large	dl19	MRC	-0.8833948339483395	random	5	1
+significant	t5.large	dl19	Success Rate	0.46668253779311986	random	5	1
+significant	t5.large	dl19	sig	1.0	random	5	1
+true	t5.large	dl19	MRC	-3.653922152124747	random	1	1
+true	t5.large	dl19	Success Rate	0.2883466254017379	random	1	1
+true	t5.large	dl19	sig	1.0	random	1	1
+trues	t5.large	dl19	MRC	-4.509320319009642	random	1	1
+trues	t5.large	dl19	Success Rate	0.2854660159504821	random	1	1
+trues	t5.large	dl19	sig	1.0	random	1	1
+associated	t5.large	dl20	MRC	0.7424383434155422	end	5	1
+associated	t5.large	dl20	Success Rate	0.40216379711493716	end	5	1
+associated	t5.large	dl20	sig	1.0	end	5	1
+bar	t5.large	dl20	MRC	0.9838296882270824	end	1	1
+bar	t5.large	dl20	Success Rate	0.3688149526911742	end	1	1
+bar	t5.large	dl20	sig	1.0	end	1	1
+baz	t5.large	dl20	MRC	4.858790910501008	random	1	0
+baz	t5.large	dl20	Success Rate	0.4214751046998604	random	1	0
+baz	t5.large	dl20	sig	0.0	random	1	0
+false	t5.large	dl20	MRC	14.843473708701723	random	5	1
+false	t5.large	dl20	Success Rate	0.5830618892508144	random	5	1
+false	t5.large	dl20	sig	1.0	random	5	1
+falses	t5.large	dl20	MRC	-1.738599348534202	random	1	1
+falses	t5.large	dl20	Success Rate	0.3656739568791686	random	1	1
+falses	t5.large	dl20	sig	1.0	random	1	1
+important	t5.large	dl20	MRC	4.592271599193423	random	5	1
+important	t5.large	dl20	Success Rate	0.5170234217465488	random	5	1
+important	t5.large	dl20	sig	1.0	random	5	1
+information	t5.large	dl20	MRC	-0.22335970218706375	random	1	1
+information	t5.large	dl20	Success Rate	0.376900108577633	random	1	1
+information	t5.large	dl20	sig	1.0	random	1	1
+informationbar	t5.large	dl20	MRC	52.982297968047156	start	5	1
+informationbar	t5.large	dl20	Success Rate	0.6020435861641074	start	5	1
+informationbar	t5.large	dl20	sig	1.0	start	5	1
+informationbaz	t5.large	dl20	MRC	42.24406700791066	start	5	1
+informationbaz	t5.large	dl20	Success Rate	0.5765472312703583	start	5	1
+informationbaz	t5.large	dl20	sig	1.0	start	5	1
+informationtrue	t5.large	dl20	MRC	19.2052311152474	end	5	1
+informationtrue	t5.large	dl20	Success Rate	0.612513572204126	end	5	1
+informationtrue	t5.large	dl20	sig	1.0	end	5	1
+irrelevant	t5.large	dl20	MRC	-1.932740034124399	random	1	1
+irrelevant	t5.large	dl20	Success Rate	0.3604195749961222	random	1	1
+irrelevant	t5.large	dl20	sig	1.0	random	1	1
+pertinent	t5.large	dl20	MRC	-0.017585698774623855	random	2	1
+pertinent	t5.large	dl20	Success Rate	0.43450442066077244	random	2	1
+pertinent	t5.large	dl20	sig	1.0	random	2	1
+related	t5.large	dl20	MRC	-4.4773538079727	random	1	1
+related	t5.large	dl20	Success Rate	0.2900573910345897	random	1	1
+related	t5.large	dl20	sig	1.0	random	1	1
+relevance	t5.large	dl20	MRC	13.18630758492322	start	5	1
+relevance	t5.large	dl20	Success Rate	0.5179734760353653	start	5	1
+relevance	t5.large	dl20	sig	1.0	start	5	1
+relevancy	t5.large	dl20	MRC	-3.423569101907864	random	1	1
+relevancy	t5.large	dl20	Success Rate	0.34380331937335196	random	1	1
+relevancy	t5.large	dl20	sig	1.0	random	1	1
+relevant	t5.large	dl20	MRC	28.479079416783	start	5	1
+relevant	t5.large	dl20	Success Rate	0.5880836047774158	start	5	1
+relevant	t5.large	dl20	sig	1.0	start	5	1
+relevantbar	t5.large	dl20	MRC	1.946603071195905	end	5	1
+relevantbar	t5.large	dl20	Success Rate	0.450655343570653	end	5	1
+relevantbar	t5.large	dl20	sig	1.0	end	5	1
+relevantfalse	t5.large	dl20	MRC	25.470606483635798	start	5	1
+relevantfalse	t5.large	dl20	Success Rate	0.5264076314564914	start	5	1
+relevantfalse	t5.large	dl20	sig	1.0	start	5	1
+relevantly	t5.large	dl20	MRC	1.2895338917325887	random	2	1
+relevantly	t5.large	dl20	Success Rate	0.4639948813401582	random	2	1
+relevantly	t5.large	dl20	sig	1.0	random	2	1
+relevanttrue	t5.large	dl20	MRC	10.663661392895921	end	5	1
+relevanttrue	t5.large	dl20	Success Rate	0.5549480378470606	end	5	1
+relevanttrue	t5.large	dl20	sig	1.0	end	5	1
+relevanty	t5.large	dl20	MRC	-0.3610012408872344	random	1	1
+relevanty	t5.large	dl20	Success Rate	0.4003218551264154	random	1	1
+relevanty	t5.large	dl20	sig	1.0	random	1	1
+relevent	t5.large	dl20	MRC	-1.5052156041569722	random	1	1
+relevent	t5.large	dl20	Success Rate	0.3695517294865829	random	1	1
+relevent	t5.large	dl20	sig	1.0	random	1	1
+significant	t5.large	dl20	MRC	4.53753683883977	random	5	1
+significant	t5.large	dl20	Success Rate	0.5196409182565535	random	5	1
+significant	t5.large	dl20	sig	1.0	random	5	1
+true	t5.large	dl20	MRC	-2.9893749030556847	random	1	1
+true	t5.large	dl20	Success Rate	0.3048898712579494	random	1	1
+true	t5.large	dl20	sig	1.0	random	1	1
+trues	t5.large	dl20	MRC	-2.600957809834031	random	1	1
+trues	t5.large	dl20	Success Rate	0.32016829533116176	random	1	1
+trues	t5.large	dl20	sig	1.0	random	1	1
