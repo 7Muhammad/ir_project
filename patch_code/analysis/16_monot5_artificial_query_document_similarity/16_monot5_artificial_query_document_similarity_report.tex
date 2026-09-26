@@ -74,7 +74,13 @@ one in the middle layers and has the \emph{opposite} sign at the embedding and a
 layer 11. Averaged over the whole attack family, adversarial injection therefore does
 \emph{not} reproduce the genuine-relevance similarity signature. Only the minority of
 attacks that actually work move the final-layer similarity in the relevant direction,
-and even they do so by a fraction of the genuine gap. None of this is causal evidence.
+and even they do so by a fraction of the genuine gap. \textbf{Supplementary level
+analyses} split the attacks by example-level success. They cover the 25 encoder
+checkpoints, the 18 important encoder heads, the decoder cross-attention and residual
+stream, and the 31 important decoder heads. At every one of these levels,
+\emph{successful} attacked inputs look like clean \emph{non-relevant} documents, not like
+genuinely relevant ones, and they are no closer to genuine relevance than unsuccessful
+attacks. None of this is causal evidence.
 \end{abstract}
 
 \tableofcontents
@@ -531,6 +537,211 @@ trajectories come from different populations and units (queries vs attacks).}
 \end{enumerate}
 
 % =====================================================================
+\section{Supplementary Analyses: Similarity Levels, Important Heads and the Decoder}
+% =====================================================================
+
+The primary analyses compare gaps (relevant $-$ non-relevant, attack $-$ control) over
+the full, unfiltered attack family. This section asks a complementary, descriptive
+question: in absolute terms, does a \emph{successful} attacked input look like a genuinely
+relevant document? Four populations are compared (stages 06--12):
+
+\begin{itemize}[nosep]
+  \item clean, genuinely relevant (qrel 2/3) and clean, non-relevant (qrel 0): the
+        balanced qrel sample of 43 queries, averaged within query, then equal weight
+        per query, $\pm1$ SE across queries;
+  \item attacked, \textbf{successful}: the 18,906 examples with example-level
+        $\Delta\score=\score_{\mathrm{attack}}-\score_{\mathrm{control}}>0$;
+  \item attacked, \textbf{unsuccessful}: the 33,572 examples with $\Delta\score\le0$.
+\end{itemize}
+
+For both attack groups, only the attacked input itself is used, with the injected tokens
+in the document span. Examples are averaged within each attack, then the attacks are
+weighted equally, with $\pm1$ SE across attacks. All 105 attacks contain both successful
+(80--405 per attack) and unsuccessful (95--420) examples.
+
+The success split is used \emph{only} in these descriptive plots. Throughout,
+\textbf{colour marks the population}: blue for the clean judged documents, orange for the
+attacked inputs. \textbf{Line style marks the outcome}: solid for relevant or successful,
+dashed for non-relevant or unsuccessful.
+
+\subsection{Encoder: similarity levels at the 25 checkpoints}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{outputs/plots/fig_successful_attacks_vs_genuine_similarity.png}
+\caption{Absolute $\cos(Q_c,D_c)$ at the 25 encoder checkpoints for the four
+populations (the same metric as Section~2).}
+\label{fig:enc_levels}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{Layers 0--9:} the four curves move together within about 0.03.
+        Genuinely relevant documents are always on top. The other three are nearly
+        indistinguishable.
+  \item \textbf{Layers 10--11:} the populations separate. At \texttt{L11\_post\_attn}
+        the values are 0.47 (relevant), 0.37 (non-relevant), 0.31 (unsuccessful) and
+        0.29 (successful). At \texttt{L11\_post\_mlp} they are 0.51, 0.46, 0.41 and
+        0.39.
+  \item \textbf{Successful attacks do not reach even the non-relevant level} at the
+        final layer. They are marginally \emph{below} the unsuccessful ones.
+\end{itemize}
+
+This does not contradict RQ4. RQ4 concerns each document's \emph{increase} over its own
+padded control; Figure~\ref{fig:enc_levels} concerns absolute levels. One plausible
+reason the levels are low is selection: attacks mostly succeed on documents that started
+out less relevant.
+
+\subsection{Important encoder heads}
+
+For each of the 18 canonical important encoder heads (Exp~13
+\texttt{encoder\_senders.json}), the same metric is applied to that head's own 64-d
+output before \texttt{o\_proj}. It is pooled over query-text positions and over document
+positions, and the two pooled vectors are compared by cosine.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{outputs/plots/fig_heads_encoder_four_populations.png}
+\caption{Head-level query--document similarity at the 18 important encoder heads
+(ordered by layer, then head).}
+\label{fig:enc_heads}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{Heads that separate genuine relevance most:} \texttt{L11H2} ($+0.43$
+        relevant $-$ non-relevant), \texttt{L11H0} ($+0.40$), \texttt{L11H11}
+        ($+0.37$), \texttt{L11H3} ($+0.36$) and \texttt{L10H2} ($+0.21$).
+  \item \textbf{Attacks at those heads:} both attack groups sit with or below the
+        non-relevant documents. At \texttt{L11H11}, for example, the values are 0.81
+        (relevant), 0.43 (non-relevant), 0.35 (unsuccessful) and 0.29 (successful).
+  \item \textbf{Two heads run the other way:} at \texttt{L9H6} and \texttt{L10H6},
+        relevant documents are \emph{less} query-similar than non-relevant ones
+        ($-0.13$, $-0.21$). Attacks follow the non-relevant level there too.
+  \item \textbf{Successful vs unsuccessful:} successful attacks are closer to genuine
+        relevance than unsuccessful ones at only 3 of 18 heads. At the discriminating
+        heads \texttt{L10H0}, \texttt{L10H2}, \texttt{L10H4} and \texttt{L11H11} they
+        are 0.05--0.06 \emph{less} query-similar than unsuccessful attacks.
+\end{itemize}
+
+\subsection{Decoder}
+
+At the first decoder step there is a single position. Query and document information
+reaches it only through cross-attention, so the encoder metric cannot be applied
+directly. Two decoder-side definitions are used.
+
+\paragraph{Cross-attention messages (stages 07/08, per layer).} In each decoder layer the
+cross-attention output (after \texttt{.o}, before the residual add) is split by source
+span:
+\[
+m_S=\texttt{o}\Big(\textstyle\sum_{j\in S}P_{h,j}V_{h,j}\Big)_h .
+\]
+The plotted quantity is $\cos(m_{\mathrm{query}},m_{\mathrm{doc}})$. On every batch the
+query, document and template parts together reproduce the cross-attention output to a
+relative error $\le10^{-6}$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{outputs/plots/fig_decoder_message_similarity_four_populations.png}
+\caption{Per decoder layer: cosine between the cross-attention message read from the
+query text and the message read from the document.}
+\label{fig:dec_msg}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{Genuine relevance separates most sharply in the last two decoder
+        layers:} 0.52 (D10) and 0.54 (D11) for relevant documents, against 0.15 for
+        non-relevant ones.
+  \item \textbf{Both attack groups sit below the non-relevant documents there}
+        (0.10--0.12).
+  \item \textbf{Relevant documents are also clearly higher at D0, D1, D3, D7 and D9.}
+        D8 is the one reversal: the non-relevant and both attack groups (0.27) are well
+        above the relevant documents (0.14).
+\end{itemize}
+
+\paragraph{Residual-stream probe (stages 11/12, every sublayer).} The encoder is run once.
+The first decoder step is then run twice from that output: once with cross-attention
+restricted to the query-text positions (the decoder's representation of the query) and
+once restricted to the document positions (its representation of the document). The
+plotted quantity is $\cos(h_{\text{query-only}},h_{\text{doc-only}})$ of the decoder
+residual state at 37 checkpoints: the embedding, then post self-attention, post
+cross-attention and post MLP for each layer, with layer 11 taken before
+\texttt{final\_layer\_norm}.
+
+Restricting cross-attention renormalises the attention over the kept span, so each run
+is a probe rather than the model's normal pass. As required, the two checkpoints before
+any cross-attention are identical in both runs (maximum $|1-\cos|\approx10^{-16}$).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{outputs/plots/fig_decoder_probe_similarity_four_populations.png}
+\caption{Decoder residual-stream query--document similarity at every decoder sublayer.}
+\label{fig:dec_probe}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{Layers 2--7:} all four groups stay at 0.93--0.99. The shared
+        start-token embedding dominates the decoder residual stream there.
+  \item \textbf{Early separation:} at layers 0--1, relevant documents already sit lower
+        at the MLP and cross-attention steps (0.92 vs 0.95 after D1 cross-attention).
+  \item \textbf{Late separation, mostly at cross-attention steps:} from D8 on, genuine
+        relevance separates, growing at the D8, D9 and D11 cross-attention steps.
+        After D11 cross-attention the values are 0.77 (relevant), 0.68
+        (non-relevant), 0.67 (unsuccessful) and 0.66 (successful).
+  \item \textbf{Attacks track the non-relevant documents} throughout, and end slightly
+        below them.
+\end{itemize}
+
+\paragraph{Important decoder heads.} For the 31 canonical important decoder heads (Exp~13
+\texttt{decoder\_receivers.json}; all cross-attention), the per-head query-sourced and
+document-sourced 64-d contributions $\sum_{j\in S}P_{h,j}V_{h,j}$ at the first decoder
+step are compared by cosine (Figure~\ref{fig:dec_heads}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{outputs/plots/fig_heads_decoder_four_populations.png}\\[4pt]
+\includegraphics[width=\textwidth]{outputs/plots/fig_heads_decoder_four_populations_by_layer.png}
+\caption{Head-level query--document similarity at the 31 important decoder
+cross-attention heads (top: all heads; bottom: the same data split per decoder layer).}
+\label{fig:dec_heads}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{Heads that separate relevant from non-relevant most:}
+        \texttt{L10-X-H0} ($+0.23$), \texttt{L8-X-H7} ($+0.17$), \texttt{L11-X-H0}
+        ($+0.15$), \texttt{L6-X-H7}, \texttt{L6-X-H9} and \texttt{L11-X-H6} ($+0.15$
+        each).
+  \item \textbf{Attacks sit at the non-relevant level at every head.} Successful and
+        unsuccessful attacks never differ by more than 0.02.
+\end{itemize}
+
+The simplified two-line versions (genuine relevant vs successful attack only) are in
+\texttt{outputs/plots/fig\_heads\_\{encoder,decoder\}\_genuine\_vs\_successful.png}.
+All plotted numbers are in \texttt{outputs/04\_analysis/} and
+\texttt{outputs/10\_head\_analysis/}.
+
+\subsection{What the supplementary analyses add}
+
+\begin{itemize}[nosep]
+  \item \textbf{Successful attacks do not look like genuinely relevant documents} at any
+        level examined: the encoder checkpoints, the important encoder heads, the
+        decoder cross-attention messages, the decoder residual stream and the
+        important decoder heads.
+  \item \textbf{They look like clean non-relevant documents}, and in the late encoder
+        and decoder slightly less query-similar still.
+  \item \textbf{Successful and unsuccessful attacks are almost indistinguishable in
+        these levels.} Where they differ, at late encoder heads, successful attacks are
+        the \emph{less} similar group.
+  \item \textbf{Implication:} whatever makes an attack succeed, it is not visible as
+        genuine-relevance-like query--document similarity in absolute terms. That
+        points away from ``the attack makes the document look relevant'' and towards a
+        different route to the \texttt{true} logit. The earlier causal experiments
+        located that route in late encoder heads and cross-attention.
+  \item \textbf{Caveats:} these are level comparisons between different document
+        sources (BM25-retrieved pairs vs the judged DL19 pool). The decoder
+        residual-stream probe restricts cross-attention and is therefore not the
+        model's normal pass. All results are descriptive.
+\end{itemize}
+
+% =====================================================================
 \section{Interpretation and Discussion}
 % =====================================================================
 
@@ -604,6 +815,10 @@ change \emph{mediates} the score change cannot be decided here.
   \item \textbf{One-sided test.} The sign-flip tests only positive gaps. The negative
         embedding and layer-11 gaps are reported descriptively (SE bands, fraction of
         attacks), not tested.
+  \item \textbf{Supplementary decoder probe.} The decoder residual-stream comparison
+        restricts cross-attention to one span per run (renormalised attention), so it
+        describes hypothetical decoder passes. The cross-attention message split, by
+        contrast, is an exact decomposition of the normal pass.
   \item \textbf{Qrel sample.} The genuine-relevance analysis is descriptive. The
         per-query gaps are saved (\texttt{qrel\_per\_query\_trajectory.csv}) for later
         inference. The qrel documents are the judged DL19 pool, not the BM25 pairs used
@@ -616,13 +831,15 @@ change \emph{mediates} the score change cannot be decided here.
 
 \begin{lstlisting}
 cd patch_code/analysis/16_monot5_artificial_query_document_similarity
-bash bash/run_tests.sh                       # 33 pytest tests (CPU)
+bash bash/run_tests.sh                       # 45 pytest tests (CPU)
 bash bash/run_smoke_test.sh                  # smoke pipeline -> outputs_smoke/
 # full run (SLURM job 1420511, L40, ~6 min end-to-end):
 cd /home/ghoummaid/IR && bash run_job.sh --job-name monot5_exp16_similarity \
   --gpu-type L40 --gpu-count 1 --cores 8 --time 24:00:00 \
   --output-dir ./patch_code/analysis/16_monot5_artificial_query_document_similarity/slurm_logs \
   --command "cd /home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity && bash bash/run_all.sh configs/default.yaml"
+# supplementary stages 06-12 (same command; completed stages resume-skip):
+#   SLURM 1420594 (07 decoder messages), 1420609 (09 heads), 1420613 (11 decoder probe)
 \end{lstlisting}
 
 The exact sources and sha256 hashes are in \texttt{outputs/manifests/provenance.json};

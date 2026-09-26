@@ -18,6 +18,7 @@ Earlier experiments are imported, never copied (project reuse convention):
                        Exp 01 scoring functions (smoke score-cache check)
   Exp 03  headlib.*    config loading with attacks.inherit_from
   Exp 06  exp6lib.*    query/document span detection (template exclusion)
+  Exp 13  exp13lib.*   canonical important-head lists (18 encoder, 31 decoder cross-attn)
   Exp 14  exp14lib.*   status.json resume helpers
 """
 
@@ -32,6 +33,7 @@ SIBLING_DIRS = [
     ANALYSIS_DIR / "01_monot5_layer_patching",
     ANALYSIS_DIR / "03_monot5_head_patching_ablation",
     ANALYSIS_DIR / "06_monot5_query_doc_patching",
+    ANALYSIS_DIR / "13_monot5_encoder_decoder_path_patching",
     ANALYSIS_DIR / "14_monot5_heldout_mean_diff_defense",
 ]
 for _p in [*SIBLING_DIRS, EXP_DIR]:

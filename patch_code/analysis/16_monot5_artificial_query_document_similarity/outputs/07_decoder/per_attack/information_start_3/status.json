@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 22:23:30",
+  "manifest_sha256": "6239331d0f3461a4ee76b90176dc7490ea30229459896d016a812d03cfea6bc7",
+  "n_examples": 500,
+  "decomposition_max_rel": 6.18154452877989e-07,
+  "fresh_vs_cached_score_max_abs": 4.1961669921875e-05,
+  "seconds": 2.451688766479492,
+  "device": "cuda"
+}
