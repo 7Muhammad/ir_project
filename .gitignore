@@ -58,3 +58,87 @@ patch_code/analysis/03_monot5_head_patching_ablation/outputs/clean_a/attacks/*/h
 
 # ── Scratch scripts ───────────────────────────────────────────────────────────
 _tmp_*.py
+
+# ── Raw experiment data (regenerable; code, plots, reports and summaries are kept)
+# Per-attack / per-query / per-example data dumps. Plots in these folders are kept.
+# selected_examples.jsonl files are re-included below: they record which examples
+# each result is about.
+patch_code/analysis/*/outputs*/**/attacks/*/**/*.csv
+patch_code/analysis/*/outputs*/**/attacks/*/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/attacks/*/**/*.jsonl
+patch_code/analysis/*/outputs*/**/attacks/*/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/attacks/*/**/*.parquet
+patch_code/analysis/*/outputs*/**/attacks/*/**/*.npz
+patch_code/analysis/*/outputs*/**/per_attack/**/*.csv
+patch_code/analysis/*/outputs*/**/per_attack/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/per_attack/**/*.jsonl
+patch_code/analysis/*/outputs*/**/per_attack/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/per_attack/**/*.parquet
+patch_code/analysis/*/outputs*/**/per_attack/**/*.npz
+patch_code/analysis/*/outputs*/**/per_query/**/*.csv
+patch_code/analysis/*/outputs*/**/per_query/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/per_query/**/*.jsonl
+patch_code/analysis/*/outputs*/**/per_query/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/per_query/**/*.parquet
+patch_code/analysis/*/outputs*/**/per_query/**/*.npz
+patch_code/analysis/*/outputs*/**/raw/**/*.csv
+patch_code/analysis/*/outputs*/**/raw/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/raw/**/*.jsonl
+patch_code/analysis/*/outputs*/**/raw/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/raw/**/*.parquet
+patch_code/analysis/*/outputs*/**/raw/**/*.npz
+patch_code/analysis/*/outputs*/**/per_example/**/*.csv
+patch_code/analysis/*/outputs*/**/per_example/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/per_example/**/*.jsonl
+patch_code/analysis/*/outputs*/**/per_example/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/per_example/**/*.parquet
+patch_code/analysis/*/outputs*/**/per_example/**/*.npz
+patch_code/analysis/*/outputs*/**/diffs/**/*.csv
+patch_code/analysis/*/outputs*/**/diffs/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/diffs/**/*.jsonl
+patch_code/analysis/*/outputs*/**/diffs/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/diffs/**/*.parquet
+patch_code/analysis/*/outputs*/**/diffs/**/*.npz
+patch_code/analysis/*/outputs*/**/examples/**/*.csv
+patch_code/analysis/*/outputs*/**/examples/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/examples/**/*.jsonl
+patch_code/analysis/*/outputs*/**/examples/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/examples/**/*.parquet
+patch_code/analysis/*/outputs*/**/examples/**/*.npz
+patch_code/analysis/*/outputs*/**/qrel/**/*.csv
+patch_code/analysis/*/outputs*/**/qrel/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/qrel/**/*.jsonl
+patch_code/analysis/*/outputs*/**/qrel/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/qrel/**/*.parquet
+patch_code/analysis/*/outputs*/**/qrel/**/*.npz
+patch_code/analysis/*/outputs*/**/pairs/**/*.csv
+patch_code/analysis/*/outputs*/**/pairs/**/*.csv.gz
+patch_code/analysis/*/outputs*/**/pairs/**/*.jsonl
+patch_code/analysis/*/outputs*/**/pairs/**/*.jsonl.gz
+patch_code/analysis/*/outputs*/**/pairs/**/*.parquet
+patch_code/analysis/*/outputs*/**/pairs/**/*.npz
+patch_code/analysis/*/outputs*/**/pilot_rows.csv
+!patch_code/analysis/*/outputs*/**/selected_examples.jsonl
+# Large (>2 MB) row-level tables that sit next to the summaries
+patch_code/analysis/03_monot5_head_patching_ablation/outputs/clean_a/aggregated/head_attack_summary.csv
+patch_code/analysis/03_monot5_head_patching_ablation/outputs/grid_a/aggregated/head_attack_summary.csv
+patch_code/analysis/06_monot5_query_doc_patching/outputs/template_tokens/attention_mass/results.csv
+patch_code/analysis/11_monot5_encoder_head_patching/outputs/canonical/results.csv
+patch_code/analysis/12_query_token_localization/outputs/aggregates/causal_query_word_ranked.csv
+patch_code/analysis/12_query_token_localization/outputs/diagnostics/individual_query_word_table.csv
+patch_code/analysis/13_monot5_encoder_decoder_path_patching/outputs/aggregates/per_attack_sender_receiver.csv
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/baselines/test_by_attack.json
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/baselines/train_by_attack.json
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/baselines/train_pooled_examples.json
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/baselines/validation_by_attack.json
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/test/clean_damage_per_example.csv
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/validation/validation_clean_damage.csv
+patch_code/analysis/15_monot5_attack_to_query_flow/outputs/05_aggregate/raw_all_query_edges.csv
+patch_code/analysis/15_monot5_attack_to_query_flow/outputs/05_aggregate/raw_single_query_edges.csv.gz
+patch_code/analysis/15_monot5_attack_to_query_flow/outputs/05_aggregate/raw_whole_head.csv
+patch_code/analysis/15_monot5_attack_to_query_flow/outputs/05_aggregate/token_per_example.csv
+patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/03_attack/attack_similarity.csv.gz
+patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/07_decoder/attack_decoder.csv.gz
+patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/07_decoder/qrel_decoder.csv.gz
+patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/09_heads/attack_heads.csv.gz
+patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/11_decoder_probe/attack_decoder_probe.csv.gz
