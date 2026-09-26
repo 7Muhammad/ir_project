@@ -1,0 +1,7 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 20:47:34",
+  "manifest_sha256": "0e78dc3e264dfeac6f6a0a1f2ae93455979f2a7ae1f643e0389c6a2c5bd8e982",
+  "n_docs": 6,
+  "device": "cuda"
+}

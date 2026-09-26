@@ -1,0 +1,39 @@
+# =============================================================================
+# Experiment 16 — SMOKE config. Inherits default.yaml and shrinks the scope so
+# the whole pipeline runs on CPU in minutes. NOT for scientific use.
+#
+# Still exercises every branch: clean extraction + cached-score attach,
+# qrel manifest (grade 2/3 vs 0, grade 1 excluded, seeded balancing) and
+# extraction, attack/control extraction (start attack + scattered random
+# attack with an Exp 01 alignment failure), all 25 checkpoints, masks,
+# fresh-vs-cached score agreement, all analyses, sign-flip/BH plumbing, plots.
+# =============================================================================
+
+extends: "default.yaml"
+
+attacks:
+  mode: "include"
+  include:
+    - relevant_start_5
+    - bar_random_3
+
+data:
+  max_clean_examples: 5
+  max_examples_per_attack: 5
+
+qrels:
+  max_queries: 2
+  max_docs_per_class: 3
+
+runtime:
+  batch_size: 8
+
+validation:
+  sanity_n_examples: 3
+  fresh_score_check_n: 3
+
+statistics:
+  n_sign_flips: 2000
+
+outputs:
+  base_dir: "../outputs_smoke"

@@ -1,0 +1,72 @@
+# =============================================================================
+# Experiment 16 — Artificial query-document similarity (observational only)
+# =============================================================================
+# FULL experiment: 500 canonical clean pairs, the balanced within-query TREC
+# DL19 qrel sample (qrel 2/3 vs qrel 0), and ALL scored examples x ALL 105
+# attacks (no success filter), each at 25 encoder checkpoints.
+#
+# All relative paths are relative to THIS config file's directory.
+# Values that change scientific semantics are LOCKED — see ../DECISIONS.md.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512          # prompts longer than this are never truncated silently (see DECISIONS 39)
+  device: "auto"           # "auto" -> cuda if usable, else cpu
+  dtype: "float32"         # locked (cached Exp 01 scores are fp32)
+  allow_tf32: false
+
+# 105-attack grid (7 tokens x 3 positions x 5 reps), inherited from Exp 01 —
+# never copied (resolved by headlib.run_utils.load_config).
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+data:
+  # Canonical 500 Type-A pairs + their cached clean monoT5 score (original_score).
+  canonical_pairs: "../../01_monot5_layer_patching/outputs/pairs/pairs.jsonl"
+  canonical_scores: "../../01_monot5_layer_patching/outputs/scores/all_scores.csv"
+  # FULL per-attack population (NOT selected_examples.jsonl, which is success-filtered):
+  #   {exp1_attacks_dir}/{attack}/pairs/pairs.jsonl       texts incl. attacked_passage (500 per attack)
+  #   {exp1_attacks_dir}/{attack}/scores/all_scores.csv   control/attack scores for every aligned pair
+  exp1_attacks_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  # ECIR-24 BM25 top-1000 DL19 run with passage text; used only to cross-check
+  # the ir_datasets query/passage text (provenance), never as a population.
+  bm25_run_text: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/data/bm25_19.tsv.gz"
+  max_clean_examples: null          # null = all 500 (smoke only may set)
+  max_examples_per_attack: null     # null = all scored examples (smoke only may set)
+
+qrels:
+  # Same ir_datasets id the upstream ECIR-24 evaluation uses
+  # (advseq2seq/retrieval_effectiveness/evaluation_utils.py:
+  #  pt.get_dataset('irds:msmarco-passage/trec-dl-2019/judged')).
+  # Qrels file downloaded by ir_datasets from https://trec.nist.gov/data/deep/2019qrels-pass.txt
+  irds_qrels_id: "msmarco-passage/trec-dl-2019/judged"
+  # Passage text for judged docids: the full MS MARCO passage collection via
+  # the same ir_datasets namespace (the ECIR-24 BM25 file only covers
+  # BM25 top-1000 and would drop ~half the balanced sample).
+  irds_docs_id: "msmarco-passage"
+  relevant_grades: [2, 3]      # locked
+  nonrelevant_grades: [0]      # locked
+  excluded_grades: [1]         # locked
+  seed: 42                     # locked
+  max_queries: null            # smoke only
+  max_docs_per_class: null     # smoke only (applied AFTER balancing; keeps classes equal)
+
+runtime:
+  seed: 42
+  batch_size: 64               # sequences per forward (attack + control rows are mixed, length-sorted)
+
+validation:
+  sanity_n_examples: 4                  # stage 01 real-model hook-semantics / batch-invariance check
+  hook_semantics_atol: 1.0e-4
+  batch_invariance_atol: 1.0e-5         # cosine units
+  fresh_score_check_n: 0                # full run: no rescoring (smoke sets > 0)
+  fresh_vs_cached_score_atol: 5.0e-3    # same tolerance as Exp 15
+
+statistics:
+  n_sign_flips: 100000
+  sign_flip_seed: 42
+  fdr_alpha: 0.05
+
+outputs:
+  base_dir: "../outputs"

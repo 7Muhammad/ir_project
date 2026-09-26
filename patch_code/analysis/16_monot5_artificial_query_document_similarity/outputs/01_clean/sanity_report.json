@@ -1,0 +1,15 @@
+{
+  "n_checkpoints": 25.0,
+  "shape_ok": 1.0,
+  "embedding_vs_embed_tokens": 0.0,
+  "embedding_vs_hidden_states0": 0.0,
+  "post_attn_residual": 0.0,
+  "post_mlp_residual": 0.0,
+  "post_mlp_carried_forward": 0.0,
+  "final_norm_of_last_post_mlp_vs_encoder_output": 0.0,
+  "last_post_mlp_minus_encoder_output": 104813.26467466354,
+  "hook_sims_vs_recomputed": 0.0,
+  "post_attn_differs_from_raw_attention_output": 83462.94995117188,
+  "batch_invariance_max_abs": 1.6776787203909294e-07,
+  "device": "cuda"
+}

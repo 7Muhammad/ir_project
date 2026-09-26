@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 20:47:01",
+  "sha256": {
+    "clean": "e1a6a567698a6960cc8195c799ec30a7ad2a4bf2e8fe1f88a8b9e14c2db14c17",
+    "attacks": "6239331d0f3461a4ee76b90176dc7490ea30229459896d016a812d03cfea6bc7",
+    "qrel": "0e78dc3e264dfeac6f6a0a1f2ae93455979f2a7ae1f643e0389c6a2c5bd8e982"
+  },
+  "n_clean": 500,
+  "n_attack_examples": 52478,
+  "n_qrel_docs": 4512
+}
