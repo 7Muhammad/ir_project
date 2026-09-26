@@ -1,0 +1,57 @@
+# =============================================================================
+# Experiment 11 — Per-head activation patching + ablation on the monoT5
+# ENCODER self-attention (the direct encoder-side analog of Experiment 3).
+# =============================================================================
+# Scope: 12 encoder layers x 12 heads = 144 head-slots, whole-sequence
+# patching (not per-position -- that's Experiments 6's job, not this one).
+# All paths are relative to this config file's directory.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Head scope. layers: null means all 12; layer_priority is the processing
+# ORDER within a run (front-load 9-11 per the experiment prompt, since three
+# independent prior results -- query-only patching, the layer-9 attention
+# anomaly, template-position relay results -- all point there), not a
+# sub-selection -- every layer still runs.
+heads:
+  layers: null
+  layer_priority: [9, 10, 11, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+
+# Ablation methods. mean/control is PRIMARY throughout this experiment
+# (Experiment 3 established zero over-attributes importance); zero is
+# still computed for the Step-1 zero-vs-mean scatter.
+ablation:
+  methods: [zero, mean]
+
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+runs:
+  canonical:
+    attack_name: "relevant_start_5"
+    n_examples: 100
+  sweep:
+    n_examples: 10
+
+# Flag threshold for "causally important" head, consistent with Experiment
+# 6's template-position classification (project-wide convention).
+flag_threshold: 0.02
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

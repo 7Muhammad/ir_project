@@ -1,0 +1,38 @@
+# =============================================================================
+# Experiment 10 — Encoder-output difference geometry
+# Primary run: 15 strongest attacks (by Experiment 1's mean_attack_delta),
+# up to 100 examples each, layers 9/10/11.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition from Experiment 1's
+# multi_attack.yaml instead of copying the list. Used only to validate that
+# selection.summary_csv's rows are within the curated grid (see run_utils.
+# select_attacks); the actual top-N choice is driven by mean_attack_delta.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Attack-strength selection: top N by Experiment 1's mean_attack_delta.
+selection:
+  summary_csv: "../../01_monot5_layer_patching/outputs/attack_comparison/summary.csv"
+  n_attacks: 15
+  n_examples: 100
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+layers: [9, 10, 11]
+pca_k_values: [1, 3, 10]
+
+plotting:
+  canonical_attack: "relevant_start_5"
+  n_scree_attacks: 5
+
+runtime:
+  seed: 42
+
+outputs:
+  base_dir: "../outputs"

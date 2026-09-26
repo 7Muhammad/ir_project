@@ -1,0 +1,32 @@
+# =============================================================================
+# Experiment 10 — pilot/smoke config: 2 attacks, 5 examples each.
+# Run this first to validate the pipeline end-to-end before configs/default.yaml.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+selection:
+  summary_csv: "../../01_monot5_layer_patching/outputs/attack_comparison/summary.csv"
+  n_attacks: 2
+  n_examples: 5
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+layers: [9, 10, 11]
+pca_k_values: [1, 3, 10]
+
+plotting:
+  canonical_attack: "relevant_start_5"
+  n_scree_attacks: 5
+
+runtime:
+  seed: 42
+
+outputs:
+  base_dir: "../outputs_pilot"

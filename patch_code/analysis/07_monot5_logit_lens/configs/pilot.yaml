@@ -1,0 +1,45 @@
+# =============================================================================
+# Experiment 7 — timing pilot: 1 attack (relevant_start_5), n=5 examples,
+# all 12 decoder layers (whole-block) + Experiment-3-flagged heads (per-head).
+# Measures wall-clock time per (layer, example) and (head, example) cell so
+# the full grid's n_examples/attack-count can be sized with real numbers.
+# Run this BEFORE configs/default.yaml's full grid.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+k_values: [5, 10, 20]
+composition_k: 10
+
+flagged_heads:
+  source_csv: "../../03_monot5_head_patching_ablation/outputs/grid_a/aggregated/head_summary.csv"
+  combined_effect_threshold: 0.02
+
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+runs:
+  grid:
+    n_examples: 5
+  canonical:
+    attack_name: "relevant_start_5"
+    n_examples: 5
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs_pilot"

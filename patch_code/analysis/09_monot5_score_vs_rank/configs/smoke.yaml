@@ -1,0 +1,27 @@
+# =============================================================================
+# Score-vs-Rank — smoke config: 3 attacks, top-20 candidates (instead of 100).
+# Runs in a couple minutes on CPU; verifies the full pipeline (01 -> 04)
+# end-to-end before touching the full 105-attack grid.
+# Outputs go to outputs_smoke/ so real outputs are never touched.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: 3          # relevant_start_1, relevant_start_2, relevant_start_3
+
+exp1:
+  outputs_attacks_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+ranking:
+  candidate_top_k: 20
+
+runtime:
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs_smoke"

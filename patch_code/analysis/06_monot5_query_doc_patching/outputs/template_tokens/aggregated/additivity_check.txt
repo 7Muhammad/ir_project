@@ -1,0 +1,1 @@
+Sum of the 7 template positions' individual peak combined_effect (layers 9-11) = 0.2114; exp6's existing whole-span 'both' (query+document) peak combined_effect at the same layers = 0.4840 (ratio 0.44x) -- diverges from additive (positions interact, or a modelling non-linearity dominates).

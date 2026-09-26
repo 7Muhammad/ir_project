@@ -1,0 +1,44 @@
+# Smoke-test config: one attack, tiny sample sizes, outputs_smoke/.
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  mode: "include"
+  include: ["relevant_start_5"]
+  max_attacks: null
+
+layers: [0, 5, 9, 11]
+
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0001
+  rescoring_pool_size: 20
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+sampling:
+  attention:
+    n_examples_per_attack: 5
+  causal:
+    n_examples_per_attack: 3
+
+enable:
+  causal: true
+  attention: true
+  structural_controls: true
+
+important_heads:
+  source_csv: "../../11_monot5_encoder_head_patching/outputs/top10_heads.csv"
+  top_n: 10
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs_smoke"

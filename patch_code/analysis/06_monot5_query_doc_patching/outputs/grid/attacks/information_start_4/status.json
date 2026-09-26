@@ -1,0 +1,11 @@
+{
+  "run": "grid",
+  "attack_name": "information_start_4",
+  "status": "success",
+  "error": null,
+  "n_examples_requested": 10,
+  "n_examples_used": 10,
+  "n_align_failed": 0,
+  "n_skipped_epsilon": 0,
+  "n_rows": 720
+}

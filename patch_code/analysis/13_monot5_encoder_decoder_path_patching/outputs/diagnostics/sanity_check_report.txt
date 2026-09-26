@@ -1,0 +1,8 @@
+[PASS] 5. correct head sets (18 senders, 31 receivers, 558 paths) -- 18 x 31 = 558
+[PASS] 1. no-change control (hybrid == baseline => path effect ~ 0) -- score diff=-0.000028, path effect=-0.000028
+[PASS] 2. sender-only reconstruction matches Experiment 11's per-head patch -- path-engine score=-12.222406 vs exp11 score=-12.222404
+[PASS] 3. full (unpatched) encoder control reproduces score_control/score_attack -- control diff=0.000000, attack diff=0.000000
+[PASS] 4. single-receiver isolation (Step D never swaps key_value_states anywhere) -- forward_ok=True, reverse_ok=True
+[PASS] 8. forward/reverse baseline preservation (forward starts from control, reverse from attack) -- same evidence as check 4: Step D's decoder base is always ctrl_hidden (forward) / atk_hidden (reverse)
+[PASS] 6. successful-instance filtering (delta > 1e-4 enforced) -- control_enc vs itself (delta=0) correctly skipped
+[PASS] 7. sample cap (<= 10 examples for the initial breadth run) -- got 10

@@ -13,11 +13,11 @@ build/
 .ipynb_checkpoints/
 
 # ── Activation tensors (large, ~1.8 GB) ────────────────────────────────────────
-patch_code/analysis/monot5_layer_patching/outputs/activations/*
-!patch_code/analysis/monot5_layer_patching/outputs/activations/.gitkeep
+patch_code/analysis/01_monot5_layer_patching/outputs/activations/*
+!patch_code/analysis/01_monot5_layer_patching/outputs/activations/.gitkeep
 
 # ── Smoke-test outputs (intermediate test run, not results) ────────────────────
-patch_code/analysis/monot5_layer_patching/outputs_smoke/
+patch_code/analysis/01_monot5_layer_patching/outputs_smoke/
 
 # ── ecir24 adversarial evaluation (58 GB of runs/data – too large for GitHub) ─
 ecir24-adversarial-evaluation/
@@ -38,3 +38,23 @@ Thumbs.db
 .venv/
 venv/
 env/
+
+# ── Experiment 3 (per-head patching) smoke outputs ─────────────────────────────
+patch_code/analysis/03_monot5_head_patching_ablation/outputs_smoke/
+
+# ── Smoke-test outputs for all experiments ────────────────────────────────────
+patch_code/analysis/*/outputs_smoke/
+
+# ── Large regenerable raw outputs (GitHub 100 MB/file limit; aggregates are kept)
+# Exp 10: per-attack encoder diff tensors (~11 GB of .npz)
+patch_code/analysis/10_monot5_encoder_diff_geometry/outputs/diffs/
+patch_code/analysis/10_monot5_encoder_diff_geometry/outputs_full_grid/diffs/
+# Exp 14: per-example row dumps (406 MB / 150 MB); summaries are kept
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/validation/validation_results.csv
+patch_code/analysis/14_monot5_heldout_mean_diff_defense/outputs/test/iid_test_per_example.csv
+# Exp 03: per-attack raw head results for type-A runs (~1.4 GB); aggregated/ is kept
+patch_code/analysis/03_monot5_head_patching_ablation/outputs/grid_a/attacks/*/head_results.csv
+patch_code/analysis/03_monot5_head_patching_ablation/outputs/clean_a/attacks/*/head_results.csv
+
+# ── Scratch scripts ───────────────────────────────────────────────────────────
+_tmp_*.py

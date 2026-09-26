@@ -1,0 +1,1 @@
+HUB HYPOTHESIS HOLDS: flagged heads' mean elevation = +0.1419 vs. unflagged heads' +0.1103 (16 flagged / 20 unflagged (layer,head) cells at layers [9, 10, 11]).

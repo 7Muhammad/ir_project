@@ -1,0 +1,1212 @@
+{
+  "decoder:0:5:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 0,
+    "head_idx": 5,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.055006996197207426,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:0:11:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 0,
+    "head_idx": 11,
+    "condition": "decoder",
+    "selected_scale": 3.0,
+    "mean_recovery_at_selected_scale": 0.042805583257963485,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:4:2:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 4,
+    "head_idx": 2,
+    "condition": "decoder",
+    "selected_scale": 1.5,
+    "mean_recovery_at_selected_scale": 0.061518298634504996,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:4:3:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 4,
+    "head_idx": 3,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.06338511449901045,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:5:7:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 5,
+    "head_idx": 7,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05416855370748852,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:6:1:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 6,
+    "head_idx": 1,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.0023029329025485495,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:6:6:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 6,
+    "head_idx": 6,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.05649092334783894,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:6:7:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 6,
+    "head_idx": 7,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.050603920352544435,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:6:9:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 6,
+    "head_idx": 9,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05713887908469216,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:7:2:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 7,
+    "head_idx": 2,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.04833397223172703,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:7:3:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 7,
+    "head_idx": 3,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.04891413483272789,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:7:5:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 7,
+    "head_idx": 5,
+    "condition": "decoder",
+    "selected_scale": 2.5,
+    "mean_recovery_at_selected_scale": 0.059988690418192964,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:7:6:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 7,
+    "head_idx": 6,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.06220068654706214,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:8:0:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 8,
+    "head_idx": 0,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.05546319048398286,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:8:7:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 8,
+    "head_idx": 7,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.0054038077944015255,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:8:9:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 8,
+    "head_idx": 9,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.050058783214875946,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:8:10:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 8,
+    "head_idx": 10,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.054620894368217605,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:9:2:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 9,
+    "head_idx": 2,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.01765867033894587,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:9:7:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 9,
+    "head_idx": 7,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05597705245053325,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:10:0:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 10,
+    "head_idx": 0,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.38919610783475617,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:10:2:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 10,
+    "head_idx": 2,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.05407479991213015,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:10:3:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 10,
+    "head_idx": 3,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05070449765297001,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:10:6:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 10,
+    "head_idx": 6,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05746887775555548,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:0:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 0,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.057035807772268535,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:1:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 1,
+    "condition": "decoder",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.06447030770484181,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:2:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 2,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05855457828405582,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:3:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 3,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.05895843659636691,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:5:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 5,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05211210318486577,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:6:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 6,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.03979244019120224,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:7:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 7,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05754457007714849,
+    "n_scale_candidates_compared": 6
+  },
+  "decoder:11:11:decoder": {
+    "side": "decoder",
+    "component": "decoder_cross_attn",
+    "layer": 11,
+    "head_idx": 11,
+    "condition": "decoder",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.010169107747100467,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:0:2:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 0,
+    "head_idx": 2,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.013190266575350818,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:0:2:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 0,
+    "head_idx": 2,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.007033921845856943,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:0:2:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 0,
+    "head_idx": 2,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.004704680496234316,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:0:2:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 0,
+    "head_idx": 2,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.0072787814259021415,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:0:2:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 0,
+    "head_idx": 2,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.005833058667073831,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:8:11:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 8,
+    "head_idx": 11,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.038501050994196054,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:8:11:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 8,
+    "head_idx": 11,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.38922290187732544,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:8:11:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 8,
+    "head_idx": 11,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05398859601416312,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:8:11:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 8,
+    "head_idx": 11,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.08962226214164759,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:8:11:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 8,
+    "head_idx": 11,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.025183297511910518,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:3:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 3,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.028208850996344924,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:3:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 3,
+    "condition": "document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.011938404665263013,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:3:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 3,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.058991799091567695,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:3:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 3,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.041336374279236525,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:3:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 3,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.008682035736646174,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:6:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 6,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.04436075930122117,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:6:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 6,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.24590215569806462,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:6:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 6,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05005667921422088,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:6:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 6,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.001660775252327895,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:9:6:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 9,
+    "head_idx": 6,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.04019150868928893,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:0:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 0,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.027084193824119127,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:0:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 0,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.02646046842933517,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:0:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 0,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.010104298080037155,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:0:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 0,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.012935543804889356,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:0:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 0,
+    "condition": "template",
+    "selected_scale": 2.0,
+    "mean_recovery_at_selected_scale": 0.0705055064391076,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:2:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 2,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.057269269890074664,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:2:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 2,
+    "condition": "document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.07288035381407869,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:2:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 2,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.055036303292563295,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:2:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 2,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05750980916794144,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:2:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 2,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.058358186745896025,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:4:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 4,
+    "condition": "all_valid",
+    "selected_scale": 1.5,
+    "mean_recovery_at_selected_scale": 0.04819358910590945,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:4:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 4,
+    "condition": "document",
+    "selected_scale": 1.5,
+    "mean_recovery_at_selected_scale": 0.009448555341946304,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:4:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 4,
+    "condition": "query",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.021984760229344983,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:4:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 4,
+    "condition": "query_document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.02222752068821748,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:4:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 4,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.0044746340946498495,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:6:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 6,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05477488271428332,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:6:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 6,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.054411843202285974,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:6:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 6,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.06454838588930913,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:6:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 6,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05749322601463987,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:6:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 6,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.010450089362038617,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:7:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 7,
+    "condition": "all_valid",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.04671720274982588,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:7:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 7,
+    "condition": "document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.059162782469598114,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:7:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 7,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.012018691141374837,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:7:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 7,
+    "condition": "query_document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.044850984545404184,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:7:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 7,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.004795753572481036,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:8:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 8,
+    "condition": "all_valid",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.06436551239516836,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:8:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 8,
+    "condition": "document",
+    "selected_scale": 2.0,
+    "mean_recovery_at_selected_scale": 0.0686313813525091,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:8:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 8,
+    "condition": "query",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.06224708776414589,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:8:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 8,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.0655061119596362,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:8:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 8,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.02545324075311663,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:9:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 9,
+    "condition": "all_valid",
+    "selected_scale": 1.5,
+    "mean_recovery_at_selected_scale": 0.06268458044363219,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:9:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 9,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.015257426370493585,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:9:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 9,
+    "condition": "query",
+    "selected_scale": 1.5,
+    "mean_recovery_at_selected_scale": 0.0692390102718664,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:9:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 9,
+    "condition": "query_document",
+    "selected_scale": 1.5,
+    "mean_recovery_at_selected_scale": 0.06510006282009595,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:10:9:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 10,
+    "head_idx": 9,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.00014848823339164383,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:0:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 0,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.036701322318655576,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:0:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 0,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.013262498365236715,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:0:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 0,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05798312810448279,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:0:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 0,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05182869071559263,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:0:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 0,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.046802626586821806,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:2:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 2,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05436461229571127,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:2:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 2,
+    "condition": "document",
+    "selected_scale": 3.0,
+    "mean_recovery_at_selected_scale": 0.0670830987951286,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:2:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 2,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.039241582227585406,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:2:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 2,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.04835824530316099,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:2:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 2,
+    "condition": "template",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.057784618705406354,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:3:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 3,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.021960631670593936,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:3:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 3,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.009556079347013335,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:3:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 3,
+    "condition": "query",
+    "selected_scale": 2.5,
+    "mean_recovery_at_selected_scale": 0.029056928309482033,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:3:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 3,
+    "condition": "query_document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.008676529741132562,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:3:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 3,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.03097138140603741,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:4:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 4,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.045377686010504556,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:4:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 4,
+    "condition": "document",
+    "selected_scale": 1.0,
+    "mean_recovery_at_selected_scale": 0.07749868945293314,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:4:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 4,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.17701547774538265,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:4:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 4,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.08030568194145041,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:4:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 4,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.06274761986865372,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:5:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 5,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.0031561803601780625,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:5:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 5,
+    "condition": "document",
+    "selected_scale": 3.0,
+    "mean_recovery_at_selected_scale": 0.06642829949820384,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:5:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 5,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.03268335091010279,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:5:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 5,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.011030838248282476,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:5:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 5,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.011154728164309725,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:6:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 6,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.003251532414825569,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:6:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 6,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.05339615447916783,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:6:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 6,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.005349214975149767,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:6:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 6,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.003527271010906738,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:6:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 6,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.06466111174738093,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:11:all_valid": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 11,
+    "condition": "all_valid",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.03837376137846443,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:11:document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 11,
+    "condition": "document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": -0.0038488222038706487,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:11:query": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 11,
+    "condition": "query",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05796569327266105,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:11:query_document": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 11,
+    "condition": "query_document",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.05386619058894799,
+    "n_scale_candidates_compared": 6
+  },
+  "encoder:11:11:template": {
+    "side": "encoder",
+    "component": "encoder_self_attn",
+    "layer": 11,
+    "head_idx": 11,
+    "condition": "template",
+    "selected_scale": 0.5,
+    "mean_recovery_at_selected_scale": 0.01567989253591263,
+    "n_scale_candidates_compared": 6
+  }
+}

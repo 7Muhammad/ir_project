@@ -1,0 +1,7 @@
+{
+  "attack_name": "irrelevant_start_2",
+  "max_abs_score_diff": 5.960464477539063e-08,
+  "mean_abs_score_diff": 5.6624412536621094e-09,
+  "tolerance": 0.01,
+  "passed": true
+}

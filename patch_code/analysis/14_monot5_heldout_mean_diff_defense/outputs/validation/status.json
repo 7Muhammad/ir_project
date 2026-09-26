@@ -1,0 +1,24 @@
+{
+  "status": "success",
+  "n_examples": 3182,
+  "n_rows": 2310132,
+  "scales": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0
+  ],
+  "skip_counts": {
+    "align_failed": 0,
+    "missing_direction": 0,
+    "encoder_mask_failed": 0
+  },
+  "n_clean_examples": 100,
+  "n_clean_rows": 72600,
+  "clean_skip_counts": {
+    "missing_direction": 0,
+    "encoder_mask_failed": 0
+  }
+}

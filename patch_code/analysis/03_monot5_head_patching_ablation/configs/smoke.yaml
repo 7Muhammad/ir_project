@@ -1,0 +1,50 @@
+# =============================================================================
+# Experiment 3 — smoke config: 2 attacks x 2 examples, all 288 head-slots.
+# Runs in a few minutes on CPU; verifies the full pipeline end-to-end.
+# Outputs go to outputs_smoke/ so real outputs are never touched.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: 2          # relevant_start_1, relevant_start_2
+
+heads:
+  components:
+    - decoder_self_attn
+    - decoder_cross_attn
+  layers: null
+
+ablation:
+  methods: [zero, mean]
+
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+data:
+  max_pairs: 50
+  max_docs_per_query: 1000
+
+runs:
+  grid_a:
+    n_examples: 2
+  grid_b:
+    attack_name: "relevant_start_5"
+    n_examples: 2
+  clean_a:
+    n_examples: 2
+  clean_b:
+    attack_name: "relevant_start_5"
+    n_examples: 2
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs_smoke"

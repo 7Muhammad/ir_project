@@ -1,0 +1,34 @@
+# =============================================================================
+# Score-vs-Rank Comparison Experiment
+# =============================================================================
+# Validates this project's score-based results (Experiment 1) against
+# Parry et al.'s rank-based evaluation protocol (DecoderLens's candidate-set
+# and ranking machinery), on the same curated 105-attack grid used
+# throughout this project. All paths are relative to this config's directory.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the CURATED 105-attack definition (7 tokens x 3
+# positions x 5 reps) from Experiment 1 — NOT DecoderLens's broader
+# 16-token/226-attack superset (see DECISIONS.md).
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Experiment 1's already-scored target pool (up to 500 pairs/attack) — read
+# directly, no rescoring.
+exp1:
+  outputs_attacks_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+# DecoderLens's candidate-set size (fixed top-100 BM25 candidates per query).
+ranking:
+  candidate_top_k: 100
+
+runtime:
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

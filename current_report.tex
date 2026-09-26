@@ -1,0 +1,1036 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+\usepackage[backend=biber,style=numeric,natbib=true]{biblatex}
+\addbibresource{references.bib}
+
+\definecolor{codegray}{gray}{0.95}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codegray},
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true,
+}
+
+\newcommand{\fwd}{\ensuremath{e^{\mathrm{fwd}}}}
+\newcommand{\rev}{\ensuremath{e^{\mathrm{rev}}}}
+\newcommand{\comb}{\ensuremath{e^{\mathrm{comb}}}}
+\newcommand{\score}{\operatorname{score}}
+
+\newcommand{\gnote}[1]{{\color{blue} {Muhammad: #1}}}
+
+\title{\textbf{Mechanistic Analysis of Adversarial Token Injection \\
+in Neural Information Retrieval}}
+\author{Muhammad Ghoummaid}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Neural rerankers such as monoT5 can be manipulated by keyword-stuffing
+attacks that inject relevance-like tokens into a document to inflate its
+score without increasing its true relevance. Prior work shows such
+attacks succeed, but not what happens inside the model when they do. We
+address this gap in \texttt{castorini/monot5-base-msmarco} on TREC DL19
+with a $7\times3\times5=105$-attack sweep and six causal and
+representational analyses. Only 12 of 105 attacks raise the mean score,
+and success depends on token identity and position rather than repetition
+alone. Activation patching localizes the attack to \textbf{late-encoder
+self-attention} (layers 10--11), the dominant causal component for all
+105 attacks, which also contaminates the encoder's representation of the
+\textbf{query} itself. This signal is built by a sparse set of
+\textbf{18 of 144} encoder heads and read downstream by \textbf{33 of
+288} decoder head-slots, 31 of them cross-attention (22 of which,
+flagged before a later sample-size revision, were evaluated for
+steering); at 20 of those 22 heads a per-head \textbf{linear direction}
+captures a small but consistently steerable component of the attack
+effect, bidirectionally. These results localize the vulnerability to a
+specific, targetable part of the network, suggesting concrete
+directions for lightweight defenses.
+\end{abstract}
+
+% =====================================================================
+\section{Introduction}
+% =====================================================================
+
+Search systems rank documents against a query, and modern pipelines almost
+always do it in two stages: a cheap retriever casts a wide net, then an
+expensive cross-encoder reranker cleans up the top of the list:
+\begin{center}
+\verb|Retriever -> Top 1000 -> Cross-Encoder Reranker -> Top 10|
+\end{center}
+The reranker is where quality is won or lost, and it is also where a specific
+kind of manipulation becomes possible. Neural rerankers will hand a high relevance
+score to a document that isn't relevant at all, as long as it is sprinkled
+with words that \emph{look} like relevance cues, a failure demonstrated for
+sequence-to-sequence models like monoT5~\cite{parry2024adversarial}. It matters
+because the fix is not obvious: a page about car parts should not outrank a
+genuinely useful restaurant listing just because someone pasted the word
+``relevant'' into it five times.
+
+We already know these attacks work. What we don't know is \emph{why}: which
+part of the model actually falls for the trick, and how the trick travels
+from the injected words to the final score. This paper answers that, with
+a controlled 105-attack sweep and six complementary tools: layer-level
+activation patching, per-head patching and ablation, a linear mean-diff
+steering intervention, query/document positional patching, a logit lens,
+and a score-versus-rank validation.
+
+The experiments reveal a consistent processing pattern, told here as a
+sequence of experiments, each one opening the question the next one
+answers: the attack effect is constructed primarily in late-encoder
+self-attention, which also spreads into the query representation, and is
+then read downstream mainly through decoder cross-attention.
+
+This is a first step, not a full account. We leave a deeper investigation
+of exactly where and how the attack lives in the model, and turning this
+localization into a real defense, to future work, sketched in the
+Conclusion.
+
+% =====================================================================
+\section{Related Work}
+% =====================================================================
+
+This work sits between adversarial neural IR and mechanistic
+interpretability. We study monoT5, a sequence-to-sequence cross-encoder that
+scores relevance through a generative objective~\citep{nogueira2020document},
+because it is widely used and vulnerable to adversarial wording.
+
+Prior attacks often assume access to a target query or model feedback,
+whereas broader content-injection work shows that retrievers and rerankers
+can also be manipulated by inserted queries, keywords, or unrelated
+text~\citep{parry2024adversarial,tamber2025illusions}.
+\citet{parry2024adversarial} establish a particularly weak threat model:
+query-independent preemption, token-stuffing, and rewriting attacks requiring
+no model-weight access, although they assume knowledge of the model's prompt.
+They show that effectiveness depends on token identity, position, and
+repetition, but their analysis remains at the model's \emph{output}: it
+identifies which attacks work, not which internal computations produce the
+score change.
+
+Two recent studies apply causal interventions to ordinary relevance
+computation. \citet{chen2024axiomatic} use activation patching to identify
+attention heads associated with term-frequency behavior in the TAS-B dense
+bi-encoder. \citet{lu2025pathway} trace a BM25-like circuit in a BERT-based
+cross-encoder, where early and middle-layer matching heads feed later
+relevance-scoring heads. We extend this work to an encoder-decoder reranker
+under adversarial inputs: we trace how injected tokens alter encoder
+representations, distinguish query- and document-position effects, identify
+the decoder cross-attention heads that read the signal, and test whether the
+effect can be manipulated through a low-dimensional steering intervention.
+
+% =====================================================================
+\section{Methodology}
+\label{sec:method}
+% =====================================================================
+
+Before any of the experiments, we need three things fixed: how monoT5 turns a
+(query, document) pair into a number, what an ``attack'' is, and how we read a
+causal claim out of a patch. Everything after this section reuses this
+machinery.
+
+\subsection{monoT5 as a one-number relevance judge}
+
+monoT5 treats ranking as a yes/no text problem: for each (query, document)
+pair it builds the prompt
+\texttt{"Query: \{query\} Document: \{passage\} Relevant:"}, runs the T5
+encoder, takes a single decoder step, and looks at the logits at that first
+decoder position. The relevance score is just the gap between the logits
+for \texttt{true} and \texttt{false}:
+\begin{equation}
+\score \;=\; \operatorname{logit}(\texttt{true}) \;-\; \operatorname{logit}(\texttt{false}).
+\label{eq:score}
+\end{equation}
+Both are single tokens, so this difference is exactly the model's log-odds
+of \texttt{true} over \texttt{false}~\citep{nogueira2020document}: positive
+means the model favors \texttt{true}, though that's a confidence gap, not
+a calibrated probability of relevance. There is no generation: one
+forward pass, one number.
+
+\subsection{The attacks, and a control that isolates them}
+
+An attack injects a trigger token into the document before scoring. We swept
+every combination of:
+\begin{itemize}[nosep]
+  \item \textbf{7 tokens:} \texttt{relevant}, \texttt{information},
+        \texttt{relevance}, \texttt{important}, \texttt{true}, \texttt{false},
+        \texttt{bar};
+  \item \textbf{3 positions:} \texttt{start} (prepended), \texttt{end}
+        (appended), \texttt{random} (scattered inside the passage);
+  \item \textbf{5 repetition counts:} $1$--$5$,
+\end{itemize}
+which gives $7\times3\times5=105$ token-injection configurations, which we
+call attacks throughout as shorthand, though Section~\ref{sec:results-strength}
+shows only 12 of 105 actually succeed. This extends the keyword-stuffing
+side of \citet{parry2024adversarial}'s taxonomy across trigger identity,
+position, and repetition count. We don't test their other two families:
+multi-token \textbf{preemption}, which inserts a prompt-structure phrase
+like \texttt{"Relevant: true"} rather than a single trigger word, and
+\textbf{LLM rewriting}, which paraphrases or summarizes the whole passage.
+Both change more of the passage than our padded control can cleanly align
+against.
+
+The trick to a clean causal claim is that comparison. For each pair we build
+three inputs over the same passage:
+\begin{description}[leftmargin=2em,style=nextline]
+  \item[Original.] The untouched document (reference only; its length differs
+  from the attacked input, so we don't patch against it).
+  \item[Padded control.] The injection slots, wherever the trigger token
+  sits, are filled with \texttt{pad\_token\_id} at
+  \texttt{attention\_mask=0}, so the encoder can't see them, while every
+  other passage token keeps the same absolute position as in the attacked
+  input, the key move that holds sequence length and position fixed, so
+  the only thing that differs from the attack is whether
+  the injected words are actually there.
+  \item[Attacked.] The real adversarial passage, all tokens visible
+  (\texttt{attention\_mask=1}).
+\end{description}
+
+The quantity every experiment tries to explain is the \textbf{attack delta}:
+\begin{equation}
+\Delta \;=\; \score_{\text{attack}} - \score_{\text{control}}.
+\label{eq:delta}
+\end{equation}
+Since control and attacked differ only in the injected words, $\Delta$ is the
+causal effect of those words. Positive means the attack raised the score;
+negative means it backfired. For the causal-patching analyses
+specifically, we keep only examples with $\Delta>10^{-4}$, not just away
+from zero, but positive, so those results characterize the pathway of
+\emph{successful} score-inflation instances, including successes pulled
+from configurations whose \emph{mean} effect is negative, not the average
+behavior of every configuration.
+
+\subsection{Reading causality out of a patch}
+\label{sec:method-patching}
+
+To find \emph{where} the effect lives, we use activation
+patching~\citep{meng2022locating} across
+monoT5's 12 encoder / 12 decoder layers ($d_{\text{model}}=768$) and five
+component types per layer (encoder self-attention, encoder MLP, decoder
+self-attention, decoder cross-attention, decoder MLP): swap one piece of
+the network between a clean run and an attacked run, and see how much of
+the attack's effect on the score follows the swap, asked in two
+directions that each answer a different question. At this level we
+replace a whole component's output at every sequence position; later
+sections narrow that down to just query or document positions
+(Section~\ref{sec:results-query}), and later still to one attention head
+at a time (Sections~\ref{sec:results-encheads}
+and~\ref{sec:results-heads}).
+
+\textbf{Is this component enough? (forward / sufficiency.)} Run the clean
+control, but at layer $L$, component $C$, paste in the attacked activation, and
+see how far the score moves toward the attacked value, an operational
+sufficiency test: can the attacked activation reproduce the effect with
+the rest of the network left alone?
+\begin{equation}
+\fwd_{L,C} \;=\;
+\frac{\score_{\text{patched}} - \score_{\text{control}}}
+     {\score_{\text{attack}} - \score_{\text{control}}}.
+\label{eq:fwd}
+\end{equation}
+$\fwd\approx0$: not enough on its own. $\fwd\approx1$: enough. $\fwd>1$:
+amplified downstream.
+
+\textbf{Is this component needed? (reverse / necessity.)} Run the attacked
+input, but paste the clean activation into that one spot, and see how much of
+the attack disappears, an operational necessity test: does removing just
+this activation kill the effect?
+\begin{equation}
+\rev_{L,C} \;=\;
+\frac{\score_{\text{attack}} - \score_{\text{patched}}}
+     {\score_{\text{attack}} - \score_{\text{control}}}.
+\label{eq:rev}
+\end{equation}
+$\rev\approx0$: others compensate, not needed. $\rev\approx1$: removing it here
+kills the attack. $\rev<0$: an opposing mechanism.
+
+A component only counts as being on the pathway if it clears both bars,
+evidence it carries attack-related information rather than proof of a
+single, formally necessary-and-sufficient path, so we take the smaller of
+the two:
+\begin{equation}
+\text{combined}_{L,C} \;=\; \min(\fwd_{L,C}, \rev_{L,C}).
+\label{eq:combined}
+\end{equation}
+Everything is normalized by the same $\Delta$ (Eq.~\ref{eq:delta}), so a value
+of $1.0$ means ``as strong as the full unpatched attack effect,'' regardless
+of the raw logit scale.
+
+\subsection{Setup details}
+
+Everything runs on monoT5-base (\texttt{castorini/monot5-base-msmarco}) in
+a BM25 $\rightarrow$ monoT5 pipeline on TREC DL19, matching
+\citet{parry2024adversarial}, random seed 42 throughout, with up to 500
+(query, document) pairs per attack (487 shared across all 105). After the
+initial sweep, we select \texttt{relevant\_start\_5} (token
+\texttt{relevant}, prepended, repeated 5$\times$) as the
+\textbf{canonical attack} used for every deep dive: it has the
+second-highest mean effect (Table~\ref{tab:topbottom}) and uses the
+literal relevance cue \texttt{relevant}; the main localization results
+are additionally evaluated across all 105 configurations. The steering
+direction (Section~\ref{sec:results-meandiff}) is estimated and evaluated
+in-sample at two tiers, a breadth tier pooling up to 10 examples across
+all 105 attacks and a depth tier of up to 100 examples on the canonical
+attack, an initial representational diagnostic rather than evidence of
+held-out generalization. Sample sizes for every other analysis are stated
+where that analysis is introduced.
+
+% =====================================================================
+\section{Experiments and Results}
+\label{sec:results}
+% =====================================================================
+
+\subsection{First: which attacks even work?}
+\label{sec:results-strength}
+
+Before chasing the mechanism, we first need to understand the connection
+between an attack's token, position, and repetition count, and whether it
+actually succeeds. Only \textbf{12 of the 105 attacks raised the mean score};
+the other 93 \emph{lowered} it. These are configuration-level averages: a
+configuration with a negative mean can still contain individual
+query--document pairs where the injection raises the score, exactly the
+successful-instance pool the patching analyses draw from
+(Section~\ref{sec:method-patching}). The strongest configurations use the
+tokens \texttt{relevant} and \texttt{information}, placed at passage
+boundaries and repeated several times; the biggest losers were any token
+scattered at random with many repetitions, and the averages hide how big
+the swings get: individual pairs reach $+6.29$ under the strongest
+attacks, so this isn't a gentle nudge for everyone, it's a large shove
+for some.
+
+\begin{table}[h]
+\centering
+\caption{Strongest and weakest attacks by mean attack delta $\bar\Delta$
+(top/bottom 5 of 105).}
+\label{tab:topbottom}
+\small
+\begin{tabular}{lr|lr}
+\toprule
+Strongest attack & $\bar\Delta$ & Weakest attack & $\bar\Delta$ \\
+\midrule
+\texttt{information\_start\_5} & $+0.381$ & \texttt{true\_random\_5}      & $-0.298$ \\
+\texttt{relevant\_start\_5}    & $+0.364$ & \texttt{relevant\_random\_5}  & $-0.287$ \\
+\texttt{relevant\_start\_4}    & $+0.286$ & \texttt{false\_random\_5}     & $-0.286$ \\
+\texttt{information\_start\_4} & $+0.244$ & \texttt{relevance\_random\_5} & $-0.262$ \\
+\texttt{information\_end\_5}   & $+0.184$ & \texttt{bar\_random\_5}       & $-0.226$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three things drive whether an attack works. \textbf{Position.} Position
+matters mainly through its interaction with token and repetition, not as
+a simple effect on its own. Averaged over all tokens and repetitions,
+\texttt{end} is almost neutral ($\approx-0.027$) and \texttt{start} is
+mildly negative ($\approx-0.053$), while \texttt{random} is consistently
+damaging ($\approx-0.156$): no random-position configuration has a
+positive mean effect. Yet every one of the
+12 attacks that worked sits at a passage boundary (6 \texttt{start}, 6
+\texttt{end}): a boundary placement can support an attack when it is
+paired with the right token and enough repetition, while scattering
+tokens through the middle of the passage never does.
+
+\textbf{Repetition.} It amplifies whatever sign the position already has:
+\texttt{relevant\_start} goes from $-0.105$ to $+0.364$ as repetitions climb
+from 1 to 5, while \texttt{relevant\_random} goes from $-0.101$ to $-0.287$
+over the same range.
+
+\textbf{Token.} Averaged over positions and repetitions, only
+\texttt{information} ($\approx+0.018$) and \texttt{relevant}
+($\approx-0.015$) land near zero; everything else is clearly negative
+($-0.09$ to $-0.13$).
+
+So repetition amplifies whichever sign position and token already set, but
+it isn't sufficient on its own: the same extra tokens can raise the score
+or lower it, depending on what's injected and where. That rules out a
+simple count-only explanation, adding more tokens doesn't uniformly raise
+the score, which is exactly what the mechanistic analyses that follow set
+out to explain.
+
+\subsection{A quick detour: how does score relate to rank?}
+\label{sec:results-scorerank}
+
+Every experiment below explains a change in \emph{score}, while users
+experience a change in \emph{rank}. Across 52{,}478 pooled examples,
+score and rank changes are strongly correlated
+(Spearman $\rho=0.764$), with an even stronger correlation for already
+competitive documents ($\rho=0.833$ vs.\ $0.754$ elsewhere). No
+configuration raises the mean score while lowering the mean rank
+(Appendix~\ref{sec:appendix-scorerank}). We therefore use score change
+as a cheap, candidate-set-free, practical proxy for rank movement in
+the remaining analyses.
+
+\subsection{Where the attack effect is built: late-encoder self-attention}
+\label{sec:results-encoder}
+
+Now the real question: where does the attack-induced score change arise?
+Decoder cross-attention is a natural first suspect because it directly
+reads the encoder output before the decoder produces the relevance score.
+
+Instead, the dominant component is \textbf{encoder self-attention}. It is
+the top causal component for all 105 configurations. Seventy peak at
+layer 11, 32 at layer 10, and only three at layer 0 or 9. Peak combined
+importance ranges from $0.492$ to $0.972$, with a mean of $0.727$.
+Figure~\ref{fig:aggcombined} shows the same thing averaged over the sweep:
+encoder self-attention climbs from $\approx0.37$ at layer 9 to $0.65$--$0.69$ at
+layers 10--11, towering over every decoder component and the encoder MLP.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{outputs/attack_comparison/aggregate_combined_heatmap.png}
+  \caption{Aggregate combined importance $=\min(\text{forward},\text{reverse})$,
+  averaged over all 105 attacks. Rows are layers, columns components. The signal
+  sits in \emph{encoder self-attention} at layers 9--11, not the decoder.}
+  \label{fig:aggcombined}
+\end{figure}
+
+Averaged across layers, encoder self-attention also has the largest
+combined effect ($0.290$), approximately twice decoder cross-attention
+($0.146$); decoder self-attention and decoder MLP remain small ($0.035$
+and $0.017$).
+
+The effect does not switch on at one layer, but grows gradually with
+depth, consistent with attack-related information accumulating through
+the residual stream. This localization is stable across the sweep:
+successful instances from both the 12 configurations with positive mean
+effects and the 93 with negative mean effects peak in the same
+late-encoder route (Appendix~\ref{sec:appendix-canonical-heatmap}).
+Whatever the trigger word, the attack-related signal becomes concentrated
+near the top of the encoder, where the injected tokens alter the joint
+encoder representation. Decoder cross-attention carries a real but
+secondary effect, consistent with it reading an encoder representation
+that has already been modified.
+
+That last point raises a question we hadn't planned to check. If the
+encoder's self-attention is busy mixing the injected tokens into the
+passage, is it careful enough to keep that contamination out of the
+\emph{query}?
+
+\subsection{The attack spreads into the query representation}
+\label{sec:results-query}
+
+Although every trigger is inserted in the document, encoder self-attention
+can propagate its effect into the query positions. We test this by
+patching only document positions, only query positions, or both, while
+leaving the template positions fixed.
+
+For the canonical attack, the query-only effect remains near zero through
+the early layers and rises at layers 9--11, peaking at layer 11 in
+encoder self-attention ($0.405$) and decoder cross-attention ($0.191$).
+The negative early-layer values for \texttt{doc\_only} and \texttt{both}
+are an artifact we traced to the frozen template positions, not a real
+effect: they vanish once every position is patched together, reproducing
+the whole-layer result exactly.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{outputs/plots/effect_by_condition.png}
+  \caption{Combined patching effect per layer, one line per condition
+  (\texttt{doc\_only}, \texttt{query\_only}, \texttt{both}), encoder
+  self-attention and decoder cross-attention side by side (canonical attack
+  \texttt{relevant\_start\_5}, $n=100$). \texttt{query\_only} stays flat
+  near zero until it rises cleanly at layers 9--11; \texttt{doc\_only} and
+  \texttt{both} swing sharply negative at early-to-mid layers, the
+  patching artifact discussed in the text.}
+  \label{fig:bycondition}
+\end{figure}
+
+This pattern generalizes across the sweep: at encoder layer 11, the
+query-only combined effect exceeds $0.2$ for all 105 configurations
+(range $0.29$--$0.66$; Appendix~\ref{sec:appendix-queryacrossattacks}).
+Thus, before decoder readout begins, the encoder has already written the
+attack signal into both document and query positions. Independent
+attention-mass and template-position checks are reported in
+Appendices~\ref{sec:appendix-attnmass} and
+\ref{sec:appendix-templatepositions}. Those checks also show that the
+frozen template markers (\texttt{Query}, \texttt{Document}, and their
+colons) carry some late-layer effect of their own, so the
+\texttt{doc\_only} and \texttt{both} magnitudes above should not be read
+as a complete decomposition of the attack effect.
+
+``Encoder self-attention'' is really 12 heads
+working in parallel at each layer, so that's still too coarse an answer to be
+satisfying: is the effect spread evenly across all of them, or is it a
+handful doing the work, with the same question waiting for us on the decoder
+side once we get there?
+
+\subsection{Who builds it: a sparse set of encoder self-attention heads}
+\label{sec:results-encheads}
+
+We next patch each of monoT5's $12\times12=144$ encoder self-attention
+heads separately: each head writes an independent $64$-dimensional slice
+of the layer's output, so it can be patched without touching the rest of
+the residual stream. We use the same forward, reverse, and combined
+measures as above.
+
+It's just as sparse as we should have expected by now. Only \textbf{18 of
+144} head-slots have a mean combined effect above $0.02$ across the attack
+sweep, and the top ones are robust across the whole grid: \texttt{L11-H3}
+and \texttt{L11-H4} clear it on \textbf{104 of 105} configurations,
+\texttt{L10-H6} on 103, \texttt{L10-H2} on 102 (Figure~\ref{fig:encheadbox}).
+The strongest encoder heads are divided between layers 10 and 11: the two
+single largest individual effects, \texttt{L10-H0} ($0.182$) and
+\texttt{L10-H2} ($0.161$), sit at layer 10 (full top-5 breakdown,
+including forward/reverse, in Appendix~\ref{sec:appendix-enctable}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{outputs/plots/exp11_per_head_effect_across_attacks.png}
+  \caption{Per-head combined effect distribution across all 105 attacks, top
+  20 encoder heads by median. A tight box well above zero marks a head with
+  a broadly consistent effect.}
+  \label{fig:encheadbox}
+\end{figure}
+
+Single-head effects should not be summed to predict a multi-head
+intervention: they come from different interventions and, in general,
+different layers, so the effect of patching several heads together must
+be evaluated jointly (Appendix~\ref{sec:appendix-encoderhead-behavior}).
+
+Attention magnitude does not explain causal importance: only two layer-9
+heads are both high-attention and causally important, while most of the
+strongest heads in layers 10--11 have ordinary attention patterns.
+Moreover, the trigger does not consistently act as a query-attention hub
+across important heads. Thus, attention patterns alone do not reveal
+which heads build the attack signal (full analysis in
+Appendix~\ref{sec:appendix-encoderhead-behavior}).
+
+The decoder's only job from here is to \emph{read} this now doubly-corrupted
+representation, built by a sparse set of encoder heads and already leaking
+into the query. Which of its heads actually do that?
+
+\subsection{Who reads it: mostly decoder cross-attention heads}
+\label{sec:results-heads}
+
+We apply the same per-head patching analysis to the decoder's
+$12\times12$ self-attention and $12\times12$ cross-attention heads, for
+288 head-slots in total. We also run two ablations on the attack input:
+\emph{zero} ablation sets the head's slice to zero, and \emph{mean}
+ablation swaps in that same example's own matched padded-control
+activation, a distribution-matched substitute, not an average across
+control runs; the distinction turns out to matter a lot below.
+
+The reading is remarkably sparse. Only \textbf{33 of 288 head-slots} (11.5\%)
+clear a mean combined effect of $0.02$, and \textbf{31 of those 33 are
+cross-attention} heads. Decoder self-attention is essentially inert (mean effect
+$-0.00002$), while cross-attention's mean ($0.0040$) rises with depth and peaks
+at layer 11 ($0.0249$), the same top-of-stack story, now on the decoder side.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{outputs/plots/head_heatmap_grid_a.png}
+  \caption{Mean combined effect per decoder head, over all 105 attacks ($n=100$
+  each). Almost nothing in self-attention; a handful of late cross-attention
+  cells carry the signal.}
+  \label{fig:heatmap_a}
+\end{figure}
+
+The important heads show different response profiles.
+\textbf{L11-X-H3} is near-universal: positive on 104 of 105 configurations
+(median $0.069$, range $[-0.096,0.721]$), turning negative only on
+\texttt{bar\_random\_4}. \textbf{L9-X-H2} reaches a large effect on some
+configurations ($0.293$ on \texttt{true\_end\_4}) but goes inert
+($<0.01$) on 25 of the 105: a defense that watches only one of these
+would miss the other's failure mode entirely. Forward and reverse
+patching agree closely across the decoder heads (mean
+$|\fwd-\rev|=0.00034$), indicating that the same heads are selected by
+both operational tests.
+
+Here the choice of ablation is load-bearing, and it's a warning for
+anyone building a defense on top of this. \textbf{Zero ablation
+over-states and mis-attributes head importance}: zeroing
+\texttt{L11-X-H3} raises both the attack score and the \emph{clean,
+unattacked} score by nearly the same amount ($+0.437$ and $+0.450$), so
+that head has a large general effect on scoring, not an attack-specific
+one. \textbf{Mean ablation} gives the more honest picture: the same
+head's attack-specific score drop is only $0.015$, small
+but genuinely attack-specific, while the clean score barely moves
+($0.0001$), and the same split holds for every top-5 head. The lesson
+for any future head-ablation defense: measure with mean,
+distribution-matched ablation, not zero, or you'll confuse ``this head
+matters to the model'' with ``this head carries the attack'' (full
+picture across all 288 heads, including the top-5 table, in
+Appendix~\ref{sec:appendix-zeroablation}).
+
+We now know where the signal is built, that it spreads to the query, and which
+heads read it out. The obvious next question for anyone hoping to defend the
+model: can we actually push on those heads?
+
+\subsection{Can a linear direction steer the attack?}
+\label{sec:results-meandiff}
+
+Activation patching requires a matched donor run to pull a control
+activation from, and mean ablation needs one too. We therefore ask a
+sharper, more practical question: can a fixed direction, estimated in
+advance, reproduce part of the same effect without access to a control
+activation at inference time? Following the mean-difference
+activation-steering approach~\citep{rimsky2024steering}, for each
+flagged head (at layer $L$, component $C$, head $h$) we computed that
+direction as the difference of class means over a pool of examples:
+writing $a_i$ for the head's activation on example $i$,
+\begin{equation}
+\vec{d}_{L,C,h} \;=\;
+\text{mean}_{i}\!\left[a^{\text{attack}}_{i}\right] -
+\text{mean}_{i}\!\left[a^{\text{control}}_{i}\right],
+\label{eq:meandiff}
+\end{equation}
+the average attacked activation minus the average control activation. We
+then tested that single vector both ways, at the same intervention site
+as per-head patching. \emph{Subtraction test:} on an attacked input, set
+$a^{\text{mod}}=a^{\text{attack}}-s\,\vec{d}$ and see how far the score
+walks back toward control. \emph{Addition test:} on a control input, set
+$a^{\text{mod}}=a^{\text{control}}+s\,\vec{d}$ and see how far it walks
+toward attack-like values. Scales $s\in\{0.5,1.0,1.5\}$. Of the 33 heads
+identified in Section~\ref{sec:results-heads}, 22 were available for this
+analysis: they were flagged by an earlier run of the head-patching sweep
+at 10 examples per attack, before that sweep was later re-run at 100
+examples per attack for statistical power (the 33-head figure reflects
+the later run). Directions are fit and evaluated on the same pool, so
+this is an in-sample feasibility test, not a generalization claim.
+
+At \textbf{20 of the 22 flagged heads}, the subtraction test moves the
+score back toward control, monotonically in scale: $1.5$ beats $1.0$
+beats $0.5$ at every one of them, and none overshoots the baseline at
+any scale. The best head recovers $6.8\%$ of the attack's score gap at
+scale $1.5$ (Figure~\ref{fig:defensebyscale}), and it hasn't saturated
+at the largest scale we tried. So a per-head linear direction captures a
+small but consistently steerable component of the attack effect, not
+the whole of it.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{outputs/plots/defense_by_scale_grid_a.png}
+  \caption{Mean score movement back toward the control baseline
+  ($\Delta_{\text{toward control}}$) per flagged head, one line per scale,
+  pooled over all 105 attacks. Heads sorted by scale-1.5 effectiveness.
+  $1.5$ beats $1.0$ beats $0.5$ at every head except the last two
+  (\texttt{L11-S-H3}, \texttt{L10-X-H0}), the only non-responders.}
+  \label{fig:defensebyscale}
+\end{figure}
+
+The direction is also bidirectional: the addition test on a control
+input pushes the score toward attack-like values, with nearly identical
+head rankings under addition and subtraction (Pearson $r=0.999$, same
+two non-responders both ways). This supports bidirectional control by
+the direction, though the recovered fraction of the attack remains
+small. Attack-specific directions are stronger than the pooled
+direction, suggesting the shared geometry varies across configurations
+(Appendix~\ref{sec:appendix-steering}). This is not yet a deployable
+defense: the intervention is fit and tested in-sample, on inputs already
+known to be attacked, not evaluated on held-out attacks.
+
+Everything above is patching, an active intervention. As a final check, we
+tested the causal story against an independent, non-causal
+read-out~\citep{nostalgebraist2020logitlens} (a
+logit lens): the injected token is never directly promoted near the top
+of the vocabulary at any layer, on any of the 105 attacks, consistent
+with an indirect effect rather than direct copying of the trigger (full
+analysis in Appendix~\ref{sec:appendix-logitlens}).
+
+% =====================================================================
+\section{Conclusion}
+% =====================================================================
+
+We set out to explain \emph{why} monoT5 falls for keyword stuffing, not just
+\emph{that} it does, and traced the effect through a 105-attack sweep and six
+interpretability analyses. Attack success is token- and position-dependent
+rather than a simple repetition effect: only 12 of 105 configurations raise
+the mean score, all of them start/end-position and repeated, using one of
+just two tokens (\texttt{relevant} or \texttt{information}), and score
+change provides a strong proxy for the rank metric of
+prior work ($\rho=0.76$). Across successful instances drawn from all 105
+configurations, the attack effect is \emph{built} in late-encoder
+self-attention (layers 10--11), the dominant causal component throughout
+the sweep, concentrated in a sparse set of 18 of 144 encoder head-slots,
+and at those same layers the encoder's own representation of the query
+gets contaminated by the document. The decoder then \emph{reads} that
+corrupted signal through an equally sparse set of 33 of 288 head-slots,
+31 of them cross-attention, and at most of the heads evaluated, a
+per-head linear direction steers the score both ways, though it recovers
+at most $6.8\%$ of the attack's effect in-sample. A representational
+control rules out direct copying or promotion of the injected token,
+consistent with an indirect rather than direct mechanism. But no single
+description covers the whole mechanism: attention mass explains only a
+fraction of which encoder heads matter, and the attack token behaves like
+an active hub only on average, not at every important head.
+Overall, the score-inflation vulnerability lives in a specific,
+targetable, but not monolithic part of the network, and future
+robustness work can aim there rather than treating the model as a single
+switch.
+
+\paragraph{Future work.} Three directions matter most. First, trace the
+missing link between the encoder and the decoder directly with path
+patching, to find which encoder heads causally feed which decoder heads.
+Second, an actual defense: combine several of the important heads and
+test a joint intervention against held-out attacks and normal ranking
+quality, not just the single-head, in-sample feasibility check we ran
+here. Third, test generalization: repeat the same localization across
+model sizes, architectures, datasets, and a broader set of attack
+families, to see how much of this mechanism is specific to
+monoT5-base.
+ 
+\printbibliography
+
+\appendix
+\section{Appendix}
+
+\subsection{Score-versus-rank agreement in full}
+\label{sec:appendix-scorerank}
+
+Section~\ref{sec:results-scorerank} states the headline correlation; this
+is the full breakdown. Rank change is defined as
+$\operatorname{rank}_{\mathrm{control}}-
+\operatorname{rank}_{\mathrm{attack}}$, so positive values indicate upward
+movement. We define ``competitive'' documents as those originally among
+the query's top-100 BM25 candidates before any attack, as opposed to
+documents injected from outside that candidate set.
+
+The per-attack scatter of mean score change against
+mean rank change is close to a single upward line
+(Figure~\ref{fig:scorerank}), and the agreement holds where a skeptic would
+expect it to break: with only a fixed 100-candidate list, ``improving the
+rank'' of a document that starts buried way outside it is a fairly
+artificial test, so one might expect the correlation to be an artifact of
+that majority subgroup. Instead the correlation is \emph{stronger}, not
+weaker, on the documents that were already genuinely competitive to begin
+with ($\rho=0.833$ vs.\ $0.754$).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{outputs/plots/score_vs_rank_scatter.png}
+  \caption{One point per attack configuration (105 points): mean score
+  change vs.\ mean rank change, coloured by success rate. Dashed lines
+  split the plot into agreement/disagreement quadrants.}
+  \label{fig:scorerank}
+\end{figure}
+
+Of the 105 attack configurations, 12 land in the both-improve corner and
+89 in the both-worsen corner; only 4 disagree in sign, and the opposite
+corner (score up but rank flat/down) is completely empty. No attack ever
+raises the average score without also raising the average rank, and the
+four disagreers all sit within $0.05$ of zero score change (score-neutral
+attacks with a tiny net rank gain), not real contradictions. The rank
+side even reproduces the strength ranking: \texttt{information\_start\_5}
+and \texttt{relevant\_start\_5} are again the two strongest attacks.
+
+\subsection{Per-layer, per-component effects for the canonical attack
+(\texttt{relevant\_start\_5})}
+\label{sec:appendix-canonical-heatmap}
+
+Figure~\ref{fig:canonicalheatmap} shows the forward and reverse patching
+effects underlying the discussion in
+Section~\ref{sec:results-encoder} (\texttt{relevant\_start\_5}, $n=100$), at
+the same per-layer, per-component granularity as the aggregate view in
+Figure~\ref{fig:aggcombined}. Both directions climb gradually across layers
+9--11 rather than switching on at a single layer, and agree closely at the
+peak (encoder self-attention: $0.65$ forward, $0.81$ reverse, at layer 11),
+confirming that this single attack reproduces the gradual, residual-stream
+pattern described in the text rather than being an artifact of averaging
+over the 105-attack sweep.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{outputs/plots/forward_layer_component_heatmap.png}
+  \end{minipage}\hfill
+  \begin{minipage}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{outputs/plots/reverse_layer_component_heatmap.png}
+  \end{minipage}
+  \caption{Forward (left) and reverse (right) patching effects per layer and
+  component, canonical attack \texttt{relevant\_start\_5} ($n=100$). Rows are
+  layers, columns components. Both directions rise gradually with depth and
+  peak at encoder self-attention, layer 11.}
+  \label{fig:canonicalheatmap}
+\end{figure}
+
+The same localization appears among successful instances drawn from both
+the 12 configurations with positive mean effects and the 93 with negative
+mean effects. Thus, configuration-level effectiveness changes the
+prevalence and strength of successful instances, but not their dominant
+localization.
+
+\subsection{Query-only effect across the full attack sweep}
+\label{sec:appendix-queryacrossattacks}
+
+Section~\ref{sec:results-query} states the headline number; this is the
+full picture. This isn't a quirk of the canonical attack
+(\texttt{relevant\_start\_5}). The encoder-layer-11 query-only effect
+exceeds $0.2$ on all 105 configurations (range $0.29$--$0.66$), at
+exactly the layer range (9--11) where Section~\ref{sec:results-encoder}
+put the overall effect (Figure~\ref{fig:queryacrossattacks}). By the time
+the encoder finishes, the attack has altered not just the document's
+representation but the query's, through the same late self-attention
+layers.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{outputs/plots/query_only_effect_across_attacks.png}
+  \caption{Distribution of query-only combined patching effect across all 105
+  attacks, per layer. Both regions show the same late-layer rise as the
+  canonical attack (\texttt{relevant\_start\_5}).}
+  \label{fig:queryacrossattacks}
+\end{figure}
+
+\subsection{Attention-mass corroboration for the query-contamination result}
+\label{sec:appendix-attnmass}
+
+Section~\ref{sec:results-query}'s query-only patching result is causal; this
+is the independent, non-causal check that agrees with it. We measured how
+much one span attends to another, normalized against a token-count-uniform
+baseline (a value above 1 means more than uniform):
+\begin{equation}
+\text{normalized\_mass}(A\to B) \;=\;
+\frac{\text{mean}_{i \in A}\big[\sum_{j \in B} \text{attn}[i,j]\big]}
+     {|B| / \text{total\_seq\_len}}.
+\label{eq:attnmass}
+\end{equation}
+Document-to-query mass shows an isolated spike at layer 9 ($1.42$, over
+40\% above baseline), an anomaly against every neighbouring layer and
+lined up exactly with where the query-only patching effect switches on.
+The reverse direction shifts more subtly: query-to-document mass stays
+below baseline everywhere but ticks up under attack at \emph{every} layer
+(e.g.\ layer 8: $0.173\to0.194$), a small, universal increase in how much
+the query looks at the injected content (Figure~\ref{fig:attnmass}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{outputs/plots/attention_mass_clean_vs_attack.png}
+  \caption{Normalized attention mass per encoder layer, clean vs.\ attacked
+  (canonical attack \texttt{relevant\_start\_5}, $n=100$). Left:
+  query$\to$document. Right: document$\to$query. Dashed line: uniform
+  baseline (1.0).}
+  \label{fig:attnmass}
+\end{figure}
+
+\subsection{Are the frozen template positions really inert?}
+\label{sec:appendix-templatepositions}
+
+Section~\ref{sec:results-query}'s positional patching always keeps 9 short
+template positions frozen at the control's own value (\texttt{"Query:"},
+\texttt{"Document:"}, \texttt{"Relevant:"}, and the final \texttt{</s>}), so
+that only the query and document spans themselves get patched. That
+convenience assumes those positions carry none of the attack's signal
+themselves. We tested the assumption directly: single-position causal
+patching of each of the 7 named positions individually (the leading space
+token folds into \texttt{"Query"} as a tokenization artifact, so there are
+7 distinct positions to test, not 9), on the canonical attack ($n=100$)
+and, unconditionally, across the full 105-attack grid ($n=10$/attack).
+
+Figure~\ref{fig:templatepositions} shows the result. \texttt{"Query"},
+\texttt{"Document"}, and the colon immediately after each are not inert:
+patching just one of these single words moves the score by itself,
+robustly, on the large majority of attacks. The other three,
+\texttt{"Relevant"}, its colon, and \texttt{</s>}, behave exactly like the
+sinks they were assumed to be: patching them barely moves the score at
+all, even though \texttt{</s>} receives more attention than any other
+position in the entire prompt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{outputs/template_tokens/plots/template_position_heatmap.png}
+  \caption{Mean combined patching effect per encoder layer, each of the 7
+  template positions patched individually (canonical attack, $n=100$).
+  \texttt{Query}, \texttt{Document}, and their colons (top four rows) light
+  up at layers 10--11; \texttt{Relevant}, its colon, and \texttt{</s>}
+  (bottom three rows) stay flat throughout.}
+  \label{fig:templatepositions}
+\end{figure}
+
+Summing the 7 positions' individual peak effects gives $0.211$, well under
+the $0.484$ peak of the existing whole-span patch at the same layers: a
+sub-additive relationship, where positions interact rather than
+contributing independently. This is evidence that the excluded positions
+carry real signal, not an additive correction to apply to
+Section~\ref{sec:results-query}'s numbers. And the asymmetry,
+\texttt{</s>} absorbing $40\times$ uniform attention while being the
+least causally important position measured, is a recognizable signature
+of a T5-style attention sink, expected behaviour for a model with no
+dedicated beginning-of-sequence token to serve that role instead.
+
+\subsection{Top encoder heads in full}
+\label{sec:appendix-enctable}
+
+Section~\ref{sec:results-encheads} states the top two; this is the full
+top-5 breakdown on the canonical attack, including the forward/reverse
+split.
+
+\begin{table}[H]
+\centering
+\caption{Top 5 encoder heads by mean combined effect (canonical attack,
+$n=100$).}
+\label{tab:enctophead}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Head & $\comb$ & $\fwd$ & $\rev$ \\
+\midrule
+L10-H0  & 0.182 & 0.200 & 0.222 \\
+L10-H2  & 0.161 & 0.172 & 0.276 \\
+L11-H3  & 0.121 & 0.127 & 0.165 \\
+L11-H11 & 0.117 & 0.132 & 0.149 \\
+L9-H6   & 0.087 & 0.218 & 0.242 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Encoder head behavior: non-additivity and attention analysis}
+\label{sec:appendix-encoderhead-behavior}
+
+Section~\ref{sec:results-encheads} states the two headline findings in
+this subsection; this is the full picture.
+
+\paragraph{Single-head effects should not be summed.} It is tempting to
+compare the sum of the flagged heads' individual combined effects against
+the whole-component patch from Section~\ref{sec:results-query}'s
+experiment. These values should not be compared additively, though:
+they come from different interventions (patching one head at a time
+leaves the other 11 free to work normally, while patching the whole
+component replaces every head's contribution simultaneously) and, for
+individual heads, potentially different layers, so there is no reason to
+expect them to add up. The practical lesson is the same regardless: if
+you want to build a defense that touches several heads at once, you
+can't predict what it will do from single-head numbers, a direct test
+requires jointly patching the selected heads, which we leave to future
+work.
+
+\paragraph{Attention does not explain importance.} Does the attention
+spike at layer 9 (Section~\ref{sec:results-query}) explain why these
+heads matter? Mostly, no. Only 2 of the 12 heads at layer 9 are both
+high-attention and causally important; two other layer-9 heads have even
+more attention but no causal effect at all, and the pattern disappears
+completely at layers 10 and 11, where most of the important heads
+actually live: four of the five strongest heads there show ordinary,
+unremarkable attention.
+
+Does the attack token act like a magnet, pulling in query information
+more than an ordinary word would? On average, yes: the important heads
+show the attack token paying more attention to the query than a normal
+document word does ($+0.142$ vs.\ $+0.110$). But that average hides a
+split. At one head, \texttt{L9-H3}, the attack token reaches for the
+query more than anywhere else we measured ($+2.67$), a textbook example
+of the magnet idea. But at \texttt{L9-H6}, the strongest layer-9 head by
+causal effect, the pattern is reversed: the attack token attends to the
+query \emph{less} than an ordinary document token ($-1.57$).
+
+So neither attention magnitude nor the magnet hypothesis explains
+importance on its own: attention patterns alone are not a reliable guide
+to which heads build the attack signal.
+
+\subsection{Zero vs.\ mean ablation across all 288 decoder heads}
+\label{sec:appendix-zeroablation}
+
+Section~\ref{sec:results-heads} states the verdict for the top 5 heads;
+this is the full picture, including the top-5 table.
+
+\begin{table}[H]
+\centering
+\caption{Top 5 decoder heads by mean combined effect (105 attacks, $n=100$).
+X = cross-attention. drop$_{\text{zero}}$ / drop$_{\text{mean}}$: mean score
+drop from zero / mean ablation (score before minus score after; negative
+means the score rose).}
+\label{tab:tophead}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Head & $\comb$ & $\fwd$ & $\rev$ & drop$_{\text{zero}}$ & drop$_{\text{mean}}$ \\
+\midrule
+L11-X-H3  & 0.0822 & 0.0833 & 0.0837 & $-$0.437 & 0.015 \\
+L11-X-H6  & 0.0677 & 0.0682 & 0.0691 & $-$0.193 & 0.009 \\
+L11-X-H11 & 0.0500 & 0.0505 & 0.0512 & $-$0.325 & 0.012 \\
+L11-X-H0  & 0.0466 & 0.0469 & 0.0478 & $-$0.123 & 0.008 \\
+L9-X-H2   & 0.0391 & 0.0414 & 0.0424 & $-$0.155 & 0.011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Swapping in the head's own matched control activation (mean ablation),
+rather than a raw zero vector, drops the clean, unattacked score by
+essentially nothing ($0.0001$) for \texttt{L11-X-H3}, versus zero
+ablation's $0.450$-point rise, the gap that makes zero ablation
+untrustworthy as an attack-specific diagnostic. Figure~\ref{fig:scatter}
+shows this holds across all 288
+head-slots, not just the top few: the important heads sit far off the
+drop(zero)$=$drop(mean) diagonal, confirming that zero ablation's large
+apparent effect is mostly a generic disruption to the model's ordinary
+functioning, not evidence the head is attack-specific.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{outputs/plots/zero_vs_mean_ablation_scatter.png}
+  \caption{Mean score drop from zero ablation (x) vs.\ mean ablation (y), per
+  head. Important heads sit far off the drop(zero)=drop(mean) diagonal.}
+  \label{fig:scatter}
+\end{figure}
+
+\subsection{Steering direction: attack-specificity and direction norm}
+\label{sec:appendix-steering}
+
+Section~\ref{sec:results-meandiff} states the headline steering result;
+this is the rest of the picture. Fitting the direction to a
+\emph{single} attack, rather than pooling across all 105, is
+$1.5$--$3.4\times$ more effective on that attack, while keeping nearly
+the same head ranking ($r=0.879$): the shared, pooled direction is a
+real but conservative summary of a geometry that varies somewhat by
+attack, and we leave a full geometric explanation to future work.
+
+Direction \emph{size} is a weak predictor of a head's causal importance:
+Pearson $r=0.293$ ($n=288$) between a head's mean-diff direction norm and
+its combined patching effect (Section~\ref{sec:results-heads}). The
+single largest-norm head in the whole decoder, \texttt{L10-X-H0}
+($\sim9\times$ the population mean), is one of only two heads where the
+steering intervention never helps (Figure~\ref{fig:defensebyscale}). The
+practical implication: pick heads to steer by causal combined effect,
+not by how large their direction happens to be.
+
+\subsection{The injected token is never directly promoted (logit lens)}
+\label{sec:appendix-logitlens}
+
+Section~\ref{sec:results-meandiff}'s closing paragraph summarizes this
+check; this is the full analysis. The simplest alternative story to the
+causal one is that the important decoder heads just shout the injected
+word into the output. To test it, at each decoder layer we took the
+cross-attention sub-layer's own contribution to the residual stream
+(output minus input) and projected it straight through the unembedding,
+skipping the final layer norm, and tracked where the injected token lands
+in the vocabulary.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{outputs/plots/attack_token_trajectory.png}
+  \caption{Attack-token rank (log scale; 1 = top of vocabulary) and raw logit
+  per decoder layer, clean/control/attack overlaid, canonical attack
+  (\texttt{relevant\_start\_5}, $n=100$). The injected token never gets near
+  the top at any layer.}
+  \label{fig:trajectory}
+\end{figure}
+
+It never gets promoted. Across all 12 layers, all 12 flagged heads, and all
+105 attacks, the injected token never comes near the top of the
+$\sim$32{,}100-token vocabulary. The best rank ever seen is
+$\approx$1{,}776, and that's on the \emph{clean} input at layer 1, not the
+attack; at layer 11 the attack's rank ($8{,}741$) is only mildly better
+than clean's ($\approx$12{,}000). The projected top-10 is $\geq$89\%
+``other'' at every layer, with the attack bucket at exactly 0\%
+throughout. That's a genuine null, and it doesn't contradict the
+patching: it refines it. Cross-attention's contribution is causally
+important for the final score, but that importance is realized through
+many later layers of processing (including the very layer norm this
+projection skips). A component can change what downstream layers compute
+without its own isolated output pointing anywhere near the answer. The
+effect is mediated, not direct.
+
+\end{document}

@@ -1,0 +1,7 @@
+{
+  "attack_name": "informationbar_end_2",
+  "max_abs_score_diff": 8.940696716308594e-08,
+  "mean_abs_score_diff": 7.3015689849853514e-09,
+  "tolerance": 0.01,
+  "passed": true
+}

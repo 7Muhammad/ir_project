@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "n_train_examples_seen": 2000,
+  "n_used": 2000,
+  "n_align_failed": 0,
+  "n_skipped_epsilon": 0,
+  "n_directions_found": 49,
+  "n_directions_expected": 49,
+  "missing_heads": 0
+}

@@ -1,0 +1,63 @@
+# =============================================================================
+# Experiment 14 — Phase 1 held-out single-head mean-diff defense
+# =============================================================================
+# All paths are relative to this config file's directory.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition (7 tokens x 3 positions x
+# 5 reps) from Experiment 1's multi_attack.yaml instead of copying the list.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Experiment 1's canonical 500-pair sample (every one of the 105 attack TSVs
+# shares the identical underlying 42005-pair BM25 candidate universe, so
+# this fixed sample is a valid attack-independent pair pool to split on —
+# see DECISIONS.md item 2).
+data:
+  pairs_jsonl: "../../01_monot5_layer_patching/outputs/pairs/pairs.jsonl"
+  exp1_attacks_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+# Head lists: derived by scripts/00_derive_candidate_heads.py from
+# Experiment 13's configs/heads/{encoder_senders,decoder_receivers}.json.
+heads:
+  exp13_heads_dir: "../../13_monot5_encoder_decoder_path_patching/configs/heads"
+
+# Pair-disjoint split — done BEFORE attack-success filtering (task spec
+# section 3). Per-split example caps below bound compute without changing
+# split MEMBERSHIP (which pairs are in which split never depends on caps).
+split:
+  seed: 42
+  ratios:
+    train: 0.6
+    validation: 0.2
+    test: 0.2
+
+# Caps on the number of (pair, attack)-instance examples actually used per
+# stage — independent of the pair split itself. null = no cap (full run).
+sampling:
+  max_train_examples_total: 2000       # pooled across all 105 attacks, for direction fitting
+  max_validation_examples_per_condition: 200
+  max_test_examples_per_condition: 200
+  max_clean_pairs_per_split: 200
+  max_ood_examples_per_condition: 100
+
+intervention:
+  scales: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+  reference_scale: 1.5    # always preserved separately (task spec section 8) — connects to Experiment 2
+
+clean_damage:
+  thresholds: [0.05, 0.1, 0.25, 0.5]
+
+ood:
+  factors: ["token", "position", "repetitions"]
+
+runtime:
+  seed: 42
+
+outputs:
+  base_dir: "../outputs"

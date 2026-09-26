@@ -1,0 +1,7 @@
+{
+  "attack_name": "false_start_4",
+  "max_abs_score_diff": 2.384185791015625e-07,
+  "mean_abs_score_diff": 1.3709068298339844e-08,
+  "tolerance": 0.01,
+  "passed": true
+}

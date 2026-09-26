@@ -1,0 +1,18 @@
+{
+  "status": "success",
+  "n_test_examples": 3433,
+  "n_iid_rows": 810188,
+  "iid_skip": {
+    "align_failed": 0,
+    "missing_direction": 0,
+    "encoder_mask_failed": 0,
+    "no_scale_selected": 0
+  },
+  "n_clean_examples": 100,
+  "n_clean_rows": 23600,
+  "clean_skip": {
+    "missing_direction": 0,
+    "encoder_mask_failed": 0,
+    "no_scale_selected": 0
+  }
+}

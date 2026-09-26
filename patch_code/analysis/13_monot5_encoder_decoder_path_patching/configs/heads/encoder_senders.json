@@ -1,0 +1,110 @@
+[
+  {
+    "layer": 10,
+    "head_idx": 0,
+    "label": "L10H0",
+    "combined_effect_mean_canonical": 0.1819361492376591
+  },
+  {
+    "layer": 10,
+    "head_idx": 2,
+    "label": "L10H2",
+    "combined_effect_mean_canonical": 0.1606983131583452
+  },
+  {
+    "layer": 11,
+    "head_idx": 3,
+    "label": "L11H3",
+    "combined_effect_mean_canonical": 0.1207184292818185
+  },
+  {
+    "layer": 11,
+    "head_idx": 11,
+    "label": "L11H11",
+    "combined_effect_mean_canonical": 0.1172785500718028
+  },
+  {
+    "layer": 9,
+    "head_idx": 6,
+    "label": "L9H6",
+    "combined_effect_mean_canonical": 0.0872110934664575
+  },
+  {
+    "layer": 11,
+    "head_idx": 4,
+    "label": "L11H4",
+    "combined_effect_mean_canonical": 0.072834143361156
+  },
+  {
+    "layer": 11,
+    "head_idx": 2,
+    "label": "L11H2",
+    "combined_effect_mean_canonical": 0.0715655932547968
+  },
+  {
+    "layer": 11,
+    "head_idx": 0,
+    "label": "L11H0",
+    "combined_effect_mean_canonical": 0.064806817572182
+  },
+  {
+    "layer": 8,
+    "head_idx": 11,
+    "label": "L8H11",
+    "combined_effect_mean_canonical": 0.0570507011911585
+  },
+  {
+    "layer": 11,
+    "head_idx": 5,
+    "label": "L11H5",
+    "combined_effect_mean_canonical": 0.03936368741221
+  },
+  {
+    "layer": 10,
+    "head_idx": 9,
+    "label": "L10H9",
+    "combined_effect_mean_canonical": 0.0362719894996393
+  },
+  {
+    "layer": 11,
+    "head_idx": 6,
+    "label": "L11H6",
+    "combined_effect_mean_canonical": 0.0355570779041944
+  },
+  {
+    "layer": 0,
+    "head_idx": 2,
+    "label": "L0H2",
+    "combined_effect_mean_canonical": 0.0354448753576101
+  },
+  {
+    "layer": 9,
+    "head_idx": 3,
+    "label": "L9H3",
+    "combined_effect_mean_canonical": 0.0333218912335565
+  },
+  {
+    "layer": 10,
+    "head_idx": 6,
+    "label": "L10H6",
+    "combined_effect_mean_canonical": 0.0310875642433071
+  },
+  {
+    "layer": 10,
+    "head_idx": 8,
+    "label": "L10H8",
+    "combined_effect_mean_canonical": 0.0300396091589369
+  },
+  {
+    "layer": 10,
+    "head_idx": 4,
+    "label": "L10H4",
+    "combined_effect_mean_canonical": 0.0294797685981084
+  },
+  {
+    "layer": 10,
+    "head_idx": 7,
+    "label": "L10H7",
+    "combined_effect_mean_canonical": 0.0270115125661885
+  }
+]

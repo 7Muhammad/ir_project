@@ -1,0 +1,48 @@
+# =============================================================================
+# Experiment 6 extension — template-token sink/signal analysis
+# =============================================================================
+# Tests whether the 7 template positions frozen at control value in every
+# §4.4 query/document positional-patching condition (Query, :, Document, :,
+# Relevant, :, </s> -- see exp6lib/template_positions.py) are causally inert
+# ("sink") or carry real attack signal ("signal"). Reuses exp6lib's padded-
+# control construction, alignment, and forward/reverse/combined machinery;
+# adds nothing new to model/data/selection/runtime scope.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+runs:
+  canonical:
+    attack_name: "relevant_start_5"
+    n_examples: 100
+  sweep:
+    n_examples: 10
+
+# Step 2 flags a position for attention-mass corroboration if its peak
+# (layers 9-11) mean combined_effect exceeds this. Reported at both values
+# so the threshold choice is visible (matches the 0.02 head-importance
+# threshold used elsewhere in the codebase); 0.05 is the stricter bar.
+flag_thresholds:
+  - 0.02
+  - 0.05
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs/template_tokens"

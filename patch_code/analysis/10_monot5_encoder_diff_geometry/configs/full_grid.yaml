@@ -1,0 +1,35 @@
+# =============================================================================
+# Experiment 10 — optional extension: ALL 105 curated attacks, n=10 examples
+# each (matching Experiment 6's grid-a depth). Cheap because this experiment
+# is a directional/geometric comparison (encoder-only forward passes, no
+# 100-candidate re-ranking), not a small-effect-size estimate needing large n.
+# Run after configs/default.yaml's 15-attack primary analysis.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+selection:
+  summary_csv: "../../01_monot5_layer_patching/outputs/attack_comparison/summary.csv"
+  n_attacks: null   # all attacks in the curated grid present in summary.csv
+  n_examples: 100
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+layers: [9, 10, 11]
+pca_k_values: [1, 3, 10]
+
+plotting:
+  canonical_attack: "relevant_start_5"
+  n_scree_attacks: 5
+
+runtime:
+  seed: 42
+
+outputs:
+  base_dir: "../outputs_full_grid"

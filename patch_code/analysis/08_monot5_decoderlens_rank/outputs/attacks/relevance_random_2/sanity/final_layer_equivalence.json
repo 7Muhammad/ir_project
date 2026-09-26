@@ -1,0 +1,7 @@
+{
+  "attack_name": "relevance_random_2",
+  "max_abs_score_diff": 2.384185791015625e-07,
+  "mean_abs_score_diff": 8.344650268554688e-09,
+  "tolerance": 0.01,
+  "passed": true
+}

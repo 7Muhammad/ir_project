@@ -1,0 +1,219 @@
+[
+  {
+    "layer": 11,
+    "head_idx": 3,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H3",
+    "combined_effect_mean_grid_a_n100": 0.0821706018312353
+  },
+  {
+    "layer": 11,
+    "head_idx": 6,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H6",
+    "combined_effect_mean_grid_a_n100": 0.0676917116246685
+  },
+  {
+    "layer": 11,
+    "head_idx": 11,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H11",
+    "combined_effect_mean_grid_a_n100": 0.0499794826936512
+  },
+  {
+    "layer": 11,
+    "head_idx": 0,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H0",
+    "combined_effect_mean_grid_a_n100": 0.0465948843935071
+  },
+  {
+    "layer": 9,
+    "head_idx": 2,
+    "component": "decoder_cross_attn",
+    "label": "L9-X-H2",
+    "combined_effect_mean_grid_a_n100": 0.0390950097523191
+  },
+  {
+    "layer": 10,
+    "head_idx": 0,
+    "component": "decoder_cross_attn",
+    "label": "L10-X-H0",
+    "combined_effect_mean_grid_a_n100": 0.0383843914919457
+  },
+  {
+    "layer": 10,
+    "head_idx": 3,
+    "component": "decoder_cross_attn",
+    "label": "L10-X-H3",
+    "combined_effect_mean_grid_a_n100": 0.0377988949228416
+  },
+  {
+    "layer": 8,
+    "head_idx": 7,
+    "component": "decoder_cross_attn",
+    "label": "L8-X-H7",
+    "combined_effect_mean_grid_a_n100": 0.0372848532790057
+  },
+  {
+    "layer": 9,
+    "head_idx": 7,
+    "component": "decoder_cross_attn",
+    "label": "L9-X-H7",
+    "combined_effect_mean_grid_a_n100": 0.0364805181112484
+  },
+  {
+    "layer": 11,
+    "head_idx": 1,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H1",
+    "combined_effect_mean_grid_a_n100": 0.0262530919626699
+  },
+  {
+    "layer": 8,
+    "head_idx": 0,
+    "component": "decoder_cross_attn",
+    "label": "L8-X-H0",
+    "combined_effect_mean_grid_a_n100": 0.0259312444259776
+  },
+  {
+    "layer": 7,
+    "head_idx": 3,
+    "component": "decoder_cross_attn",
+    "label": "L7-X-H3",
+    "combined_effect_mean_grid_a_n100": 0.0256115079149387
+  },
+  {
+    "layer": 10,
+    "head_idx": 6,
+    "component": "decoder_cross_attn",
+    "label": "L10-X-H6",
+    "combined_effect_mean_grid_a_n100": 0.0252868748311799
+  },
+  {
+    "layer": 7,
+    "head_idx": 5,
+    "component": "decoder_cross_attn",
+    "label": "L7-X-H5",
+    "combined_effect_mean_grid_a_n100": 0.0243492057918667
+  },
+  {
+    "layer": 4,
+    "head_idx": 2,
+    "component": "decoder_cross_attn",
+    "label": "L4-X-H2",
+    "combined_effect_mean_grid_a_n100": 0.0233949774241166
+  },
+  {
+    "layer": 7,
+    "head_idx": 6,
+    "component": "decoder_cross_attn",
+    "label": "L7-X-H6",
+    "combined_effect_mean_grid_a_n100": 0.0233246301765555
+  },
+  {
+    "layer": 11,
+    "head_idx": 2,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H2",
+    "combined_effect_mean_grid_a_n100": 0.0220915050675411
+  },
+  {
+    "layer": 5,
+    "head_idx": 7,
+    "component": "decoder_cross_attn",
+    "label": "L5-X-H7",
+    "combined_effect_mean_grid_a_n100": 0.0213015698681295
+  },
+  {
+    "layer": 6,
+    "head_idx": 9,
+    "component": "decoder_cross_attn",
+    "label": "L6-X-H9",
+    "combined_effect_mean_grid_a_n100": 0.0209843760364478
+  },
+  {
+    "layer": 0,
+    "head_idx": 5,
+    "component": "decoder_cross_attn",
+    "label": "L0-X-H5",
+    "combined_effect_mean_grid_a_n100": 0.0201564879421177
+  },
+  {
+    "layer": 6,
+    "head_idx": 7,
+    "component": "decoder_cross_attn",
+    "label": "L6-X-H7",
+    "combined_effect_mean_grid_a_n100": 0.020031928735055
+  },
+  {
+    "layer": 7,
+    "head_idx": 2,
+    "component": "decoder_cross_attn",
+    "label": "L7-X-H2",
+    "combined_effect_mean_grid_a_n100": 0.0195340942255066
+  },
+  {
+    "layer": 4,
+    "head_idx": 3,
+    "component": "decoder_cross_attn",
+    "label": "L4-X-H3",
+    "combined_effect_mean_grid_a_n100": 0.019303036567477
+  },
+  {
+    "layer": 8,
+    "head_idx": 9,
+    "component": "decoder_cross_attn",
+    "label": "L8-X-H9",
+    "combined_effect_mean_grid_a_n100": 0.0191536736130473
+  },
+  {
+    "layer": 6,
+    "head_idx": 6,
+    "component": "decoder_cross_attn",
+    "label": "L6-X-H6",
+    "combined_effect_mean_grid_a_n100": 0.019151054130012
+  },
+  {
+    "layer": 6,
+    "head_idx": 1,
+    "component": "decoder_cross_attn",
+    "label": "L6-X-H1",
+    "combined_effect_mean_grid_a_n100": 0.0180843839899785
+  },
+  {
+    "layer": 8,
+    "head_idx": 10,
+    "component": "decoder_cross_attn",
+    "label": "L8-X-H10",
+    "combined_effect_mean_grid_a_n100": 0.0180299733835947
+  },
+  {
+    "layer": 0,
+    "head_idx": 11,
+    "component": "decoder_cross_attn",
+    "label": "L0-X-H11",
+    "combined_effect_mean_grid_a_n100": 0.0179287973791578
+  },
+  {
+    "layer": 10,
+    "head_idx": 2,
+    "component": "decoder_cross_attn",
+    "label": "L10-X-H2",
+    "combined_effect_mean_grid_a_n100": 0.0178146298675194
+  },
+  {
+    "layer": 11,
+    "head_idx": 5,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H5",
+    "combined_effect_mean_grid_a_n100": 0.0171419138326052
+  },
+  {
+    "layer": 11,
+    "head_idx": 7,
+    "component": "decoder_cross_attn",
+    "label": "L11-X-H7",
+    "combined_effect_mean_grid_a_n100": 0.0163990317866566
+  }
+]

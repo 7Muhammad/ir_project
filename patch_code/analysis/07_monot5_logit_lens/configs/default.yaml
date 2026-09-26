@@ -1,0 +1,54 @@
+# =============================================================================
+# Experiment 7 — Logit lens on monoT5 decoder cross-attention
+# (merges what would have been Experiments 4 and 5 with a general logit-lens
+# pass — see DECISIONS.md)
+# =============================================================================
+# Scope: cross-attention only. Whole-block: all 12 decoder layers, always.
+# Per-head: only heads Experiment 3 flagged as important (read live from its
+# aggregated output, not hardcoded). All paths relative to this file's directory.
+#
+# Grid size confirmed after the timing pilot (scripts/01_run_pilot.py):
+# higher-n (30/attack + 100 canonical), estimated ~1.0-2.3h on GPU.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition from Experiment 1's
+# multi_attack.yaml instead of copying the list.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+k_values: [5, 10, 20]
+composition_k: 10   # default k for bucket_composition (per task spec)
+
+# Experiment 3's per-head results — read live at run time, not hardcoded.
+# See DECISIONS.md for the 0.02 threshold's provenance.
+flagged_heads:
+  source_csv: "../../03_monot5_head_patching_ablation/outputs/grid_a/aggregated/head_summary.csv"
+  combined_effect_threshold: 0.02
+
+# Example selection: reuse Experiment 1's per-attack selections.
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+runs:
+  grid:
+    n_examples: 30
+  canonical:
+    attack_name: "relevant_start_5"
+    n_examples: 100
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

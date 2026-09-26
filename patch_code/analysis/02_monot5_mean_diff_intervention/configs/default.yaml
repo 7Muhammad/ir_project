@@ -1,0 +1,64 @@
+# =============================================================================
+# Experiment 2 — Mean-diff direction analysis + intervention (defense test)
+# =============================================================================
+# Part 1 computes direction = mean(attack_activations) - mean(control_activations)
+# at encoder_self_attn, decoder_self_attn, decoder_cross_attn (whole-vector and
+# per-head), pooled per tier. Part 2 intervenes ONLY at the 22 decoder heads
+# Experiment 3 flagged (grid_a, combined_effect_mean > 0.02) — see DECISIONS.md
+# for why decoder_self_attn is in scope alongside decoder_cross_attn.
+# All paths are relative to this config file's directory.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition (7 tokens x 3 positions x
+# 5 reps) from Experiment 1's multi_attack.yaml instead of copying the list.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Example reuse: Experiment 1's selected_examples.jsonl (top-N by
+# attack_delta_vs_control desc). The fitting pool and the intervention test
+# pool are IDENTICAL (same top-N examples) in both tiers — the strictest,
+# simplest form of "in-sample" (see DECISIONS.md).
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+# Fallback scoring inputs (only used when reuse_dir has no selection file).
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+# Source of Part 2's intervention scope.
+flagged_heads:
+  source_csv: "../../03_monot5_head_patching_ablation/outputs/grid_a/aggregated/head_summary.csv"
+  combined_effect_threshold: 0.02
+  max_heads: null   # cap for smoke tests; null = all heads above threshold
+
+# Locations Part 1 computes directions for (both granularities always run).
+locations:
+  - encoder_self_attn
+  - decoder_self_attn
+  - decoder_cross_attn
+
+# The two tiers, mirroring Experiment 3's grid_a/grid_b split.
+tiers:
+  grid_a:                       # breadth: every attack, up to n_examples_per_attack
+    n_examples_per_attack: 10
+  grid_b:                       # depth: one canonical attack, many examples
+    attack_name: "relevant_start_5"
+    n_examples: 100
+
+intervention:
+  scales: [0.5, 1.0, 1.5]
+  types: [subtract, add]        # subtract = 2a defense, add = 2b sufficiency
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

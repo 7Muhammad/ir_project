@@ -1,0 +1,9 @@
+{
+  "attack_name": "relevance_random_2",
+  "candidate_top_k": 100,
+  "n_queries": 43,
+  "n_alignment_success": 100,
+  "n_alignment_failed": 0,
+  "n_examples_used": 100,
+  "selection_mode": "all_aligned"
+}

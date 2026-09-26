@@ -1,0 +1,62 @@
+# =============================================================================
+# Experiment 13 ("2A") — True encoder-head -> decoder-cross-attention-head
+# PATH patching. Recovers the coarse A -> B causal pathway for the 18
+# important encoder self-attention heads (Section 4.5 / Experiment 11) and
+# the 31 important decoder cross-attention heads (Section 4.6 / Experiment 3).
+# 18 x 31 = 558 candidate paths, forward + reverse, over all 105 attacks.
+# All relative paths are interpreted relative to this file's directory.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition (7 tokens x 3 positions x
+# 5 reps) from Experiment 1's multi_attack.yaml instead of copying the list.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Fixed head sets (see configs/heads/*.json + exp13lib/head_lists.py for
+# exact provenance/derivation). Not overridable per-run except by editing
+# those JSON files directly and re-running scripts/00_derive_head_lists.py.
+heads:
+  senders_path: "heads/encoder_senders.json"
+  receivers_path: "heads/decoder_receivers.json"
+
+# Example selection: reuse Experiment 1's per-attack pool, filter on stored
+# attack_delta_vs_control > 1e-4, seed-42 shuffle, take a size-N prefix.
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+run:
+  # null = all 105 attacks from the inherited grid; otherwise a list of
+  # attack_name strings (e.g. for a partial re-run).
+  attack_subset: null
+  # Examples per attack for THIS run. Change only this value to move
+  # between the initial breadth run (10) and later n=30 / n=100 passes —
+  # no other config or code changes needed (see exp13lib/run_utils.py).
+  max_examples_per_attack: 10
+  run_forward: true
+  run_reverse: true
+  checkpoint_frequency: 1  # flush the checkpoint file after every N attacks completed
+
+runtime:
+  seed: 42
+
+outputs:
+  base_dir: "../outputs"
+  raw_dir: "../outputs/raw"
+  aggregates_dir: "../outputs/aggregates"
+  plots_dir: "../outputs/plots"
+  diagnostics_dir: "../outputs/diagnostics"
+
+# Only used by scripts/00_debug_single_path.py / scripts/01_sanity_checks.py.
+debug:
+  attack_name: "relevant_start_5"
+  n_examples: 1
+  sender_layer: 11
+  sender_head: 3
+  receiver_layer: 11
+  receiver_head: 3

@@ -1,0 +1,15 @@
+{
+  "attack_name": "irrelevant_start_2",
+  "token": "irrelevant",
+  "position": "start",
+  "repetitions": 2,
+  "run_name": "bm25_19",
+  "candidate_top_k": 100,
+  "status": "success",
+  "error": null,
+  "n_alignment_success": 100,
+  "n_alignment_failed": 0,
+  "n_examples_used": 100,
+  "sanity_passed": true,
+  "sanity_max_abs_diff": 5.960464477539063e-08
+}

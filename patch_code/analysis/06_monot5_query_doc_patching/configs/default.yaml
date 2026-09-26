@@ -1,0 +1,55 @@
+# =============================================================================
+# Experiment 6 — Query/Document positional patching + attention analysis
+# =============================================================================
+# Scope: 12 encoder layers (self-attention) + 12 decoder layers (cross-attention),
+# each x 3 conditions (doc_only, query_only, both). Per-head granularity is
+# OUT of scope this pass. All paths are relative to this config file's directory.
+#
+# Grid size confirmed after the timing pilot (scripts/01_run_pilot.py):
+# Exp-3 tiering (10/attack + 100 canonical), estimated ~1.8-3.4h on GPU.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition from Experiment 1's
+# multi_attack.yaml instead of copying the list.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+regions:
+  - encoder_self_attn
+  - decoder_cross_attn
+
+conditions:
+  - doc_only
+  - query_only
+  - both
+
+# Example selection: reuse Experiment 1's per-attack selections
+# (top-n by attack_delta_vs_control) so results are directly comparable to
+# Experiments 1 and 3. Falls back to scoring from scratch if a selection
+# file is missing for a given attack.
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+runs:
+  grid:
+    n_examples: 10
+  canonical:
+    attack_name: "relevant_start_5"
+    n_examples: 100
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

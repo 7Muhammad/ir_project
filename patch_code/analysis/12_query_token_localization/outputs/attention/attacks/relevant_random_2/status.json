@@ -1,0 +1,10 @@
+{
+  "attack_name": "relevant_random_2",
+  "status": "success",
+  "error": null,
+  "n_examples_requested": 100,
+  "n_examples_used": 100,
+  "n_align_failed": 0,
+  "n_skipped_epsilon": 0,
+  "n_rows": 11220
+}

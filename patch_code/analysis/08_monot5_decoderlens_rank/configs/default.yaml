@@ -1,0 +1,119 @@
+# =============================================================================
+# DecoderLens Rank Experiment: monoT5 Adversarial Ranking
+# =============================================================================
+#
+# This experiment is DecoderLens-style, NOT activation patching.
+#
+#   Previous experiment (01_monot5_layer_patching) asked:
+#       "Where does the attack effect become causally important?"
+#       (head / component / causal activation patching)
+#
+#   This experiment asks:
+#       "When does the attack effect become READABLE from the encoder
+#        representation?"
+#
+# For each encoder layer l we compute a monoT5 score by forcing the decoder
+# to cross-attend to encoder layer l's hidden states (after the encoder final
+# layer norm) instead of the final encoder output:
+#
+#       encoder layer l hidden states -> decoder -> logit(true), logit(false)
+#       score_l = logit(true) - logit(false)
+#
+# We then re-rank a fixed candidate set with those layerwise scores and track
+# how the target passage's rank changes across encoder layers.
+
+model:
+  # HuggingFace checkpoint for monoT5-base trained on MS MARCO.
+  checkpoint: "castorini/monot5-base-msmarco"
+  # Maximum token length fed to the encoder.
+  max_length: 512
+  # "auto" -> GPU if available, else CPU. "cuda" -> force GPU. "cpu" -> force CPU.
+  device: "auto"
+
+data:
+  # Absolute path to the cloned ECIR-24 repo (for reference / provenance only).
+  upstream_repo_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation"
+  dataset: "dl19"
+
+# -----------------------------------------------------------------------------
+# Attack discovery — runs over ALL manual injection attacks by default.
+# -----------------------------------------------------------------------------
+attacks:
+  # Directory containing the pre-built attacked TSV files from the ECIR-24 repo.
+  upstream_injected_dir: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19"
+
+  # Discovery mode:
+  #   "all"      -> every .gz.tsv file found in upstream_injected_dir (DEFAULT)
+  #   "include"  -> only the named attack_names in the include list (debugging)
+  #   "pattern"  -> glob pattern matched against attack_name (debugging)
+  mode: "all"
+
+  # Used only when mode == "include".  Format: {token}_{position}_{repetitions}
+  include: []
+
+  # Used only when mode == "pattern", e.g. "relevant_*".
+  include_pattern: null
+
+  # Hard cap on the number of attacks to run (null = no cap).
+  max_attacks: null
+
+# -----------------------------------------------------------------------------
+# Ranking — candidate set used to compute the target passage rank.
+# -----------------------------------------------------------------------------
+ranking:
+  # Number of BM25 candidates kept per query (top-k by BM25 rank).
+  # Ranks are always computed against this whole candidate set, never just the
+  # attacked/control pair.  We never recompute BM25 — top-k uses the rank
+  # column already present in the attacked TSV.
+  candidate_top_k: 100
+
+# -----------------------------------------------------------------------------
+# Target-example selection.  Because this experiment is about ALL attack types,
+# weak / negative attacks are meaningful, so the default keeps every aligned
+# example.
+# -----------------------------------------------------------------------------
+selection:
+  # "all_aligned"          -> keep every example whose padded-control alignment
+  #                           succeeds (DEFAULT).
+  # "final_layer_success"  -> keep only examples where the final-layer attack
+  #                           score beats the padded control (faster debugging).
+  # "top_delta"            -> keep the strongest examples by final-layer delta.
+  mode: "all_aligned"
+  max_target_examples_per_attack: 100
+  # Threshold on final-layer (attack_score - control_score) used by the
+  # final_layer_success and top_delta modes.
+  min_attack_delta_final_layer: 0.0
+
+# -----------------------------------------------------------------------------
+# DecoderLens implementation details.
+# -----------------------------------------------------------------------------
+decoderlens:
+  # Apply model.encoder.final_layer_norm to each intermediate encoder hidden
+  # state before handing it to the decoder.  Required so that layer 12 matches
+  # the normal monoT5 score (the encoder applies final_layer_norm to its last
+  # block output to produce last_hidden_state).
+  apply_final_layer_norm: true
+
+# -----------------------------------------------------------------------------
+# Final-layer sanity check: DecoderLens score at the top encoder layer must
+# closely match the normal monoT5 score.
+# -----------------------------------------------------------------------------
+sanity:
+  # Maximum allowed |DecoderLens_layer12 - normal_monot5| for "passed": true.
+  tolerance: 0.01
+
+runtime:
+  seed: 42
+  # If true, also persist the (potentially large) per-candidate layerwise score
+  # parquet.  It is required by Stage 04 to compute ranks, so this is kept true.
+  save_candidate_scores: true
+
+outputs:
+  base_dir: "outputs"
+
+# -----------------------------------------------------------------------------
+# Cross-attack comparison settings.
+# -----------------------------------------------------------------------------
+comparison:
+  # Number of attacks shown in the "top attacks" bar plots.
+  top_attacks_n: 20

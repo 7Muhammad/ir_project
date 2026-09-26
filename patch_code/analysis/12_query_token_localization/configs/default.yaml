@@ -1,0 +1,68 @@
+# =============================================================================
+# Experiment 12 -- Query-token localization (which query words/positions
+# causally carry the attack effect; attack<->query attention as descriptive
+# evidence)
+# =============================================================================
+# All paths are relative to this config file's directory.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition from Experiment 1's
+# multi_attack.yaml instead of copying the list. Set `include`/`max_attacks`
+# here to restrict to a subset for debugging (e.g. one attack).
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+  # include: ["relevant_start_5"]   # uncomment to restrict to a debug subset
+
+# Layer subset (encoder layers only -- Part B never patches the decoder).
+# null = all 12 encoder layers (model.config.num_layers).
+layers: null
+
+# Example selection: reuse Experiment 1's per-attack selections (same pool
+# every other experiment draws from) so results are directly comparable.
+# Falls back to scoring from scratch if a selection file is missing.
+# min_attack_delta here is used only by the rescoring fallback path --
+# the REQUIRED success filter (delta > 1e-4) is applied unconditionally in
+# exp12lib.run_utils.get_example_pool regardless of source.
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0001
+  rescoring_pool_size: 100
+
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+# Independently configurable sample sizes (SAMPLE-SIZE STRATEGY in the
+# experiment prompt). Both are capped at "up to N successful examples per
+# attack" -- fewer are used if an attack does not have N successful
+# instances. Re-running with n=30 or n=100 for causal patching requires only
+# editing `causal.n_examples_per_attack`, never a code change.
+sampling:
+  attention:
+    n_examples_per_attack: 100
+  causal:
+    n_examples_per_attack: 10
+
+# Which parts of the pipeline to run.
+enable:
+  causal: true
+  attention: true
+  structural_controls: true
+
+# Previously identified important encoder heads (Experiment 11, Section
+# 4.5) -- read-only, never re-derived here.
+important_heads:
+  source_csv: "../../11_monot5_encoder_head_patching/outputs/top10_heads.csv"
+  top_n: 10
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

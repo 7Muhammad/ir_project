@@ -1,0 +1,134 @@
+[
+  {
+    "layer": 11,
+    "component": "decoder_cross_attn",
+    "head_idx": 3,
+    "combined_effect_mean": 0.08217060183123537
+  },
+  {
+    "layer": 11,
+    "component": "decoder_cross_attn",
+    "head_idx": 6,
+    "combined_effect_mean": 0.0676917116246685
+  },
+  {
+    "layer": 11,
+    "component": "decoder_cross_attn",
+    "head_idx": 11,
+    "combined_effect_mean": 0.04997948269365128
+  },
+  {
+    "layer": 11,
+    "component": "decoder_cross_attn",
+    "head_idx": 0,
+    "combined_effect_mean": 0.046594884393507195
+  },
+  {
+    "layer": 11,
+    "component": "decoder_self_attn",
+    "head_idx": 3,
+    "combined_effect_mean": 0.04157757919746868
+  },
+  {
+    "layer": 9,
+    "component": "decoder_cross_attn",
+    "head_idx": 2,
+    "combined_effect_mean": 0.039095009752319144
+  },
+  {
+    "layer": 10,
+    "component": "decoder_cross_attn",
+    "head_idx": 0,
+    "combined_effect_mean": 0.038384391491945724
+  },
+  {
+    "layer": 10,
+    "component": "decoder_cross_attn",
+    "head_idx": 3,
+    "combined_effect_mean": 0.0377988949228416
+  },
+  {
+    "layer": 8,
+    "component": "decoder_cross_attn",
+    "head_idx": 7,
+    "combined_effect_mean": 0.037284853279005783
+  },
+  {
+    "layer": 9,
+    "component": "decoder_cross_attn",
+    "head_idx": 7,
+    "combined_effect_mean": 0.03648051811124849
+  },
+  {
+    "layer": 11,
+    "component": "decoder_cross_attn",
+    "head_idx": 1,
+    "combined_effect_mean": 0.026253091962669967
+  },
+  {
+    "layer": 8,
+    "component": "decoder_cross_attn",
+    "head_idx": 0,
+    "combined_effect_mean": 0.025931244425977697
+  },
+  {
+    "layer": 7,
+    "component": "decoder_cross_attn",
+    "head_idx": 3,
+    "combined_effect_mean": 0.02561150791493877
+  },
+  {
+    "layer": 10,
+    "component": "decoder_cross_attn",
+    "head_idx": 6,
+    "combined_effect_mean": 0.025286874831179973
+  },
+  {
+    "layer": 7,
+    "component": "decoder_cross_attn",
+    "head_idx": 5,
+    "combined_effect_mean": 0.024349205791866776
+  },
+  {
+    "layer": 4,
+    "component": "decoder_cross_attn",
+    "head_idx": 2,
+    "combined_effect_mean": 0.023394977424116607
+  },
+  {
+    "layer": 7,
+    "component": "decoder_cross_attn",
+    "head_idx": 6,
+    "combined_effect_mean": 0.02332463017655557
+  },
+  {
+    "layer": 11,
+    "component": "decoder_cross_attn",
+    "head_idx": 2,
+    "combined_effect_mean": 0.022091505067541112
+  },
+  {
+    "layer": 5,
+    "component": "decoder_cross_attn",
+    "head_idx": 7,
+    "combined_effect_mean": 0.02130156986812953
+  },
+  {
+    "layer": 6,
+    "component": "decoder_cross_attn",
+    "head_idx": 9,
+    "combined_effect_mean": 0.020984376036447885
+  },
+  {
+    "layer": 0,
+    "component": "decoder_cross_attn",
+    "head_idx": 5,
+    "combined_effect_mean": 0.020156487942117725
+  },
+  {
+    "layer": 6,
+    "component": "decoder_cross_attn",
+    "head_idx": 7,
+    "combined_effect_mean": 0.02003192873505502
+  }
+]

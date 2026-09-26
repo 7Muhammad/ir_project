@@ -1,0 +1,7 @@
+{
+  "attack_name": "informationbaz_end_3",
+  "max_abs_score_diff": 1.1920928955078125e-07,
+  "mean_abs_score_diff": 5.364418029785156e-09,
+  "tolerance": 0.01,
+  "passed": true
+}

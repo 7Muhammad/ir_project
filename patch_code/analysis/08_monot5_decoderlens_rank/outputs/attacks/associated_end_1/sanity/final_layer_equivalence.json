@@ -1,0 +1,7 @@
+{
+  "attack_name": "associated_end_1",
+  "max_abs_score_diff": 2.384185791015625e-07,
+  "mean_abs_score_diff": 1.0430812835693359e-08,
+  "tolerance": 0.01,
+  "passed": true
+}

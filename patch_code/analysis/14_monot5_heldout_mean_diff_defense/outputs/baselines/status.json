@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "splits": {
+    "train": {
+      "n_attacks_with_examples": 105,
+      "n_examples_total": 9973,
+      "n_clean_examples": 200
+    },
+    "validation": {
+      "n_attacks_with_examples": 105,
+      "n_examples_total": 3182,
+      "n_clean_examples": 100
+    },
+    "test": {
+      "n_attacks_with_examples": 105,
+      "n_examples_total": 3433,
+      "n_clean_examples": 100
+    }
+  },
+  "n_train_pooled_examples": 2000
+}

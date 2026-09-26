@@ -1,0 +1,45 @@
+# =============================================================================
+# Smoke-test config for the DecoderLens rank experiment.
+# Small, fast: one attack, few candidates, few targets.  For pipeline wiring
+# checks only — NOT for drawing conclusions.
+# =============================================================================
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+data:
+  upstream_repo_path: "/home/ghoummaid/IR/ecir24-adversarial-evaluation"
+  dataset: "dl19"
+
+attacks:
+  upstream_injected_dir: "/home/ghoummaid/IR/ecir24-adversarial-evaluation/runs/injected/dl19"
+  mode: "pattern"
+  include: []
+  include_pattern: "relevant_start_5"
+  max_attacks: 1
+
+ranking:
+  candidate_top_k: 20
+
+selection:
+  mode: "all_aligned"
+  max_target_examples_per_attack: 5
+  min_attack_delta_final_layer: 0.0
+
+decoderlens:
+  apply_final_layer_norm: true
+
+sanity:
+  tolerance: 0.01
+
+runtime:
+  seed: 42
+  save_candidate_scores: true
+
+outputs:
+  base_dir: "outputs_smoke"
+
+comparison:
+  top_attacks_n: 20

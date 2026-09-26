@@ -1,0 +1,66 @@
+# =============================================================================
+# Experiment 3 — Per-head activation patching + ablation on the monoT5 decoder
+# =============================================================================
+# Scope: 12 decoder layers x 2 attention components x 12 heads = 288 head-slots.
+# Decoder MLP is excluded (no heads).  Encoder is out of scope for this
+# experiment.  All paths are relative to this config file's directory.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512
+  device: "auto"
+
+# Attack grid: inherit the 105-attack definition (7 tokens x 3 positions x
+# 5 reps) from Experiment 1's multi_attack.yaml instead of copying the list.
+# Any non-null key set here overrides the inherited block.
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+# Head scope.  layers: null means all decoder layers.
+heads:
+  components:
+    - decoder_self_attn
+    - decoder_cross_attn
+  layers: null
+
+# Ablation methods to run (both required for the zero-vs-mean scatter).
+#   zero — head output set to the zero vector
+#   mean — head output replaced by the padded-control (Type B) activation
+ablation:
+  methods: [zero, mean]
+
+# Example selection.
+# reuse_dir points at Experiment 1's per-attack outputs; when
+# {reuse_dir}/{attack}/scores/selected_examples.jsonl exists, its top-n
+# examples (sorted by attack_delta_vs_control desc) are reused so Grid A/B run
+# on exactly the examples Experiment 1 analysed.  Otherwise the attack TSV is
+# scored from scratch (data: block below) and selected with the same rule.
+selection:
+  reuse_dir: "../../01_monot5_layer_patching/outputs/attacks"
+  min_attack_delta: 0.0
+
+# Fallback scoring inputs (only used when reuse_dir has no selection file).
+data:
+  max_pairs: 500
+  max_docs_per_query: 1000
+
+# The four runs.
+runs:
+  grid_a:            # breadth: every attack, up to 100 examples (capped by availability)
+    n_examples: 100
+  grid_b:            # depth: one canonical attack, many examples
+    attack_name: "relevant_start_5"
+    n_examples: 100
+  clean_a:           # side-effect check on grid_a's matched clean inputs
+    n_examples: 100
+  clean_b:           # side-effect check on grid_b's matched clean inputs
+    attack_name: "relevant_start_5"
+    n_examples: 100
+
+runtime:
+  seed: 42
+  batch_size_scoring: 8
+
+outputs:
+  base_dir: "../outputs"

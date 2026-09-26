@@ -1,0 +1,348 @@
+{
+  "provenance": {
+    "encoder_source": "/home/ghoummaid/IR/patch_code/analysis/13_monot5_encoder_decoder_path_patching/configs/heads/encoder_senders.json",
+    "decoder_source": "/home/ghoummaid/IR/patch_code/analysis/13_monot5_encoder_decoder_path_patching/configs/heads/decoder_receivers.json",
+    "note": "current_report.tex's '33 of 288 (31 cross-attn + 2 self-attn)' does not reproduce from any on-disk aggregate; this manifest uses the reproducible 18 encoder (threshold 0.02) + 31 decoder cross-attn (rank top-31) sets Experiment 13 already settled on. See DECISIONS.md item 1."
+  },
+  "encoder_position_masks": [
+    "document",
+    "query",
+    "template",
+    "query_document",
+    "all_valid"
+  ],
+  "encoder_heads": [
+    {
+      "layer": 10,
+      "head_idx": 0,
+      "label": "L10H0",
+      "combined_effect_mean": 0.1819361492376591
+    },
+    {
+      "layer": 10,
+      "head_idx": 2,
+      "label": "L10H2",
+      "combined_effect_mean": 0.1606983131583452
+    },
+    {
+      "layer": 11,
+      "head_idx": 3,
+      "label": "L11H3",
+      "combined_effect_mean": 0.1207184292818185
+    },
+    {
+      "layer": 11,
+      "head_idx": 11,
+      "label": "L11H11",
+      "combined_effect_mean": 0.1172785500718028
+    },
+    {
+      "layer": 9,
+      "head_idx": 6,
+      "label": "L9H6",
+      "combined_effect_mean": 0.0872110934664575
+    },
+    {
+      "layer": 11,
+      "head_idx": 4,
+      "label": "L11H4",
+      "combined_effect_mean": 0.072834143361156
+    },
+    {
+      "layer": 11,
+      "head_idx": 2,
+      "label": "L11H2",
+      "combined_effect_mean": 0.0715655932547968
+    },
+    {
+      "layer": 11,
+      "head_idx": 0,
+      "label": "L11H0",
+      "combined_effect_mean": 0.064806817572182
+    },
+    {
+      "layer": 8,
+      "head_idx": 11,
+      "label": "L8H11",
+      "combined_effect_mean": 0.0570507011911585
+    },
+    {
+      "layer": 11,
+      "head_idx": 5,
+      "label": "L11H5",
+      "combined_effect_mean": 0.03936368741221
+    },
+    {
+      "layer": 10,
+      "head_idx": 9,
+      "label": "L10H9",
+      "combined_effect_mean": 0.0362719894996393
+    },
+    {
+      "layer": 11,
+      "head_idx": 6,
+      "label": "L11H6",
+      "combined_effect_mean": 0.0355570779041944
+    },
+    {
+      "layer": 0,
+      "head_idx": 2,
+      "label": "L0H2",
+      "combined_effect_mean": 0.0354448753576101
+    },
+    {
+      "layer": 9,
+      "head_idx": 3,
+      "label": "L9H3",
+      "combined_effect_mean": 0.0333218912335565
+    },
+    {
+      "layer": 10,
+      "head_idx": 6,
+      "label": "L10H6",
+      "combined_effect_mean": 0.0310875642433071
+    },
+    {
+      "layer": 10,
+      "head_idx": 8,
+      "label": "L10H8",
+      "combined_effect_mean": 0.0300396091589369
+    },
+    {
+      "layer": 10,
+      "head_idx": 4,
+      "label": "L10H4",
+      "combined_effect_mean": 0.0294797685981084
+    },
+    {
+      "layer": 10,
+      "head_idx": 7,
+      "label": "L10H7",
+      "combined_effect_mean": 0.0270115125661885
+    }
+  ],
+  "decoder_heads": [
+    {
+      "layer": 11,
+      "head_idx": 3,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H3",
+      "combined_effect_mean": 0.0821706018312353
+    },
+    {
+      "layer": 11,
+      "head_idx": 6,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H6",
+      "combined_effect_mean": 0.0676917116246685
+    },
+    {
+      "layer": 11,
+      "head_idx": 11,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H11",
+      "combined_effect_mean": 0.0499794826936512
+    },
+    {
+      "layer": 11,
+      "head_idx": 0,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H0",
+      "combined_effect_mean": 0.0465948843935071
+    },
+    {
+      "layer": 9,
+      "head_idx": 2,
+      "component": "decoder_cross_attn",
+      "label": "L9-X-H2",
+      "combined_effect_mean": 0.0390950097523191
+    },
+    {
+      "layer": 10,
+      "head_idx": 0,
+      "component": "decoder_cross_attn",
+      "label": "L10-X-H0",
+      "combined_effect_mean": 0.0383843914919457
+    },
+    {
+      "layer": 10,
+      "head_idx": 3,
+      "component": "decoder_cross_attn",
+      "label": "L10-X-H3",
+      "combined_effect_mean": 0.0377988949228416
+    },
+    {
+      "layer": 8,
+      "head_idx": 7,
+      "component": "decoder_cross_attn",
+      "label": "L8-X-H7",
+      "combined_effect_mean": 0.0372848532790057
+    },
+    {
+      "layer": 9,
+      "head_idx": 7,
+      "component": "decoder_cross_attn",
+      "label": "L9-X-H7",
+      "combined_effect_mean": 0.0364805181112484
+    },
+    {
+      "layer": 11,
+      "head_idx": 1,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H1",
+      "combined_effect_mean": 0.0262530919626699
+    },
+    {
+      "layer": 8,
+      "head_idx": 0,
+      "component": "decoder_cross_attn",
+      "label": "L8-X-H0",
+      "combined_effect_mean": 0.0259312444259776
+    },
+    {
+      "layer": 7,
+      "head_idx": 3,
+      "component": "decoder_cross_attn",
+      "label": "L7-X-H3",
+      "combined_effect_mean": 0.0256115079149387
+    },
+    {
+      "layer": 10,
+      "head_idx": 6,
+      "component": "decoder_cross_attn",
+      "label": "L10-X-H6",
+      "combined_effect_mean": 0.0252868748311799
+    },
+    {
+      "layer": 7,
+      "head_idx": 5,
+      "component": "decoder_cross_attn",
+      "label": "L7-X-H5",
+      "combined_effect_mean": 0.0243492057918667
+    },
+    {
+      "layer": 4,
+      "head_idx": 2,
+      "component": "decoder_cross_attn",
+      "label": "L4-X-H2",
+      "combined_effect_mean": 0.0233949774241166
+    },
+    {
+      "layer": 7,
+      "head_idx": 6,
+      "component": "decoder_cross_attn",
+      "label": "L7-X-H6",
+      "combined_effect_mean": 0.0233246301765555
+    },
+    {
+      "layer": 11,
+      "head_idx": 2,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H2",
+      "combined_effect_mean": 0.0220915050675411
+    },
+    {
+      "layer": 5,
+      "head_idx": 7,
+      "component": "decoder_cross_attn",
+      "label": "L5-X-H7",
+      "combined_effect_mean": 0.0213015698681295
+    },
+    {
+      "layer": 6,
+      "head_idx": 9,
+      "component": "decoder_cross_attn",
+      "label": "L6-X-H9",
+      "combined_effect_mean": 0.0209843760364478
+    },
+    {
+      "layer": 0,
+      "head_idx": 5,
+      "component": "decoder_cross_attn",
+      "label": "L0-X-H5",
+      "combined_effect_mean": 0.0201564879421177
+    },
+    {
+      "layer": 6,
+      "head_idx": 7,
+      "component": "decoder_cross_attn",
+      "label": "L6-X-H7",
+      "combined_effect_mean": 0.020031928735055
+    },
+    {
+      "layer": 7,
+      "head_idx": 2,
+      "component": "decoder_cross_attn",
+      "label": "L7-X-H2",
+      "combined_effect_mean": 0.0195340942255066
+    },
+    {
+      "layer": 4,
+      "head_idx": 3,
+      "component": "decoder_cross_attn",
+      "label": "L4-X-H3",
+      "combined_effect_mean": 0.019303036567477
+    },
+    {
+      "layer": 8,
+      "head_idx": 9,
+      "component": "decoder_cross_attn",
+      "label": "L8-X-H9",
+      "combined_effect_mean": 0.0191536736130473
+    },
+    {
+      "layer": 6,
+      "head_idx": 6,
+      "component": "decoder_cross_attn",
+      "label": "L6-X-H6",
+      "combined_effect_mean": 0.019151054130012
+    },
+    {
+      "layer": 6,
+      "head_idx": 1,
+      "component": "decoder_cross_attn",
+      "label": "L6-X-H1",
+      "combined_effect_mean": 0.0180843839899785
+    },
+    {
+      "layer": 8,
+      "head_idx": 10,
+      "component": "decoder_cross_attn",
+      "label": "L8-X-H10",
+      "combined_effect_mean": 0.0180299733835947
+    },
+    {
+      "layer": 0,
+      "head_idx": 11,
+      "component": "decoder_cross_attn",
+      "label": "L0-X-H11",
+      "combined_effect_mean": 0.0179287973791578
+    },
+    {
+      "layer": 10,
+      "head_idx": 2,
+      "component": "decoder_cross_attn",
+      "label": "L10-X-H2",
+      "combined_effect_mean": 0.0178146298675194
+    },
+    {
+      "layer": 11,
+      "head_idx": 5,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H5",
+      "combined_effect_mean": 0.0171419138326052
+    },
+    {
+      "layer": 11,
+      "head_idx": 7,
+      "component": "decoder_cross_attn",
+      "label": "L11-X-H7",
+      "combined_effect_mean": 0.0163990317866566
+    }
+  ],
+  "n_encoder_heads": 18,
+  "n_decoder_heads": 31,
+  "n_encoder_candidates": 90,
+  "n_decoder_candidates": 31,
+  "n_total_candidates": 121
+}

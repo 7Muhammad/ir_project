@@ -1,0 +1,10 @@
+{
+  "tier": "grid_a",
+  "status": "success",
+  "error": null,
+  "n_attacks": 105,
+  "n_examples_used": 1050,
+  "n_align_failed": 0,
+  "n_skipped_epsilon": 0,
+  "n_direction_keys": 468
+}
