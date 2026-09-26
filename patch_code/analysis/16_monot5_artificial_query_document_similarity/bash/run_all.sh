@@ -61,5 +61,7 @@ stage "08 decoder level plot (4 populations)"; "$PY" scripts/08_plot_decoder_mes
 stage "10 head-level tables + plots";  "$PY" scripts/10_plot_head_similarity.py --config "$CONFIG"
 stage "12 decoder probe plot (4 populations)"; "$PY" scripts/12_plot_decoder_probe_similarity.py --config "$CONFIG"
 stage "14 all encoder heads L9-L11 plot"; "$PY" scripts/14_plot_late_encoder_heads.py --config "$CONFIG"
+stage "15 head-count anomaly detection"; "$PY" scripts/15_head_anomaly_detection.py --config "$CONFIG"
+stage "16 anomaly head attribution";  "$PY" scripts/16_head_anomaly_attribution.py --config "$CONFIG"
 echo ""
 echo "=== [$(date '+%F %T')] Done. Outputs under the config's outputs.base_dir ==="

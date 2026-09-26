@@ -81,7 +81,12 @@ decoder cross-attention and residual
 stream, and the 31 important decoder heads. At every one of these levels,
 \emph{successful} attacked inputs look like clean \emph{non-relevant} documents, not like
 genuinely relevant ones, and they are no closer to genuine relevance than unsuccessful
-attacks. None of this is causal evidence.
+attacks. \textbf{A simple anomaly detector} counts heads whose similarity deviates
+($|z|>2$) from genuine relevant inputs, with held-out queries. Successful attacks
+activate more abnormal heads (median 4 vs 1; AUROC 0.74, 0.78 with the top 5 heads).
+The signal is sparse, almost always ``too low'', and concentrated in heads that overlap
+strongly with the causally important ones (\texttt{L11H11}, \texttt{L10H2},
+\texttt{L10H0}). None of this is causal evidence.
 \end{abstract}
 
 \tableofcontents
@@ -792,6 +797,172 @@ All plotted numbers are in \texttt{outputs/04\_analysis/} and
 \end{itemize}
 
 % =====================================================================
+\section{Head-Level Anomaly Detection of Successful Attacks}
+\label{sec:anomaly}
+% =====================================================================
+
+\subsection{Method}
+
+Can successful attacks be detected because their pattern of head-level query--document
+similarity looks abnormal compared with genuinely relevant inputs? Stages 15/16 test a
+deliberately simple, interpretable detector on the 36 features of
+Section~\ref{sec:supp}: the head-level similarity at every encoder head of layers
+9--11. No classifier is trained.
+
+\begin{itemize}[nosep]
+  \item \textbf{Reference (``normal''):} clean genuinely relevant documents (qrel~2/3)
+        of the \emph{training} queries only. No qrel~0 and no attack data are used.
+        For each head, $\mu_h$ and $\sigma_h$ are estimated from this reference; no
+        $\sigma_h$ was near zero in any fold.
+  \item \textbf{Score:} $z_h=(\qsim_h-\mu_h)/\sigma_h$ for each head. A head is
+        abnormal if $|z_h|>2$; this threshold was fixed in advance. The anomaly score is
+        the number of abnormal heads, $0$--$36$. The mean $|z_h|$ is a secondary score.
+  \item \textbf{Evaluation:} query-level 5-fold cross-validation (seed 42) over the
+        42 queries that have both genuine relevant documents and successful attacks.
+        One query (\texttt{855410}) has only genuine data and is excluded.
+  \item \textbf{Test groups:} 2,253 held-out genuine relevant documents and 18,906
+        held-out successful attacked inputs (example-level $\Delta\score>0$, all 105
+        attack configurations).
+  \item \textbf{Detector:} flag an input if its abnormal-head count is $\ge T$. $T$ is
+        chosen by balanced accuracy in an inner loop over the training folds only.
+        The top-$k$ heads in the ablation are also ranked on training folds only,
+        with the reference refitted without the test fold.
+\end{itemize}
+
+\subsection{Successful attacks activate more abnormal heads}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{outputs/plots/fig_anomaly_head_count_distribution.png}\\[4pt]
+\includegraphics[width=\textwidth]{outputs/plots/fig_anomaly_threshold_curve.png}
+\caption{Top: abnormal-head count for held-out genuine relevant documents and
+successful attacks (histogram and ECDF). Bottom: TPR/FPR against the count threshold
+$T$, and the ROC.}
+\label{fig:anom_dist}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{Genuine relevant inputs} have few abnormal heads: mean 1.9, median 1
+        (quartiles 0--2), and 30\% have none. Most heads are abnormal for about 4--8\% of
+        genuine inputs, close to the Gaussian expectation of 4.6\%. The exceptions are
+        \texttt{L11H2} and \texttt{L11H3}, at about 0\%, where the genuine spread is
+        very wide.
+  \item \textbf{Successful attacks} have more: mean 5.1, median 4 (quartiles 1--8),
+        and 12\% have none.
+  \item \textbf{Separation is moderate, not clean.} AUROC is 0.743 (per fold
+        0.64--0.81); the mean $|z|$ gives 0.763.
+  \item \textbf{Detector with $T$ chosen on training queries:} $T$ is 3--4 in every
+        fold. That gives 58\% recall at an 18\% genuine false-positive rate (balanced
+        accuracy 0.70).
+  \item \textbf{Fixed thresholds:} $T=5$ gives 45\% recall at 10\% false positives;
+        $T=10$ gives 16\% at 2.2\%.
+  \item \textbf{Robustness:} AUROC is 0.68--0.76 for $k$ from 1.0 to 3.0; $k=2$ was not
+        tuned.
+  \item \textbf{Precision} is about 0.96, but that mainly reflects roughly 8 attacks
+        per genuine input in the test set.
+\end{itemize}
+
+\subsection{Which heads create the difference?}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{outputs/plots/fig_anomaly_attr_rates_by_head.png}\\[4pt]
+\includegraphics[width=\textwidth]{outputs/plots/fig_anomaly_attr_direction.png}
+\caption{Top: per-head abnormality rate ($|z|>2$), mean over the 5 held-out folds with
+$\pm1$ SE. Bottom: direction of abnormality under successful attacks (down: $z<-2$,
+up: $z>+2$). Bold labels are the canonical important heads.}
+\label{fig:anom_heads}
+\end{figure}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrrrlcc@{}}
+\toprule
+Head & genuine abn. & attack abn. & excess & direction & canonical & folds $>0$ \\
+\midrule
+L11H11 & 8.3\% & 49.3\% & $+0.41$ & low & yes & 5/5 \\
+L10H2  & 5.0\% & 39.1\% & $+0.34$ & low & yes & 5/5 \\
+L10H0  & 5.7\% & 35.4\% & $+0.30$ & low & yes & 5/5 \\
+L11H10 & 6.8\% & 35.8\% & $+0.29$ & low & no  & 5/5 \\
+L9H4   & 4.7\% & 33.6\% & $+0.29$ & low & no  & 5/5 \\
+L11H4  & 7.0\% & 29.6\% & $+0.23$ & low & yes & 5/5 \\
+L11H0  & 4.1\% & 23.0\% & $+0.19$ & low & yes & 5/5 \\
+L10H7  & 5.6\% & 18.2\% & $+0.13$ & low & yes & 5/5 \\
+L10H4  & 3.9\% & 16.5\% & $+0.13$ & low & yes & 5/5 \\
+L9H2   & 5.5\% & 17.1\% & $+0.12$ & low & no  & 5/5 \\
+\bottomrule
+\end{tabular}
+\caption{Top 10 heads by excess abnormality (attack $-$ genuine abnormal rate, pooled
+held-out). ``Direction'' is whether attack abnormalities are mostly $z<-2$ or $z>+2$.}
+\label{tab:anom_top10}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{outputs/plots/fig_anomaly_attr_excess_bars.png}
+\caption{Excess abnormality per head, ordered by layer and ranked (whiskers: min/max
+over folds; hatched: canonical important head).}
+\label{fig:anom_bars}
+\end{figure}
+
+\begin{itemize}[nosep]
+  \item \textbf{The signal is concentrated in about 5--10 heads.} The top 5 heads account
+        for 49\% of the attacks' positive excess abnormality, and the top 10 for 73\%.
+        All top 10 have a positive excess in 5 of 5 folds; 16 heads do in total.
+  \item \textbf{Abnormality is almost always ``too low''.} 96\% of all abnormal-head
+        events under attack are $z<-2$. The mean signed $z$ of attacks is negative at 32
+        of 36 heads, down to $-1.8$ at \texttt{L11H11}. Successful attacks make these
+        heads see query and document as \emph{less} similar than in genuine relevant
+        documents. This is consistent with Section~\ref{sec:supp}.
+  \item \textbf{Strong overlap with the causal heads.} 7 of the top 10 detector heads,
+        and the top 3 (\texttt{L11H11}, \texttt{L10H2}, \texttt{L10H0}), are among the 18
+        canonical heads with the largest causal effect in the earlier patching
+        experiments. The 16 canonical heads within layers 9--11 carry 59\% of the positive
+        excess.
+  \item \textbf{Two strong non-canonical detectors} are \texttt{L11H10} and
+        \texttt{L9H4}.
+  \item \textbf{Two canonical heads flag nothing:} \texttt{L11H2} and \texttt{L11H3},
+        the strongest separators of genuine relevance in Figure~\ref{fig:late_heads}.
+        Their genuine spread is so wide that attacks, about 1 SD below the mean, rarely
+        pass $|z|>2$.
+\end{itemize}
+
+\subsection{How few heads does the detector need?}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{outputs/plots/fig_anomaly_attr_topk_auroc.png}
+\caption{Held-out AUROC of the abnormal-head count restricted to the top-$k$ heads,
+with the heads ranked on the training folds only.}
+\label{fig:anom_topk}
+\end{figure}
+
+Restricting the count to the top-$k$ heads, ranked without test data, gives AUROC 0.747
+(top 3), \textbf{0.782 (top 5)}, 0.774 (top 10) and 0.743 (all 36). The peak is 0.788 at
+top 7. The training-selected top 5 are \texttt{L11H11}, \texttt{L10H2}, \texttt{L10H0},
+\texttt{L9H4} and \texttt{L11H10} in 4 of 5 folds; in the fifth, \texttt{L11H4} replaces
+\texttt{L9H4}. Adding the remaining heads mostly adds noise. The detector can therefore
+be reduced to about five interpretable late-encoder heads without losing performance.
+
+\subsection{Interpretation}
+
+\begin{itemize}[nosep]
+  \item \textbf{The attack-detection signal is sparse.} It is driven by a small, stable set
+        of late-encoder heads, not spread evenly over layers 9--11.
+  \item \textbf{Most of those heads overlap with the heads that carry the attack
+        causally.} Under successful attacks they report \emph{lower} query--document
+        similarity than genuine relevance produces.
+  \item \textbf{Defence candidates:} heads that are both causally important and
+        systematically abnormal, above all \texttt{L11H11}, \texttt{L10H2} and
+        \texttt{L10H0}, are natural targets for a defence.
+  \item \textbf{A weak detector on its own:} performance is moderate (AUROC about
+        0.74--0.79), so this detector alone is weak.
+  \item \textbf{Possible source confound:} genuine and attacked documents come from
+        different sources (judged DL19 pool vs BM25-retrieved pairs). Part of the
+        separation may reflect that rather than the attack.
+\end{itemize}
+
+% =====================================================================
 \section{Interpretation and Discussion}
 % =====================================================================
 
@@ -873,6 +1044,10 @@ change \emph{mediates} the score change cannot be decided here.
   \item \textbf{One-sided test.} The sign-flip tests only positive gaps. The negative
         embedding and layer-11 gaps are reported descriptively (SE bands, fraction of
         attacks), not tested.
+  \item \textbf{Anomaly detector.} The genuine reference and the attacked inputs come
+        from different document sources (judged DL19 pool vs BM25-retrieved pairs). The
+        detector may partly detect that difference. A reference built from each attacked
+        document's own clean version, or from BM25 pairs, would test this.
   \item \textbf{Supplementary decoder probe.} The decoder residual-stream comparison
         restricts cross-attention to one span per run (renormalised attention), so it
         describes hypothetical decoder passes. The cross-attention message split, by
@@ -889,7 +1064,7 @@ change \emph{mediates} the score change cannot be decided here.
 
 \begin{lstlisting}
 cd patch_code/analysis/16_monot5_artificial_query_document_similarity
-bash bash/run_tests.sh                       # 46 pytest tests (CPU)
+bash bash/run_tests.sh                       # 51 pytest tests (CPU)
 bash bash/run_smoke_test.sh                  # smoke pipeline -> outputs_smoke/
 # full run (SLURM job 1420511, L40, ~6 min end-to-end):
 cd /home/ghoummaid/IR && bash run_job.sh --job-name monot5_exp16_similarity \
@@ -898,7 +1073,7 @@ cd /home/ghoummaid/IR && bash run_job.sh --job-name monot5_exp16_similarity \
   --command "cd /home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity && bash bash/run_all.sh configs/default.yaml"
 # supplementary stages 06-12 (same command; completed stages resume-skip):
 #   SLURM 1420594 (07 decoder messages), 1420609 (09 heads), 1420613 (11 decoder probe),
-#   1420615 (13 all encoder heads, layers 9-11)
+#   1420615 (13 all encoder heads, layers 9-11); stages 15/16 (anomaly detector) need no model
 \end{lstlisting}
 
 The exact sources and sha256 hashes are in \texttt{outputs/manifests/provenance.json};
