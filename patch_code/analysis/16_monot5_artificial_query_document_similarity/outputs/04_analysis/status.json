@@ -1,9 +1,9 @@
 {
   "status": "success",
-  "finished": "2026-09-26 22:46:42",
+  "finished": "2026-09-26 23:07:31",
   "upstream": {
     "/home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/01_clean": "2026-09-26 20:47:14",
-    "/home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/02_qrel": "2026-09-26 22:41:19",
-    "/home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/03_attack": "2026-09-26 22:42:03"
+    "/home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/02_qrel": "2026-09-26 23:01:48",
+    "/home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/03_attack": "2026-09-26 23:02:32"
   }
 }

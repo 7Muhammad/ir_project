@@ -82,3 +82,18 @@ def test_head_similarity_ignores_masked_slots(tiny_model):
         assert torch.allclose(e1[k], e2[k], atol=1e-6)
     for k in d1:
         assert torch.allclose(d1[k], d2[k], atol=1e-6)
+
+
+def test_all_late_encoder_heads_and_encoder_only_runner(tiny_model):
+    from exp16lib.heads import all_encoder_heads, encoder_head_batch
+    heads36 = all_encoder_heads([9, 10, 11])
+    assert len(heads36) == 36 and heads36[0].label == "L9H0" and heads36[-1].label == "L11H11"
+    assert [(h.layer, h.head_idx) for h in heads36] == [(L, h) for L in (9, 10, 11) for h in range(12)]
+    # encoder-only runner == the full-forward encoder capture used by stage 09 (tiny model: layers 0-2)
+    atk, ctl = _pair()
+    b = collate([atk, ctl], 0, CPU)
+    small = [h for h in all_encoder_heads([1, 2]) if h.head_idx < tiny_model.config.num_heads]   # tiny model: 4 heads
+    enc_only = encoder_head_batch(tiny_model, b, small)
+    full, _, _ = head_forward_batch(tiny_model, b, small, DEC)
+    for h in small:
+        assert torch.allclose(enc_only[h.label], full[h.label], atol=1e-10)

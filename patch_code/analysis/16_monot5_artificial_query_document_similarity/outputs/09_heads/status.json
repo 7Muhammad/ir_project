@@ -1,6 +1,6 @@
 {
   "status": "success",
-  "finished": "2026-09-26 22:43:16",
+  "finished": "2026-09-26 23:03:47",
   "qrel_manifest_sha256": "0e78dc3e264dfeac6f6a0a1f2ae93455979f2a7ae1f643e0389c6a2c5bd8e982",
   "attack_manifest_sha256": "6239331d0f3461a4ee76b90176dc7490ea30229459896d016a812d03cfea6bc7",
   "n_attack_examples": 52478,

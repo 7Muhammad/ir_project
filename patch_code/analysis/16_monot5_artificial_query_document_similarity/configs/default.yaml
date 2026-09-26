@@ -62,6 +62,7 @@ validation:
   batch_invariance_atol: 1.0e-5         # cosine units
   fresh_score_check_n: 0                # full run: no rescoring (smoke sets > 0)
   fresh_vs_cached_score_atol: 5.0e-3    # same tolerance as Exp 15
+  head_crosscheck_atol: 1.0e-4          # stage 13: shared heads vs stage-09 cache (cosine units)
   decoder_decomposition_rtol: 1.0e-5    # stage 07: max|m_query + m_doc + m_rest - out| / max|out| (fp32 model vs fp64 split)
 
 statistics:

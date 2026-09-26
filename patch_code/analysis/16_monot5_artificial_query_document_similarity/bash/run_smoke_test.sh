@@ -25,7 +25,9 @@ for f in manifests/clean.jsonl manifests/attacks.jsonl.gz manifests/qrel_balance
          10_head_analysis/head_similarity_decoder.csv plots/fig_heads_encoder_four_populations.png \
          plots/fig_heads_decoder_four_populations.png plots/fig_heads_decoder_four_populations_by_layer.png \
          11_decoder_probe/qrel_decoder_probe.csv.gz 11_decoder_probe/attack_decoder_probe.csv.gz \
-         plots/fig_decoder_probe_similarity_four_populations.png; do
+         plots/fig_decoder_probe_similarity_four_populations.png \
+         13_late_encoder_heads/attack_late_encoder_heads.csv.gz 10_head_analysis/late_encoder_heads_L9_L11.csv \
+         plots/fig_heads_encoder_all_L9_L11_four_populations.png; do
     if [[ -s "${EXP_DIR}/outputs_smoke/${f}" ]]; then echo "  OK       ${f}"; else echo "  MISSING  ${f}"; exit 1; fi
 done
 echo "=== Smoke test passed ==="

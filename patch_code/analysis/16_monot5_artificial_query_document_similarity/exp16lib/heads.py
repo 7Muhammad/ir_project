@@ -127,3 +127,34 @@ def run_head_sequences(model, seqs, pad_id, device, batch_size, enc_heads, dec_h
 
 def head_labels(heads) -> List[str]:
     return [h.label for h in heads]
+
+
+def all_encoder_heads(layers) -> list:
+    """Every self-attention head of the given encoder layers, ordered (layer, head); labels L{L}H{h} (Exp 13 style)."""
+    from exp13lib.head_lists import SenderHead
+    return [SenderHead(layer=L, head_idx=h, label=f"L{L}H{h}") for L in sorted(layers) for h in range(12)]
+
+
+@torch.inference_mode()
+def encoder_head_batch(model, batch, heads):
+    """Encoder-only forward -> {label: [B]} head-level query/document cosine (same capture as stage 09)."""
+    with EncoderHeadCapture(model.encoder, heads) as ec:
+        ec.set_masks(batch["query_mask"], batch["doc_mask"])
+        model.encoder(input_ids=batch["input_ids"], attention_mask=batch["attention_mask"])
+        return {h.label: ec.cos[h.label] for h in heads}
+
+
+def run_encoder_head_sequences(model, seqs, pad_id, device, batch_size, heads):
+    """Length-sorted batches -> np [N, n_heads] (encoder only; no decoder pass needed)."""
+    import numpy as np
+    from exp16lib.inputs import collate
+
+    order = sorted(range(len(seqs)), key=lambda i: seqs[i].seq_len)
+    E = np.full((len(seqs), len(heads)), np.nan)
+    for start in range(0, len(order), batch_size):
+        idx = order[start:start + batch_size]
+        res = encoder_head_batch(model, collate([seqs[i] for i in idx], pad_id, device), heads)
+        E[idx] = torch.stack([res[h.label] for h in heads], 1).cpu().numpy()
+    if not np.isfinite(E).all():
+        raise FloatingPointError("non-finite head similarity")
+    return E

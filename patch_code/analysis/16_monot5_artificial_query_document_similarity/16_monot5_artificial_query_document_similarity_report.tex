@@ -76,7 +76,8 @@ layer 11. Averaged over the whole attack family, adversarial injection therefore
 attacks that actually work move the final-layer similarity in the relevant direction,
 and even they do so by a fraction of the genuine gap. \textbf{Supplementary level
 analyses} split the attacks by example-level success. They cover the 25 encoder
-checkpoints, the 18 important encoder heads, the decoder cross-attention and residual
+checkpoints, the 18 important encoder heads, all 36 heads of encoder layers 9--11, the
+decoder cross-attention and residual
 stream, and the 31 important decoder heads. At every one of these levels,
 \emph{successful} attacked inputs look like clean \emph{non-relevant} documents, not like
 genuinely relevant ones, and they are no closer to genuine relevance than unsuccessful
@@ -289,6 +290,7 @@ $\overline{\dsim}_k$ and $\overline{\Delta\score}_k$.}
 \centering
 \includegraphics[width=0.85\textwidth]{outputs/plots/fig1_clean_rho.png}
 \caption{Spearman $\rho(\qsim_{\mathrm{clean}}(c),\score_{\mathrm{clean}})$, 500 clean pairs.}
+\label{fig:clean_rho}
 \end{figure}
 
 \begin{itemize}[nosep]
@@ -404,6 +406,7 @@ BH-FDR.}
 \caption{Spearman across the 105 attacks between the attack-mean $\dsim$ and the
 attack-mean $\Delta\score$ (primary; filled = nominal $p<0.05$), and the pooled
 example-level Spearman (secondary, dashed).}
+\label{fig:dsim_dscore}
 \end{figure}
 
 \begin{itemize}[nosep]
@@ -538,6 +541,7 @@ trajectories come from different populations and units (queries vs attacks).}
 
 % =====================================================================
 \section{Supplementary Analyses: Similarity Levels, Important Heads and the Decoder}
+\label{sec:supp}
 % =====================================================================
 
 The primary analyses compare gaps (relevant $-$ non-relevant, attack $-$ control) over
@@ -621,6 +625,49 @@ positions, and the two pooled vectors are compared by cosine.
         heads \texttt{L10H0}, \texttt{L10H2}, \texttt{L10H4} and \texttt{L11H11} they
         are 0.05--0.06 \emph{less} query-similar than unsuccessful attacks.
 \end{itemize}
+
+\subsection{All encoder heads in layers 9--11}
+
+To check that the important-head picture is not an artefact of the head selection, the
+same head-level metric was computed for \emph{every} self-attention head of encoder
+layers 9, 10 and 11: 36 heads, \texttt{L9H0}--\texttt{L11H11} (stages 13/14). The
+populations, masks and weighting are unchanged. The 16 heads shared with the canonical
+set reproduce the earlier values exactly (maximum difference 0.0).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{outputs/plots/fig_heads_encoder_all_L9_L11_four_populations.png}
+\caption{Head-level query--document similarity at all 36 encoder heads of layers 9--11
+(bold tick labels: canonical important heads).}
+\label{fig:late_heads}
+\end{figure}
+
+For each head, three descriptive differences were computed:
+\texttt{success\_gap} $=$ successful $-$ unsuccessful attack mean,
+\texttt{genuine\_gap} $=$ relevant $-$ non-relevant mean, and
+\texttt{successful\_vs\_genuine} $=$ successful attack $-$ relevant mean.
+
+\begin{itemize}[nosep]
+  \item \textbf{Layer 9 does not discriminate:} all four groups move together.
+  \item \textbf{Genuine relevance separates in late layer 10 and above all layer 11.}
+        24 of 36 heads have a positive genuine gap. The largest are \texttt{L11H2}
+        ($+0.43$), \texttt{L11H0} ($+0.40$), \texttt{L11H11} ($+0.37$),
+        \texttt{L11H3} ($+0.36$) and \texttt{L10H2} ($+0.21$). All five are canonical
+        important heads, and at each of them successful attacks are \emph{less}
+        query-similar than unsuccessful ones (success gap $-0.02$ to $-0.06$).
+  \item \textbf{Only 3 of 36 heads have a positive success gap:} \texttt{L9H0}
+        ($+0.016$), \texttt{L10H6} ($+0.009$) and \texttt{L10H5} ($+0.003$). All three
+        have a \emph{negative} genuine gap ($-0.12$, $-0.21$, $-0.06$). At these heads a
+        higher similarity is characteristic of \emph{non-relevant} documents.
+  \item \textbf{No head has both a positive genuine gap and a positive success gap.}
+        No late-encoder head makes successful attacks look more like genuine relevance
+        than unsuccessful attacks.
+  \item \textbf{Successful attacks come closest to the relevant level} only at heads
+        where the groups barely differ at all (\texttt{L10H8}, \texttt{L9H11},
+        \texttt{L9H3}).
+\end{itemize}
+
+The table is \texttt{outputs/10\_head\_analysis/late\_encoder\_heads\_L9\_L11.csv}.
 
 \subsection{Decoder}
 
@@ -727,6 +774,9 @@ All plotted numbers are in \texttt{outputs/04\_analysis/} and
         important decoder heads.
   \item \textbf{They look like clean non-relevant documents}, and in the late encoder
         and decoder slightly less query-similar still.
+  \item \textbf{The same holds across all 36 encoder heads of layers 9--11:} no head
+        separates genuine relevance and also favours successful attacks
+        (Figure~\ref{fig:late_heads}).
   \item \textbf{Successful and unsuccessful attacks are almost indistinguishable in
         these levels.} Where they differ, at late encoder heads, successful attacks are
         the \emph{less} similar group.
@@ -751,6 +801,14 @@ All plotted numbers are in \texttt{outputs/04\_analysis/} and
         judgement. It tracks the score on clean data, separates human-judged relevant
         from non-relevant documents, and is both largest and most predictive in the
         last encoder layer's attention.
+  \item \textbf{The link between similarity and score is shown by two figures.}
+        Figure~\ref{fig:clean_rho} shows that on clean inputs a higher similarity
+        goes with a higher score, up to Spearman $\rho=0.70$ at \texttt{L11\_post\_attn}.
+        Figure~\ref{fig:dsim_dscore} shows that across attacks, a larger similarity
+        \emph{increase} over the padded control goes with a larger score increase,
+        up to $\rho=0.70$ at layer 11. Both are correlations. In absolute levels,
+        attacked inputs still stay at or below non-relevant documents
+        (Section~\ref{sec:supp}).
   \item Keyword stuffing does leave a similarity signature: a small, very consistent
         mid-encoder increase that grows with repetition count and is largest for the
         tokens (\emph{relevant}, \emph{information}) and positions (start, end) that
@@ -831,7 +889,7 @@ change \emph{mediates} the score change cannot be decided here.
 
 \begin{lstlisting}
 cd patch_code/analysis/16_monot5_artificial_query_document_similarity
-bash bash/run_tests.sh                       # 45 pytest tests (CPU)
+bash bash/run_tests.sh                       # 46 pytest tests (CPU)
 bash bash/run_smoke_test.sh                  # smoke pipeline -> outputs_smoke/
 # full run (SLURM job 1420511, L40, ~6 min end-to-end):
 cd /home/ghoummaid/IR && bash run_job.sh --job-name monot5_exp16_similarity \
@@ -839,7 +897,8 @@ cd /home/ghoummaid/IR && bash run_job.sh --job-name monot5_exp16_similarity \
   --output-dir ./patch_code/analysis/16_monot5_artificial_query_document_similarity/slurm_logs \
   --command "cd /home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity && bash bash/run_all.sh configs/default.yaml"
 # supplementary stages 06-12 (same command; completed stages resume-skip):
-#   SLURM 1420594 (07 decoder messages), 1420609 (09 heads), 1420613 (11 decoder probe)
+#   SLURM 1420594 (07 decoder messages), 1420609 (09 heads), 1420613 (11 decoder probe),
+#   1420615 (13 all encoder heads, layers 9-11)
 \end{lstlisting}
 
 The exact sources and sha256 hashes are in \texttt{outputs/manifests/provenance.json};

@@ -179,9 +179,11 @@ Stage 00 checks the population and fails loudly on any mismatch:
 10_plot_head_similarity                  -> 10_head_analysis/*.csv, plots/fig_heads_*.png
 11_run_decoder_probe_similarity          -> 11_decoder_probe/{qrel,attack}_decoder_probe.csv.gz
 12_plot_decoder_probe_similarity         -> plots/fig_decoder_probe_similarity_four_populations.png (+ CSV)
+13_run_late_encoder_heads                -> 13_late_encoder_heads/{qrel,attack}_late_encoder_heads.csv.gz
+14_plot_late_encoder_heads               -> 10_head_analysis/late_encoder_heads_L9_L11.csv, plots/fig_heads_encoder_all_L9_L11_four_populations.png
 ```
 
-### Supplementary level analyses (stages 06–12)
+### Supplementary level analyses (stages 06–14)
 
 These stages plot absolute similarity levels, not gaps, for four populations:
 clean qrel 2/3 (genuinely relevant), clean qrel 0 (non-relevant), and
@@ -200,11 +202,12 @@ attacked inputs split by example-level `delta_score > 0` (successful) or
 | 07/08 | per decoder layer: cosine between the cross-attention message read from query-text positions and the message read from document positions, `m_S = o(Σ_{j∈S} P·V)` (`exp16lib/decoder.py`). The query + document + template parts must reproduce the cross-attention output (relative error ≤ 1e-5, checked every batch). |
 | 09/10 | the same quantities at the canonical important heads (Exp 13 lists: 18 encoder heads, 31 decoder cross-attention heads). Encoder: pre-`o_proj` 64-d head slice, pooled over query vs document. Decoder: per-head query-sourced vs document-sourced 64-d contribution (`exp16lib/heads.py`). |
 | 11/12 | decoder residual-stream probe: the encoder runs once, then the first decoder step runs twice with cross-attention restricted to query-text positions or to document positions. `cos(h_query-only, h_doc-only)` is taken at 37 decoder checkpoints: embedding, then post self-attention, post cross-attention and post MLP for each layer, with L11 taken before `final_layer_norm` (`exp16lib/decoder_probe.py`). Restricting cross-attention is a probe, not the model's normal run. The two pre-cross-attention checkpoints must be exactly 1. |
+| 13/14 | the stage 09 encoder-head metric for **all 36** self-attention heads of encoder layers 9–11 (`L9H0`–`L11H11`), from an encoder-only pass. The 16 heads shared with stage 09 must reproduce its cache (`head_crosscheck_atol`). The CSV adds `success_gap`, `genuine_gap`, `successful_vs_genuine` and `previously_important_head`. |
 
 Every stage resumes safely through `status.json` (the Exp 01/14 convention)
 and accepts `--force`.
 - Model stages record the manifest sha256 and refuse to mix populations.
-- Stage 02 resumes per query; stages 03, 07, 09 and 11 resume per attack.
+- Stage 02 resumes per query; stages 03, 07, 09, 11 and 13 resume per attack.
 - Stage 03 accepts `--attack-start/--attack-end` for deterministic SLURM
   chunking.
 

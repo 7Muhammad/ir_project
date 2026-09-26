@@ -49,8 +49,9 @@ stage "03 attack/control similarity";  "$PY" scripts/03_run_attack_similarity.py
 stage "07 decoder message similarity"; "$PY" scripts/07_run_decoder_message_similarity.py --config "$CONFIG" $FORCE "${SLICE[@]}"
 stage "09 head-level similarity";      "$PY" scripts/09_run_head_similarity.py --config "$CONFIG" $FORCE "${SLICE[@]}"
 stage "11 decoder probe similarity";   "$PY" scripts/11_run_decoder_probe_similarity.py --config "$CONFIG" $FORCE "${SLICE[@]}"
+stage "13 all encoder heads L9-L11";  "$PY" scripts/13_run_late_encoder_heads.py --config "$CONFIG" $FORCE "${SLICE[@]}"
 if [[ ${#SLICE[@]} -gt 0 ]]; then
-    echo "=== attack slice given: skipping stages 04-12 (run without a slice once all slices finish) ==="
+    echo "=== attack slice given: skipping stages 04-14 (run without a slice once all slices finish) ==="
     exit 0
 fi
 stage "04 analyze";                    "$PY" scripts/04_analyze.py --config "$CONFIG" $FORCE
@@ -59,5 +60,6 @@ stage "06 encoder level plot (4 populations)"; "$PY" scripts/06_plot_successful_
 stage "08 decoder level plot (4 populations)"; "$PY" scripts/08_plot_decoder_message_similarity.py --config "$CONFIG"
 stage "10 head-level tables + plots";  "$PY" scripts/10_plot_head_similarity.py --config "$CONFIG"
 stage "12 decoder probe plot (4 populations)"; "$PY" scripts/12_plot_decoder_probe_similarity.py --config "$CONFIG"
+stage "14 all encoder heads L9-L11 plot"; "$PY" scripts/14_plot_late_encoder_heads.py --config "$CONFIG"
 echo ""
 echo "=== [$(date '+%F %T')] Done. Outputs under the config's outputs.base_dir ==="
