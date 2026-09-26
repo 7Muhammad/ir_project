@@ -1,0 +1,12 @@
+{
+  "n_examples": 5250,
+  "n_heads": 18,
+  "n_head_layers": 5,
+  "total_query_tokens": 41962,
+  "mean_query_tokens": 7.992761904761905,
+  "rows_stage02_all_query": 189000,
+  "rows_stage03_single_query": 1510632,
+  "rows_stage04_whole_head": 189000,
+  "unpatched_capture_passes": 31500,
+  "rows_total": 1920132
+}

@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 20:21:32",
+  "n_checks": 282,
+  "manifest_sha256": "686db9cb13f44e56b159a9c0a2e824ebc570162a90a568669a7e7e2c8ce6557c",
+  "head_labels": [
+    "L10H0",
+    "L9H6"
+  ]
+}

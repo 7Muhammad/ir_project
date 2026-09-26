@@ -1,0 +1,12 @@
+{
+  "n_examples": 5250,
+  "max_abs_live_minus_cached_control": 0.0,
+  "max_abs_live_minus_cached_attack": 0.0,
+  "mean_abs_live_minus_cached_control": 0.0,
+  "mean_abs_live_minus_cached_attack": 0.0,
+  "max_abs_edge_vs_wholehead_live_control": 0.0,
+  "max_abs_edge_vs_wholehead_live_attack": 0.0,
+  "max_m_control_norm_all_rows": 0.0,
+  "max_decomposition_err_all_rows": 2.86102294921875e-05,
+  "n_alignment_boundary_shift_examples": 10
+}

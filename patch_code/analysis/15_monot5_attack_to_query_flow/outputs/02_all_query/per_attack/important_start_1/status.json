@@ -1,0 +1,29 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 20:30:25",
+  "seconds": 5.433992862701416,
+  "n_examples": 50,
+  "n_rows": 900,
+  "manifest_sha256": "686db9cb13f44e56b159a9c0a2e824ebc570162a90a568669a7e7e2c8ce6557c",
+  "head_labels": [
+    "L10H0",
+    "L10H2",
+    "L11H3",
+    "L11H11",
+    "L9H6",
+    "L11H4",
+    "L11H2",
+    "L11H0",
+    "L8H11",
+    "L11H5",
+    "L10H9",
+    "L11H6",
+    "L0H2",
+    "L9H3",
+    "L10H6",
+    "L10H8",
+    "L10H4",
+    "L10H7"
+  ],
+  "device": "cuda"
+}

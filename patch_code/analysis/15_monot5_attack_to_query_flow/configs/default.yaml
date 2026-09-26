@@ -1,0 +1,83 @@
+# =============================================================================
+# Experiment 15 — Attack-token -> query information flow (edge-message patching)
+# =============================================================================
+# FULL experiment: all 105 attacks x 18 canonical encoder heads x up to 50
+# successful examples per attack, forward + reverse, all-query + every
+# single query-token position, plus the whole-head reference.
+#
+# All relative paths are relative to THIS config file's directory.
+# Every value below that changes scientific semantics is a LOCKED decision —
+# see ../DECISIONS.md before editing.
+
+model:
+  checkpoint: "castorini/monot5-base-msmarco"
+  max_length: 512          # same as Exp 01; stage 00 fails loudly if any example would be truncated
+  device: "auto"           # "auto" -> cuda if available (and usable), else cpu
+
+# 105-attack grid (7 tokens x 3 positions x 5 reps), inherited from Exp 01 —
+# never copied (resolved by exp15lib.config.load_config).
+attacks:
+  inherit_from: "../../01_monot5_layer_patching/configs/multi_attack.yaml"
+  max_attacks: null
+
+data:
+  # Exp 01 cached per-attack pools:
+  #   {exp1_attacks_dir}/{attack}/scores/selected_examples.jsonl
+  exp1_attacks_dir: "../../01_monot5_layer_patching/outputs/attacks"
+
+heads:
+  # Canonical 18 important encoder heads (Exp 11 canonical run, 0.02 threshold),
+  # as frozen by Exp 13. Loaded with exp13lib.head_lists.load_senders, which
+  # asserts exactly 18 unique entries.
+  encoder_heads_json: "../../13_monot5_encoder_decoder_path_patching/configs/heads/encoder_senders.json"
+  # null = all 18. Only smoke.yaml may set a subset (list of labels, e.g. ["L10H0"]).
+  subset: null
+
+sampling:
+  seed: 42
+  max_successful_per_attack: 50
+  # Success filter: (score_attack - score_control) > SKIP_EPSILON, where
+  # SKIP_EPSILON is IMPORTED from Exp 01's src.patching (== 1e-4). It is
+  # deliberately NOT configurable here; this key is documentation only and
+  # is asserted equal to the imported constant at runtime.
+  success_epsilon_source: "src.patching.SKIP_EPSILON"
+
+runtime:
+  # Max batch rows per patched encoder+decoder pass. Rows are independent
+  # hypothetical runs of the SAME-length input (control and attack share
+  # length by construction), so chunk size never changes semantics.
+  max_rows_per_batch: 128
+  allow_tf32: false        # keep full fp32 matmuls (tolerances below assume fp32)
+
+tolerances:
+  decomposition_atol: 1.0e-4        # |z(q) - sum_j P[q,j] V[j]|  (check A)
+  control_message_max_norm: 1.0e-5  # ||m_control(q)|| over all query positions (check B)
+  noop_score_atol: 1.0e-4           # donor == receiver message -> score unchanged (check C)
+  reference_score_atol: 1.0e-4      # optimized vs reference patched scores (check N)
+  fresh_vs_cached_score_atol: 5.0e-3  # fresh live baseline score vs Exp 01 cached score
+
+sanity:
+  # Stage 01 runs every real-model sanity check on this small subset before
+  # the expensive stages, and fails the pipeline loudly if any check fails.
+  attacks: ["relevant_start_5", "true_end_2", "bar_random_3"]
+  heads: ["L10H0", "L9H6"]
+  n_examples_per_attack: 2
+
+statistics:
+  bootstrap_reps: 10000
+  bootstrap_ci_level: 0.95
+  bootstrap_seed: 42
+  bootstrap_method: "percentile"
+  n_sign_flips: 100000
+  sign_flip_seed: 42
+  fdr_alpha: 0.05
+
+comparison:
+  # Edge/whole-head ratio (SECONDARY only) is computed only when
+  # |whole_head_combined| > SKIP_EPSILON (the project's existing numerical
+  # guard). Exp 11's 0.02 importance threshold is reported alongside as an
+  # informational stability flag, never used to drop rows.
+  exp11_importance_threshold: 0.02
+
+outputs:
+  base_dir: "../outputs"

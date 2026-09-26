@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 20:56:30",
+  "n_records": 5250,
+  "n_attacks": 105,
+  "manifest_path": "/home/ghoummaid/IR/patch_code/analysis/15_monot5_attack_to_query_flow/outputs/sample_manifest.jsonl",
+  "manifest_sha256": "686db9cb13f44e56b159a9c0a2e824ebc570162a90a568669a7e7e2c8ce6557c",
+  "seed": 42,
+  "max_successful_per_attack": 50,
+  "skip_epsilon": 0.0001
+}

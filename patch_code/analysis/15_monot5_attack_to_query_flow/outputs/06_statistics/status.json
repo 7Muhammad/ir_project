@@ -1,0 +1,5 @@
+{
+  "status": "success",
+  "finished": "2026-09-26 21:33:15",
+  "upstream_fingerprint": "5a9e542ab305c5edb728d30f834c350477493b89d48ef4cb67b4cb9899781d61{\"bootstrap_ci_level\": 0.95, \"bootstrap_method\": \"percentile\", \"bootstrap_reps\": 10000, \"bootstrap_seed\": 42, \"fdr_alpha\": 0.05, \"n_sign_flips\": 100000, \"sign_flip_seed\": 42}"
+}

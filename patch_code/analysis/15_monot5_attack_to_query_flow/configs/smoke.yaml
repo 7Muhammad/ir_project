@@ -1,0 +1,39 @@
+# =============================================================================
+# Experiment 15 — SMOKE config. Inherits default.yaml and shrinks the scope
+# so the whole pipeline runs on CPU in minutes. NOT for scientific use.
+#
+# Still exercises every central path: start + end + scattered-random attacks
+# (repetition 1 and > 1), two heads in two different layers, all-query and
+# single-query-token edges, forward + reverse, whole-head reference,
+# aggregation, bootstrap, sign-flip + BH plumbing, plots.
+# =============================================================================
+
+extends: "default.yaml"
+
+attacks:
+  mode: "include"
+  include:
+    - relevant_start_1
+    - true_end_2
+    - bar_random_3
+
+heads:
+  subset: ["L10H0", "L9H6"]
+
+sampling:
+  max_successful_per_attack: 3
+
+runtime:
+  max_rows_per_batch: 32
+
+sanity:
+  attacks: ["relevant_start_1", "bar_random_3"]
+  heads: ["L10H0", "L9H6"]
+  n_examples_per_attack: 1
+
+statistics:
+  bootstrap_reps: 500
+  n_sign_flips: 2000
+
+outputs:
+  base_dir: "../outputs_smoke"
