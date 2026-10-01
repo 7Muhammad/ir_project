@@ -1,0 +1,37 @@
+{
+ "n_attacks": 105,
+ "n_instances": 422206,
+ "n_successful": 131314,
+ "n_relevant": 184751,
+ "n_boundary_shift": 1270,
+ "n_queries": 43,
+ "instances_by_cell": {
+  "unsucc_nonrel": 161147,
+  "unsucc_rel": 129745,
+  "succ_nonrel": 76308,
+  "succ_rel": 55006
+ },
+ "stage17_alignment_failures_excluded": 104,
+ "states": [
+  "embedding",
+  "L00",
+  "L01",
+  "L02",
+  "L03",
+  "L04",
+  "L05",
+  "L06",
+  "L07",
+  "L08",
+  "L09",
+  "L10",
+  "L11",
+  "final_norm"
+ ],
+ "regions": [
+  "query",
+  "orig_doc",
+  "whole_shared",
+  "whole_full_visible"
+ ]
+}

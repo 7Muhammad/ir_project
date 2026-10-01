@@ -1,0 +1,32 @@
+# =============================================================================
+# Experiment 17 — Encoder attention-distribution statistics (exploratory screen)
+# =============================================================================
+# Input: EXACTLY the Exp 16 stage-22 token sample (read-only). No full population.
+# All relative paths are relative to THIS config file's directory.
+
+exp16_config: "../../16_monot5_artificial_query_document_similarity/configs/default.yaml"   # model settings
+token_sample_dir: "../../16_monot5_artificial_query_document_similarity/outputs/22_token_sample"
+exp11_outputs_dir: "../../11_monot5_encoder_head_patching/outputs"     # optional causal comparison (read-only)
+
+sample:
+  expect_full_sample: true     # assert the stage-22 counts (6,325 sequences, 253 pairs, 1,026 successful)
+  max_pairs: null              # smoke only: first N base pairs (clean + all their control/attack sequences)
+
+model:
+  device: "auto"               # "auto" -> cuda if usable, else cpu (Blackwell login node -> cpu)
+
+runtime:
+  batch_size: 32               # sequences per forward (length-sorted)
+  local_window: 5              # |i - j| <= 5 for local_mass
+
+validation:
+  score_atol: 1.0e-3           # recomputed monoT5 score vs stage 22 (same fp32 model, different batching)
+  pre_o_n_batches: 4           # batches whose pre-o_proj head outputs are compared with stage-22 heads.npy
+  pre_o_rel_tol: 2.0e-3        # max |x - stored| / max(|x|, 1)  (stage-22 storage is fp16)
+  row_sum_atol: 1.0e-4
+  direct_check_batches: 3      # batches with direct NumPy recomputation of random cells
+  direct_check_cells: 40       # (sequence, layer, head, region, scope) cells per such batch
+  direct_rtol: 1.0e-4
+
+outputs:
+  base_dir: "../outputs"

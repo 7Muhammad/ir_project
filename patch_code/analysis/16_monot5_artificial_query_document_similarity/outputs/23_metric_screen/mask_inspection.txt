@@ -1,0 +1,27 @@
+=== seq 0 kind=clean group=relevant pair=19335_1729 attack=nan
+QUERY  (6): ▁ anthropo logical ▁definition ▁of ▁environment
+FULL   (69): ▁Graduate ▁Study ▁in ▁Anthropolog y . ▁The ▁graduate ▁program ▁in ▁biological ▁ anthropo logy ▁at ▁ CU ▁Boulder ▁offers ▁training ▁in ▁several ▁areas , ▁including ▁prima t ology , ▁human ▁biology , ▁and ▁pale o anthropo logy . ▁We ▁share ▁an ▁interest ▁in ▁human ▁ecology , ▁the ▁broad ▁integrat ive ▁area ▁of ▁ anthropo logy ▁that ▁ focuses ▁on ▁the ▁interactions ▁of ▁culture , ▁biology ▁and ▁the ▁environment .
+ORIG   (69): ▁Graduate ▁Study ▁in ▁Anthropolog y . ▁The ▁graduate ▁program ▁in ▁biological ▁ anthropo logy ▁at ▁ CU ▁Boulder ▁offers ▁training ▁in ▁several ▁areas , ▁including ▁prima t ology , ▁human ▁biology , ▁and ▁pale o anthropo logy . ▁We ▁share ▁an ▁interest ▁in ▁human ▁ecology , ▁the ▁broad ▁integrat ive ▁area ▁of ▁ anthropo logy ▁that ▁ focuses ▁on ▁the ▁interactions ▁of ▁culture , ▁biology ▁and ▁the ▁environment .
+INS    (0): 
+OUTSIDE POOLS: ▁ Query : ▁Document : ▁Relevan t : </s>
+
+=== seq 4307 kind=control group=nonrelevant pair=19335_712804 attack=information_random_1
+QUERY  (6): ▁ anthropo logical ▁definition ▁of ▁environment
+FULL   (46): ▁The ▁E ASA ▁seek s ▁to ▁advance ▁the ▁status ▁of ▁ anthropo logy ▁in ▁Europe ▁and ▁to ▁increase ▁visibility ▁of ▁marginal ized ▁ anthropo logical ▁traditions ▁and ▁ thereby ▁contribute ▁to ▁the ▁project ▁of ▁ a ▁global ▁ anthropo logy ▁or ▁world ▁ anthropo logy .
+ORIG   (46): ▁The ▁E ASA ▁seek s ▁to ▁advance ▁the ▁status ▁of ▁ anthropo logy ▁in ▁Europe ▁and ▁to ▁increase ▁visibility ▁of ▁marginal ized ▁ anthropo logical ▁traditions ▁and ▁ thereby ▁contribute ▁to ▁the ▁project ▁of ▁ a ▁global ▁ anthropo logy ▁or ▁world ▁ anthropo logy .
+INS    (0): 
+OUTSIDE POOLS: ▁ Query : ▁Document : <pad> <pad> ▁Relevan t : </s>
+
+=== seq 4302 kind=attack group=relevant pair=19335_1729 attack=information_random_1
+QUERY  (6): ▁ anthropo logical ▁definition ▁of ▁environment
+FULL   (71): ▁Graduate ▁Study ▁in ▁Anthropolog y . ▁The ▁graduate ▁program ▁in ▁biological ▁ anthropo logy ▁at ▁ CU ▁Boulder ▁offers ▁training ▁in ▁several ▁areas , ▁including ▁prima t ology , ▁human ▁biology , ▁and ▁pale o anthropo logy . ▁We ▁share ▁an ▁interest ▁in ▁human ▁ecology , ▁the ▁broad ▁integrat ive ▁area ▁of ▁ anthropo logy ▁that ▁ focuses ▁on ▁the ▁interactions ▁of ▁culture , ▁biology ▁and ▁the ▁information : ▁environment .
+ORIG   (69): ▁Graduate ▁Study ▁in ▁Anthropolog y . ▁The ▁graduate ▁program ▁in ▁biological ▁ anthropo logy ▁at ▁ CU ▁Boulder ▁offers ▁training ▁in ▁several ▁areas , ▁including ▁prima t ology , ▁human ▁biology , ▁and ▁pale o anthropo logy . ▁We ▁share ▁an ▁interest ▁in ▁human ▁ecology , ▁the ▁broad ▁integrat ive ▁area ▁of ▁ anthropo logy ▁that ▁ focuses ▁on ▁the ▁interactions ▁of ▁culture , ▁biology ▁and ▁the ▁environment .
+INS    (2): ▁information :
+OUTSIDE POOLS: ▁ Query : ▁Document : ▁Relevan t : </s>
+
+=== seq 4308 kind=attack group=nonrelevant pair=19335_712804 attack=information_random_1
+QUERY  (6): ▁ anthropo logical ▁definition ▁of ▁environment
+FULL   (48): ▁The ▁E ASA ▁seek s ▁to ▁advance ▁the ▁status ▁of ▁ anthropo logy ▁in ▁Europe ▁and ▁to ▁increase ▁visibility ▁of ▁marginal ized ▁ anthropo logical ▁traditions ▁and ▁information : ▁ thereby ▁contribute ▁to ▁the ▁project ▁of ▁ a ▁global ▁ anthropo logy ▁or ▁world ▁ anthropo logy .
+ORIG   (46): ▁The ▁E ASA ▁seek s ▁to ▁advance ▁the ▁status ▁of ▁ anthropo logy ▁in ▁Europe ▁and ▁to ▁increase ▁visibility ▁of ▁marginal ized ▁ anthropo logical ▁traditions ▁and ▁ thereby ▁contribute ▁to ▁the ▁project ▁of ▁ a ▁global ▁ anthropo logy ▁or ▁world ▁ anthropo logy .
+INS    (2): ▁information :
+OUTSIDE POOLS: ▁ Query : ▁Document : ▁Relevan t : </s>

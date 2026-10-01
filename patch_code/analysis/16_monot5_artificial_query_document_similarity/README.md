@@ -183,6 +183,7 @@ Stage 00 checks the population and fails loudly on any mismatch:
 14_plot_late_encoder_heads               -> 10_head_analysis/late_encoder_heads_L9_L11.csv, plots/fig_heads_encoder_all_L9_L11_four_populations.png
 15_head_anomaly_detection                -> 15_head_anomaly/{anomaly_predictions.csv.gz, per_head_abnormality.csv, detector_threshold_curve.csv, fold_summary.csv, overall_summary.json}, plots/fig_anomaly_*.png
 16_head_anomaly_attribution              -> 15_head_anomaly/{per_head_attack_anomaly_analysis.csv, topk_head_detector_auroc.csv, attribution_summary.json}, plots/fig_anomaly_attr_*.png
+17-21 paired extension                   -> see 'Paired extension (stages 17-21)' below
 ```
 
 ### Supplementary level analyses (stages 06–16)
@@ -219,6 +220,77 @@ bash bash/run_tests.sh                    # pytest (CPU)
 bash bash/run_smoke_test.sh               # full pipeline on configs/smoke.yaml -> outputs_smoke/
 bash bash/run_all.sh configs/default.yaml # full run (submit via SLURM, see run_all.sh header)
 ```
+
+## Paired extension (stages 17–21)
+
+**Question.** For the *same* judged document, when a successful attack raises
+the monoT5 score, do its late-encoder query–document head similarities become
+more abnormal than those of its own padded control? This removes the
+document-population confound in stages 15–16, where attacked documents were
+compared with *other*, genuinely relevant documents.
+
+| Item | Definition |
+|------|------------|
+| Instance | (qid, docid, attack configuration): every judged attackable DL19 base pair × all 105 attacks, read directly from `ecir24-adversarial-evaluation/runs/injected/dl19/*.gz.tsv` with Exp 01's `load_attacked_tsv` (not `selected_examples.jsonl`) |
+| Groups | qrel 2/3 (1,760 base pairs) and qrel 0 (2,262), always analysed separately; qrel 1 and unjudged dropped |
+| Pair | padded control → attacked input (`encode_attack_and_control`; same length and positions) |
+| Success | `delta_score = score_attack − score_control > 0` (logit true − logit false, fresh forward) |
+| Features | 36 encoder heads L9–L11, pre-`o_proj`, cos(mean query-text, mean document) (stage 13 metric) |
+| Reference (fold f) | controls of successful qrel 2/3 instances whose qid ∉ fold f, pooled over all 105 attacks; per-head μ, σ |
+| Abnormal | \|z\| > 2; abnormal_count = # of 36 heads |
+| CV | 5-fold by query, `anomaly.query_folds` over all judged attackable qids, seed 42 |
+| Detector | positive = attacked input, negative = its own control; top-k heads, ranking, threshold T_k and k* chosen on inner folds of the training queries only |
+
+```
+17_prepare_paired_manifest -> 17_paired_manifest/{base_pairs.jsonl.gz, attacks/{attack}.jsonl.gz, alignment_failures.csv,
+                              attack_population_summary.csv, fold_map.json, old_outputs_fingerprint.json, provenance.json}
+18_run_paired_forward      -> 18_paired_forward/per_attack/{attack}/rows.csv.gz  (score + 25 checkpoints + 36 heads,
+                              control and attack, one forward; per-attack resume; cross-check vs Exp 01 / stage 03 / stage 13)
+19_paired_anomaly          -> 19_paired_anomaly/{paired_instances.csv.gz, reference_fits.csv, per_head_paired.csv,
+                              paired_count_summary.csv, count_distribution.csv, document_level{.csv.gz,_summary.csv},
+                              low_high_summary.csv, per_attack_paired.csv, success_counts.csv, summary.json}
+20_paired_detector         -> 20_paired_detector/{topk_detector_metrics.csv, detector_fold_details.csv, selected_heads.csv,
+                              detector_summary.json}
+21_plot_paired             -> plots/paired/fig_paired_*.png, 21_paired_report/{plot_data/*.csv, final_summary.json,
+                              old_outputs_check.json}
+```
+
+Run with `bash bash/run_paired.sh configs/default.yaml` (SLURM command in the
+script header). Smoke with `bash bash/run_paired_smoke.sh` (4 attacks, 15
+queries, ≤ 4 pairs per group per query → `outputs_paired_smoke/`). Stages
+17–21 write only new directories; stage 21 re-hashes every pre-existing Exp 16
+output and fails if any changed. Design choices: DECISIONS 45–52.
+
+**All 12 layers (144 heads).** `bash bash/run_paired.sh configs/paired_all_layers.yaml`
+(smoke: `bash bash/run_paired_all_layers_smoke.sh`). Same method, reuses the
+stage-17 manifest, writes `18_paired_forward_all_layers/` …
+`21_paired_report_all_layers/` and `plots/paired_all_layers/` (DECISIONS 53).
+
+**Token-level exploration sample (stage 22).** `scripts/22_extract_token_sample.py`
+stores, for ~250 judged base pairs (≤ 3 qrel 2/3 + ≤ 3 qrel 0 per query, seed 42) ×
+(clean + a balanced 12-attack subset, control and attack), the per-token pre-`o_proj`
+output of all 144 encoder heads (fp16, `outputs/22_token_sample/`, ~12 GB). Try new
+metrics there with `exp16lib.token_sample.TokenSample`; promising ones are computed on
+the fly over the full population later (pooled vectors are never bulk-stored).
+
+```python
+from exp16lib.token_sample import TokenSample
+ts = TokenSample("outputs/22_token_sample")
+for s in ts.iter(kind="control", relevance_group="relevant"):
+    h = s["heads"][:, 11, 2].astype("float32")          # [tokens, 64], layer 11 head 2
+    q, d = h[s["query_mask"]], h[s["doc_mask"]]         # query-text / document tokens (control: no insertion slots)
+```
+
+**Activation-statistics screen (stage 24).** `scripts/24_activation_stats.py`
+(`exp16lib/activation_stats.py`; CPU, ~6 min, no forward pass) computes per head
+and token region (query, full document, attacked original-document tokens,
+inserted tokens) the mean token L2 norm, mean, per-token variance, max |x|,
+effective dimensionality, top-token energy share and normalised token-energy
+entropy on the stage-22 sample. It compares clean relevant vs non-relevant
+documents, successful attacks vs their own padded control, and inserted vs
+original (and size-matched original) tokens, and runs an exploratory PCA of the
+L9–L11 pooled document head representation (2304-d, not the residual stream).
+Outputs: `outputs/24_activation_stats/` (DECISIONS 54).
 
 ## Reused code (imported, never copied)
 

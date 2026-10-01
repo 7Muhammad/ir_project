@@ -1,0 +1,27 @@
+# =============================================================================
+# Experiment 18 — Full-population encoder representation change (padded control -> attacked input)
+# =============================================================================
+# Inputs (read-only): Exp 16 stage 17 paired manifest + stage 18 scores / success labels.
+# Storage decision (user, 2026-09-30): persist only what is < 2 GB -> per-instance scalar metrics
+# (~0.8 GB Parquet). No pooled vectors (~54 GB fp16), no token states (~1.6 TB fp16).
+# All relative paths are relative to THIS config file's directory.
+
+exp16_config: "../../16_monot5_artificial_query_document_similarity/configs/default.yaml"   # model block (fp32, no TF32)
+exp16_outputs_dir: "../../16_monot5_artificial_query_document_similarity/outputs"           # 17_paired_manifest, 18_paired_forward
+
+model:
+  device: "auto"                   # "auto" -> cuda if usable, else cpu (Blackwell login node -> cpu)
+
+run:
+  batch_pairs: 64                  # control/attack pairs per forward (= 128 sequences)
+  max_attacks: null                # smoke only: evenly spaced subset of the 105 attacks
+  max_instances_per_attack: null   # smoke only: evenly spaced instances within each attack
+  n_boot: 2000                     # query-level bootstrap replicates (95% CI)
+  boot_seed: 42
+
+validation:
+  score_atol: 5.0e-3               # recomputed score vs Exp 16 stage 18 (same fp32 model, different batching)
+  embedding_shared_atol: 1.0e-9    # shared regions must be identical at the embedding state
+
+outputs:
+  base_dir: "../outputs"

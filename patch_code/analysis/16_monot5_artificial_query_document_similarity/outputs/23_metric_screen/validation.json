@@ -1,0 +1,15 @@
+{
+  "query_doc_disjoint": true,
+  "pools_attention_1": true,
+  "pad_in_pools": 0,
+  "control_inserted_in_doc_pool": 0,
+  "control_inserted_slots_are_masked_pads": true,
+  "clean_has_inserted": 0,
+  "attack_inserted_outside_doc_field": 0,
+  "non_template_tokens_outside_pools": 0,
+  "attack_inserted_region_not_attack_token": 0,
+  "baseline_vs_stage22_capture_max_abs_diff": 0.00010404710284428464,
+  "baseline_vs_pooled_cosine_max_abs_diff": 0.0,
+  "orig_equals_full_for_control": true,
+  "ins_defined_only_for_attack": true
+}

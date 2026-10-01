@@ -72,3 +72,39 @@ statistics:
 
 outputs:
   base_dir: "../outputs"
+
+# -----------------------------------------------------------------------------
+# Paired extension (stages 17-21): padded control -> attack on EVERY judged
+# attackable DL19 base pair (qrel 2/3 and qrel 0; qrel 1 / unjudged excluded)
+# x the 105-attack grid, read directly from the upstream injected TSVs.
+# Locked values are asserted by exp16lib.paired.validate_cfg.
+# -----------------------------------------------------------------------------
+paired:
+  success_threshold: 0.0       # locked: successful <=> delta_score = score_attack - score_control > 0
+  abnormal_z: 2.0              # locked: head abnormal <=> |z| > 2
+  n_folds: 5                   # locked: query-level CV (exp16lib.anomaly.query_folds)
+  fold_seed: 42                # locked
+  scope: "L9_L11"              # "L9_L11" (primary, 36 heads) | "all_layers" (scope extension, 144 heads;
+                               #   configs/paired_all_layers.yaml; outputs in *_all_layers directories)
+  layers: [9, 10, 11]          # locked to the scope: L9_L11 -> [9, 10, 11]; all_layers -> [0..11]
+  batch_size: 128              # sequences per forward (control + attack rows mixed, length-sorted)
+  max_queries: null            # smoke only: first N judged qids (sorted) with >= 1 qrel 2/3 pair
+  max_pairs_per_group_per_query: null   # smoke only: k best-BM25-rank pairs per (qid, group)
+  n_sign_flips: 100000         # secondary query-level sign-flip test on the paired change
+  scatter_heads: 6             # heads shown in the paired scatter plots (per group)
+  scatter_max_points: 4000     # random subsample for plotting only (seed 42)
+  # Read-only cross-check against the ORIGINAL Exp 16 / Exp 01 caches for overlapping
+  # (attack, qid, docid) instances: scores (Exp 01 all_scores.csv), layer sims (stage 03),
+  # head sims (stage 13). Missing caches -> check skipped and recorded.
+  crosscheck_outputs_dir: "../outputs"
+
+# -----------------------------------------------------------------------------
+# Stage 22: per-token head outputs (all 144 heads, pre-o_proj, fp16) for a small
+# fixed exploration sample (exp16lib/token_sample.py). Metrics are explored here;
+# promising ones are later computed on the fly over the full paired population.
+# -----------------------------------------------------------------------------
+token_sample:
+  docs_per_group: 3            # up to 3 qrel 2/3 + 3 qrel 0 base pairs per query
+  seed: 42
+  attacks: null                # null = exp16lib.token_sample.DEFAULT_ATTACKS (balanced 12-attack subset)
+  batch_size: 64

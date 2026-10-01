@@ -1,0 +1,38 @@
+{
+  "representation": "late-layer pooled document head representation: mean over document tokens (doc_mask; attacked = original + injected tokens) of the pre-o_proj output of every head of encoder layers 9, 10, 11, concatenated layer-major/head-major -> 3 x 12 x 64 = 2304 dims. NOT a residual-stream representation.",
+  "input_dim": 2304,
+  "fit_on": "CLEAN sequences only (126 relevant + 127 non-relevant documents)",
+  "scaling": "centred only (no per-feature standardisation)",
+  "sign_convention": "each component's largest-|loading| coordinate is positive",
+  "query_centered": "rep - mean clean rep of the same qid (all clean docs of that qid, both groups)",
+  "n_queries_with_both_groups": 42,
+  "explained_variance_ratio": {
+    "raw": [
+      0.24996641168286043,
+      0.06889986153606087,
+      0.039821069844667614,
+      0.0331701411491595,
+      0.030177207036273173,
+      0.02601620748679953,
+      0.021809076415491378,
+      0.019323915842340323,
+      0.018697785814322,
+      0.01708190813291783
+    ],
+    "query_centered": [
+      0.30141928392118533,
+      0.06798513077994255,
+      0.044761186963730035,
+      0.03724729830136497,
+      0.03139755431084795,
+      0.024733409332013827,
+      0.019103902413662353,
+      0.01631834937765252,
+      0.0159786740142311,
+      0.014927732612804051
+    ]
+  },
+  "relevance_direction": "mean(clean relevant) - mean(clean non-relevant) in the full 2304-dim space of each basis; movement projection = (attack - control) . g / ||g||^2 (fraction of the genuine gap). Descriptive: g is estimated on the same clean documents (no held-out split).",
+  "orig_doc_variant": "same, but attacked sequences pooled over original-document tokens only",
+  "arrow_sample": "<= 100 pairs per group, numpy default_rng(42); all pairs used for numbers"
+}

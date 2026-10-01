@@ -1,0 +1,25 @@
+{
+ "n_instances": 422206,
+ "n_successful": 131314,
+ "n_queries_successful": 43,
+ "causal_heads": [
+  "L0H2",
+  "L8H11",
+  "L9H3",
+  "L9H6",
+  "L10H0",
+  "L10H2",
+  "L10H4",
+  "L10H6",
+  "L10H7",
+  "L10H8",
+  "L10H9",
+  "L11H0",
+  "L11H2",
+  "L11H3",
+  "L11H4",
+  "L11H5",
+  "L11H6",
+  "L11H11"
+ ]
+}

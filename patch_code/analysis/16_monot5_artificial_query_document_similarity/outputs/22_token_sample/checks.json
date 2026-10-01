@@ -1,0 +1,27 @@
+{
+  "n_pairs": 253,
+  "n_sequences": 6325,
+  "n_tokens": 673638,
+  "n_instances_missing_alignment": 0,
+  "by_kind": {
+    "control": 3036,
+    "attack": 3036,
+    "clean": 253
+  },
+  "by_group": {
+    "nonrelevant": 127,
+    "relevant": 126
+  },
+  "vs_stage18_all_layers": {
+    "n_sequences": 6072,
+    "max_abs_diff_cos": 4.6254473261841955e-06,
+    "max_abs_diff_score": 3.910064697087989e-05
+  },
+  "vs_diag_clean": {
+    "n_sequences": 186,
+    "max_abs_diff_cos": 1.8253296732440027e-06
+  },
+  "stored_fp16_recompute_max_abs_diff": 6.363653408431036e-05,
+  "seconds": 88.17120099067688,
+  "disk_gib": 11.57970517128706
+}

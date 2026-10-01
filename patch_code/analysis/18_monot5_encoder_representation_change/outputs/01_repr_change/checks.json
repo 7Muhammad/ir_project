@@ -1,0 +1,8 @@
+{
+ "max_embedding_shared_region_change": 0.0,
+ "max_fresh_vs_stage18_score_diff": 4.482269287109375e-05,
+ "min_pooled_control_norm": 3.208310322112573,
+ "n_token_near_zero_control_norm": 0,
+ "n_batches": 6615,
+ "cka_finite": true
+}

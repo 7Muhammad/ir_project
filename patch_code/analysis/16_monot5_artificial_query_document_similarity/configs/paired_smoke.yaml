@@ -1,0 +1,27 @@
+# =============================================================================
+# Experiment 16 — PAIRED extension SMOKE config (stages 17-21). Inherits
+# default.yaml; 4 attacks (start / end / random, incl. an attack with Exp 01
+# alignment failures), 15 judged queries x <= 4 base pairs per group.
+# Written to outputs_paired_smoke/ (never touches outputs/ or outputs_smoke/).
+# NOT for scientific use.
+# =============================================================================
+
+extends: "default.yaml"
+
+attacks:
+  mode: "include"
+  include:
+    - relevant_start_5
+    - relevant_end_3
+    - bar_random_3
+    - true_random_5
+
+paired:
+  batch_size: 32
+  max_queries: 15
+  max_pairs_per_group_per_query: 4
+  n_sign_flips: 2000
+  scatter_max_points: 500
+
+outputs:
+  base_dir: "../outputs_paired_smoke"

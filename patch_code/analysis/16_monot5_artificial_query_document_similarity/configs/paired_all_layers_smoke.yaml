@@ -1,0 +1,6 @@
+# Smoke for the all-layers (144-head) scope: paired_smoke.yaml population, into outputs_paired_smoke/*_all_layers.
+extends: "paired_smoke.yaml"
+
+paired:
+  scope: "all_layers"
+  layers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]

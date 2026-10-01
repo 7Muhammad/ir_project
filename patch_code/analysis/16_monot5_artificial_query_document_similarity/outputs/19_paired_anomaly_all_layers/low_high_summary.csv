@@ -1,0 +1,3 @@
+relevance_group,control_abnormal_events,control_share_low,attack_abnormal_events,attack_share_low,normal_to_abnormal_events,normal_to_abnormal_share_low,normal_to_abnormal_share_high,abnormal_to_normal_events,abnormal_to_normal_share_from_low,abnormal_to_abnormal_events,abnormal_to_abnormal_sign_flips
+relevant,445887,0.7556129692052023,435312,0.7107614768258169,61340,0.4816596022171503,0.5183403977828497,71915,0.793436696099562,373972,0
+nonrelevant,896914,0.818043870426819,841467,0.7759995341469125,99995,0.49227461373068654,0.5077253862693135,155442,0.8360739053794984,741472,1

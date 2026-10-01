@@ -1,0 +1,12 @@
+{
+ "n_attacks": 105,
+ "n_instances": 422206,
+ "n_queries": 43,
+ "n_pairs": 4022,
+ "n_successful": 131314,
+ "n_unsuccessful": 290892,
+ "n_relevant": 184751,
+ "n_boundary_shift": 1270,
+ "smoke": false,
+ "matches_exp18": true
+}

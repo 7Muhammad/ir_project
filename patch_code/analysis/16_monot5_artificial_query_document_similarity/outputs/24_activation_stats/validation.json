@@ -1,0 +1,78 @@
+{
+  "counts": {
+    "n_sequences": 6325,
+    "by_kind": {
+      "control": 3036,
+      "attack": 3036,
+      "clean": 253
+    },
+    "n_pairs": 253,
+    "n_queries": 43,
+    "clean_by_group": {
+      "nonrelevant": 127,
+      "relevant": 126
+    },
+    "clean_qrel_grades": [
+      0,
+      2,
+      3
+    ],
+    "n_successful_attacks": 1026,
+    "heads_shape": [
+      673638,
+      12,
+      12,
+      64
+    ],
+    "heads_dtype": "float16"
+  },
+  "counts_ok": true,
+  "query_doc_disjoint": true,
+  "regions_attention_1": true,
+  "pad_in_regions": 0,
+  "control_inserted_slots_in_any_region": 0,
+  "control_inserted_slots_are_masked_pads": true,
+  "n_control_masked_slots": 12144,
+  "clean_has_inserted": 0,
+  "attack_inserted_outside_doc": 0,
+  "attack_inserted_is_pad_or_unattended": 0,
+  "non_template_tokens_outside_regions": 0,
+  "attack_orig_contains_inserted_or_partition_broken": 0,
+  "attack_inserted_word_count_ne_repetitions": 0,
+  "attack_inserted_has_other_tokens_than_word_or_colon": 0,
+  "attack_inserted_token_sequence_identical_within_attack": {
+    "relevant_start_1": true,
+    "true_start_1": true,
+    "information_start_5": true,
+    "false_start_5": true,
+    "bar_end_1": true,
+    "important_end_1": true,
+    "relevance_end_5": true,
+    "relevant_end_5": true,
+    "information_random_1": true,
+    "true_random_1": true,
+    "false_random_5": true,
+    "bar_random_5": true
+  },
+  "attack_inserted_strings": {
+    "relevant_start_1": "relevant:",
+    "true_start_1": "true",
+    "information_start_5": "information: information: information: information: information:",
+    "false_start_5": "false false false false false",
+    "bar_end_1": "bar",
+    "important_end_1": "important",
+    "relevance_end_5": "relevance relevance relevance relevance relevance",
+    "relevant_end_5": "relevant: relevant: relevant: relevant: relevant:",
+    "information_random_1": "information:",
+    "true_random_1": "true",
+    "false_random_5": "false false false false false",
+    "bar_random_5": "bar bar bar bar bar"
+  },
+  "masks_ok": true,
+  "direct_numpy_recompute_max_rel_diff": 5.469030929823045e-08,
+  "direct_numpy_recompute_n_values": 978,
+  "pca_input_dim": 2304,
+  "pca_input_vs_direct_max_abs_diff": 0.0,
+  "control_orig_equals_doc": true,
+  "ins_defined_only_for_attack": true
+}

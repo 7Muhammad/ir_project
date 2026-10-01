@@ -1,0 +1,7 @@
+# Smoke for stage 22 on the paired smoke population (outputs_paired_smoke/22_token_sample).
+extends: "paired_smoke.yaml"
+
+token_sample:
+  docs_per_group: 2
+  attacks: [relevant_start_5, relevant_end_3, bar_random_3, true_random_5]
+  batch_size: 16

@@ -1,0 +1,3 @@
+relevance_group,n_docs_with_success,n_docs_in_group,mean_n_successful_attacks,median_n_successful_attacks,mean_control_abnormal_count,mean_attack_abnormal_count,mean_paired_change,median_of_doc_mean_change,mean_of_doc_median_change,se_paired_change_query_cluster,frac_docs_mean_change_positive,frac_docs_mean_change_negative
+relevant,1752,1760,31.39611872146119,30.0,7.722606665929396,7.582391705038246,-0.1402149608911504,-0.0238888888888888,-0.1780821917808219,0.1233668787592878,0.4726027397260274,0.5034246575342466
+nonrelevant,2260,2262,33.76460176991151,31.0,10.741797779843942,10.214929168948592,-0.5268686108953502,-0.3237365368682684,-0.4991150442477876,0.1608382997601505,0.3787610619469027,0.606637168141593

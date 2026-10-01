@@ -1,0 +1,47 @@
+{
+  "created": "2026-09-30 12:58:18",
+  "n_sequences": 6325,
+  "n_clean": 253,
+  "n_rel_clean": 126,
+  "n_successful": 1026,
+  "n_successful_by_group": {
+    "relevant": 505,
+    "nonrelevant": 521
+  },
+  "n_successful_docs_by_group": {
+    "relevant": 123,
+    "nonrelevant": 125
+  },
+  "length": {
+    "n_visible_keys_mean_rel": 106.83333333333333,
+    "n_visible_keys_mean_nonrel": 98.5275590551181,
+    "n_visible_keys_cohen_d": 0.2266784907822966,
+    "n_query_tokens_cohen_d": 0.008558291150694753
+  },
+  "causal_references": [
+    "exp11_canonical_relevant_start_5",
+    "exp11_sweep_mean_105_attacks",
+    "exp11_sweep_mean_12_stage22_attacks"
+  ],
+  "canonical_heads": [
+    "L0H2",
+    "L8H11",
+    "L9H3",
+    "L9H6",
+    "L10H0",
+    "L10H2",
+    "L10H4",
+    "L10H6",
+    "L10H7",
+    "L10H8",
+    "L10H9",
+    "L11H0",
+    "L11H2",
+    "L11H3",
+    "L11H4",
+    "L11H5",
+    "L11H6",
+    "L11H11"
+  ],
+  "seconds": 51.92547631263733
+}

@@ -1,0 +1,10 @@
+{
+ "max_score_diff": 4.482269287109375e-05,
+ "max_exp16_head_cos_diff": 1.535524430273938e-06,
+ "max_identical_input_diff": 0.0,
+ "min_pooled_control_norm": 0.7517038741028497,
+ "n_token_near_zero_control_norm": 0,
+ "n_exp16_head_crosschecks": 105,
+ "n_batches": 6615,
+ "cka_finite": true
+}

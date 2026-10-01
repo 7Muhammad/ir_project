@@ -1,0 +1,44 @@
+{
+ "n_instances": 422206,
+ "n_queries": 43,
+ "n_pairs": 4022,
+ "n_attacks": 105,
+ "by_group": {
+  "successful/all": {
+   "n_instances": 131314,
+   "n_queries": 43
+  },
+  "successful/relevant": {
+   "n_instances": 55006,
+   "n_queries": 42
+  },
+  "successful/nonrelevant": {
+   "n_instances": 76308,
+   "n_queries": 43
+  },
+  "unsuccessful/all": {
+   "n_instances": 290892,
+   "n_queries": 43
+  },
+  "unsuccessful/relevant": {
+   "n_instances": 129745,
+   "n_queries": 42
+  },
+  "unsuccessful/nonrelevant": {
+   "n_instances": 161147,
+   "n_queries": 43
+  },
+  "all/all": {
+   "n_instances": 422206,
+   "n_queries": 43
+  },
+  "all/relevant": {
+   "n_instances": 184751,
+   "n_queries": 42
+  },
+  "all/nonrelevant": {
+   "n_instances": 237455,
+   "n_queries": 43
+  }
+ }
+}

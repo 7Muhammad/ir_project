@@ -1,0 +1,15 @@
+# Smoke test: 4 evenly spaced attacks x 24 evenly spaced instances, CPU; outputs to ../outputs_smoke.
+# NOT for scientific use.
+extends: "default.yaml"
+
+model:
+  device: "cpu"
+
+run:
+  batch_pairs: 8
+  max_attacks: 4
+  max_instances_per_attack: 24
+  n_boot: 200
+
+outputs:
+  base_dir: "../outputs_smoke"

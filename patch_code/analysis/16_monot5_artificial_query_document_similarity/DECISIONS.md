@@ -155,3 +155,67 @@ before you edit any config value, population rule, mask, hook or statistic.
     results are produced.
 44. **Uncertainty bands** in the figures are ±1 SE across the top-level unit
     (queries or attacks). They are descriptive, not an extra test family.
+
+## Paired extension (stages 17–21)
+
+45. **Population.** Every judged (qrel 0/2/3) base pair of the upstream DL19
+    injected TSVs × the 105-attack grid, read with Exp 01's `load_attacked_tsv`.
+    All 105 files must hold the identical (qid, docno, query, text_0) set.
+    Alignment failures are logged in `alignment_failures.csv` and excluded
+    (the stage-00 rule); any other encoding error aborts.
+46. **Pair and success.** The pair is padded control → attacked input. Clean
+    inputs are not used. Scores come from a fresh forward (same definition as
+    Exp 01). They are cross-checked against Exp 01's cached scores on
+    overlapping instances (atol 5e-3). Checkpoint and head similarities are
+    cross-checked against stages 03 and 13 (atol 1e-4). Successful means
+    `delta_score > 0`, strictly.
+47. **Reference.** For outer fold f, the reference is the controls of
+    successful qrel 2/3 instances of training queries only, pooled over all
+    attacks. There is no per-token, per-position or per-repetition fit. Each
+    control counts once per attack, so documents with more successful attacks
+    weigh more; this follows directly from pooling by instance.
+48. **Abnormality.** \|z\| > 2 is fixed. Heads with σ < 1e-8 never count
+    (`anomaly.abnormal_counts`). Relevant and non-relevant are always separate.
+49. **Detector.** The negative is always the positive's own control.
+    Inner-CV helpers are generalised in `anomaly.py` so the reference can
+    differ from the negatives (`*_ref`); with negatives = reference they
+    reproduce `inner_head_ranking` / `inner_threshold` exactly (tested). The
+    threshold rule stays the existing one (maximise balanced accuracy, which
+    equals accuracy here because the classes are paired and balanced). F1,
+    precision and recall are reported at that training-chosen T_k. The single
+    k* per fold is the inner-CV AUROC argmax (ties → smaller k).
+50. **Secondary statistics (descriptive).** One-sided query-level sign-flip
+    test of the mean paired change (queries = CV unit). Plot bands are ±1
+    cluster-robust SE with query clusters. The paired win rate
+    P(count_attack > count_control) is reported alongside AUROC.
+51. **Document level.** Each (qid, docid) is first averaged over its
+    successful attacks, then documents are weighted equally.
+52. **Smoke trimming** (smoke config only) keeps the best-BM25-rank pairs per
+    (query, group), so the cross-checks against the Exp 01 caches are
+    exercised. Paired CSVs store scores with exact `repr`, so that
+    `delta_score == score_attack − score_control` holds after reloading.
+53. **All-layers scope extension.** `paired.scope: all_layers`
+    (`configs/paired_all_layers.yaml`) repeats stages 18–21 on all 144 encoder
+    heads (layers 0–11). It uses the same `EncoderHeadCapture` hooks, and
+    population, success rule, reference, z-score rule, |z| > 2, folds and
+    detector are unchanged; abnormal counts are out of 144 and k runs 1–144.
+    The stage-17 manifest is shared; outputs go to `*_all_layers` directories.
+    Stage 18 requires the new run to reproduce the primary run's scores and its
+    36 L9–L11 head similarities on every instance (atol 1e-4). Stage 19 adds
+    `layer_summary.csv`, which gives the per-layer abnormal counts, paired
+    change and transitions for both scopes.
+54. **Activation-statistics screen (stage 24).** This is exploratory and runs on
+    the stage-22 sample only: no forward pass, no classifier, no full
+    population. Regions come from `metrics_screen.region_masks`, so padded
+    control slots never enter a region. `var` is the population variance
+    (ddof 0) over the 64 dims. For a one-token region, top_share = 1 and
+    entropy = NaN; an empty region gives NaN for every statistic. Inserted
+    tokens have no control equivalent, so they are compared with the original
+    tokens of the same attacked sequence and with a size-matched baseline:
+    the mean over 16 random same-size original-token subsets, seed 42. The
+    baseline is needed because top_share, maxabs and eff_dim depend on region
+    size. Paired summaries are reported per instance and with equal document
+    weight. PCA inputs are centred but not scaled, and the fit uses clean
+    documents only (raw, and query-centred by each qid's clean mean). The
+    relevance direction is estimated on the same clean documents and is
+    descriptive only.

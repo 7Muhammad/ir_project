@@ -1,0 +1,17 @@
+# Smoke test: the same stage-22 sample, restricted to the first 6 base pairs (clean + all their
+# control / attack sequences), CPU-feasible; outputs to ../outputs_smoke.
+extends: "default.yaml"
+
+sample:
+  expect_full_sample: false
+  max_pairs: 6
+
+runtime:
+  batch_size: 8
+
+validation:
+  pre_o_n_batches: 2
+  direct_check_batches: 2
+
+outputs:
+  base_dir: "../outputs_smoke"

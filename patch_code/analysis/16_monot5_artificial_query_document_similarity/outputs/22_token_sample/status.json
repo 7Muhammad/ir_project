@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "finished": "2026-09-29 16:47:29",
+  "attacks": [
+    "relevant_start_1",
+    "true_start_1",
+    "information_start_5",
+    "false_start_5",
+    "bar_end_1",
+    "important_end_1",
+    "relevance_end_5",
+    "relevant_end_5",
+    "information_random_1",
+    "true_random_1",
+    "false_random_5",
+    "bar_random_5"
+  ],
+  "docs_per_group": 3,
+  "seed": 42
+}

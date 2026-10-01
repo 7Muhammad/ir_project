@@ -123,3 +123,45 @@ def inner_head_ranking(Xg: np.ndarray, fold_g: np.ndarray, Xa: np.ndarray, fold_
     ab = lambda z: (np.abs(np.nan_to_num(np.concatenate(z), nan=0.0)) > k).mean(0)  # noqa: E731
     excess = ab(za) - ab(zg)
     return np.lexsort((np.arange(len(excess)), -excess))
+
+
+# ---- generalisation for the paired extension (stages 17-21) ---------------------------------
+# Above, the genuine reference and the negative class are the same rows (Xg). In the paired
+# design the negatives are each positive's own padded control, which for qrel-0 documents is
+# NOT the (qrel 2/3) reference. These helpers take reference, positives and negatives
+# separately; with negatives == reference they reproduce inner_head_ranking / inner_threshold
+# exactly (tests/test_paired.py).
+
+def inner_heldout_z(X_ref: np.ndarray, fold_ref: np.ndarray, Xs: List[np.ndarray], folds: List[np.ndarray],
+                    train_folds: List[int]) -> List[np.ndarray]:
+    """Inner CV over the TRAINING folds only: for every g in train_folds the reference is refitted on
+    the other training folds and the fold-g rows of each X in Xs are z-scored; concatenated over g."""
+    out = [[] for _ in Xs]
+    for g in train_folds:
+        mu, sd, ok = fit_reference(X_ref[np.isin(fold_ref, [f for f in train_folds if f != g])])
+        for i, (X, fo) in enumerate(zip(Xs, folds)):
+            out[i].append(zscores(X[fo == g], mu, sd, ok))
+    return [np.concatenate(o) for o in out]
+
+
+def head_ranking_from_z(z_pos: np.ndarray, z_neg: np.ndarray, k: float) -> np.ndarray:
+    """Head order by excess abnormality rate (pos - neg), ties -> lower head index (as inner_head_ranking)."""
+    ab = lambda z: (np.abs(np.nan_to_num(z, nan=0.0)) > k).mean(0)  # noqa: E731
+    excess = ab(z_pos) - ab(z_neg)
+    return np.lexsort((np.arange(len(excess)), -excess))
+
+
+def inner_head_ranking_ref(X_ref, fold_ref, X_pos, fold_pos, X_neg, fold_neg, train_folds: List[int],
+                           k: float) -> np.ndarray:
+    zp, zn = inner_heldout_z(X_ref, fold_ref, [X_pos, X_neg], [fold_pos, fold_neg], train_folds)
+    return head_ranking_from_z(zp, zn, k)
+
+
+def inner_threshold_ref(X_ref, fold_ref, X_pos, fold_pos, X_neg, fold_neg, train_folds: List[int], k: float,
+                        heads=None) -> int:
+    """T chosen on inner held-out training folds, optionally counting only the given head indices."""
+    zp, zn = inner_heldout_z(X_ref, fold_ref, [X_pos, X_neg], [fold_pos, fold_neg], train_folds)
+    if heads is not None:
+        zp, zn = zp[:, heads], zn[:, heads]
+    return choose_threshold(abnormal_counts(zp, k)["abnormal_head_count"],
+                            abnormal_counts(zn, k)["abnormal_head_count"], zp.shape[1])

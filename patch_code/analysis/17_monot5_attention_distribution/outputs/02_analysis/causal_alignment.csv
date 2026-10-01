@@ -1,0 +1,112 @@
+causal_reference,attention_feature,spearman_vs_causal_effect,spearman_vs_abs_causal_effect,top18_overlap_with_canonical
+exp11_canonical_relevant_start_5,|mean delta| entropy_norm query shared_key,0.21303351820593197,-0.03439434129089301,4
+exp11_canonical_relevant_start_5,|paired dz| entropy_norm query shared_key,0.01566996222168636,-0.00017281569005706937,0
+exp11_canonical_relevant_start_5,|mean delta| entropy_norm orig shared_key,0.16614018165742306,-0.03839321597942288,5
+exp11_canonical_relevant_start_5,|paired dz| entropy_norm orig shared_key,0.006249497628807973,-0.018732417008279077,2
+exp11_canonical_relevant_start_5,|mean delta| top3 query shared_key,0.18768185837151352,-0.01022425850012057,4
+exp11_canonical_relevant_start_5,|paired dz| top3 query shared_key,-0.011695201350373765,-0.012318141628486457,1
+exp11_canonical_relevant_start_5,|mean delta| top3 orig shared_key,0.17097098303994857,-0.03992846234225545,5
+exp11_canonical_relevant_start_5,|paired dz| top3 orig shared_key,0.03846957640061088,-0.05258419741178362,2
+exp11_canonical_relevant_start_5,|mean delta| dist_norm query shared_key,0.1677477694719074,-0.06968893175789728,5
+exp11_canonical_relevant_start_5,|paired dz| dist_norm query shared_key,0.05209388312836588,-0.046169922031991,1
+exp11_canonical_relevant_start_5,|mean delta| dist_norm orig shared_key,0.07229724298689816,-0.13221605980226672,1
+exp11_canonical_relevant_start_5,|paired dz| dist_norm orig shared_key,-0.06547303271441202,-0.12226107226107226,0
+exp11_canonical_relevant_start_5,|mean delta| entropy_norm query full_visible,0.018439032232135683,-0.15346033277067764,1
+exp11_canonical_relevant_start_5,|paired dz| entropy_norm query full_visible,-0.13931757897275138,-0.08180612490957319,1
+exp11_canonical_relevant_start_5,|mean delta| entropy_norm orig full_visible,-0.05112531147013906,0.04048709910778877,1
+exp11_canonical_relevant_start_5,|paired dz| entropy_norm orig full_visible,-0.011606784020577125,-0.11771963668515394,2
+exp11_canonical_relevant_start_5,|mean delta| top3 query full_visible,0.11007555662728077,-0.18282292420223453,2
+exp11_canonical_relevant_start_5,|paired dz| top3 query full_visible,-0.11261152640462986,-0.12048468772606705,1
+exp11_canonical_relevant_start_5,|mean delta| top3 orig full_visible,-0.1373643597781529,0.07111566594325215,1
+exp11_canonical_relevant_start_5,|paired dz| top3 orig full_visible,-0.10602845430431636,-0.1399525761594727,1
+exp11_canonical_relevant_start_5,|mean delta| dist_norm query full_visible,0.08802347078209148,0.03455911904187767,3
+exp11_canonical_relevant_start_5,|paired dz| dist_norm query full_visible,-0.14881440398681778,0.1578088578088578,2
+exp11_canonical_relevant_start_5,|mean delta| dist_norm orig full_visible,0.07085041395386223,-0.2500321517562897,1
+exp11_canonical_relevant_start_5,|paired dz| dist_norm orig full_visible,-0.031854352544007716,-0.26408246925488305,0
+exp11_canonical_relevant_start_5,mean norm mass query_to_ins,0.27791978136805723,-0.1892452375210996,2
+exp11_canonical_relevant_start_5,mean RAW mass query_to_ins (magnitude reference),0.2543324491600354,-0.1562213648420545,2
+exp11_canonical_relevant_start_5,mean norm mass ins_to_query,0.07510248372317338,0.14439353749698577,4
+exp11_canonical_relevant_start_5,mean RAW mass ins_to_query (magnitude reference),0.06915440880958122,0.14194598504943332,5
+exp11_canonical_relevant_start_5,mean norm mass orig_to_ins,0.056181175146692394,-0.036291294911984566,3
+exp11_canonical_relevant_start_5,mean RAW mass orig_to_ins (magnitude reference),-0.0062374407201993415,0.07669801462904913,1
+exp11_canonical_relevant_start_5,mean norm mass ins_to_orig,0.15991077887629615,-0.06269994373442649,5
+exp11_canonical_relevant_start_5,mean RAW mass ins_to_orig (magnitude reference),0.1547182702355116,-0.057495378185033356,5
+exp11_canonical_relevant_start_5,|Cohen d| relevance entropy_norm doc,-0.05697693111486215,0.15755968169761272,3
+exp11_canonical_relevant_start_5,|Cohen d| relevance max_attn doc,0.08825255204565549,0.007029177718832891,4
+exp11_canonical_relevant_start_5,|Cohen d| relevance top3 doc,0.05430029740374569,-0.05235913511775581,4
+exp11_canonical_relevant_start_5,|Cohen d| relevance neff_norm doc,-0.03822040028936581,0.11200868097419824,4
+exp11_canonical_relevant_start_5,|Cohen d| relevance dist_norm doc,-0.06493449079655977,0.08694236797685073,3
+exp11_sweep_mean_12_stage22_attacks,|mean delta| entropy_norm query shared_key,0.22137287999356967,-0.1105739088497709,4
+exp11_sweep_mean_12_stage22_attacks,|paired dz| entropy_norm query shared_key,0.011928301583473999,-0.10561048147255044,0
+exp11_sweep_mean_12_stage22_attacks,|mean delta| entropy_norm orig shared_key,0.14588859416445624,-0.02972027972027972,5
+exp11_sweep_mean_12_stage22_attacks,|paired dz| entropy_norm orig shared_key,-0.11782814886263163,0.07093481231412266,2
+exp11_sweep_mean_12_stage22_attacks,|mean delta| top3 query shared_key,0.17206816172333414,-0.09131902580178443,4
+exp11_sweep_mean_12_stage22_attacks,|paired dz| top3 query shared_key,-0.026231814162848643,-0.13554778554778554,1
+exp11_sweep_mean_12_stage22_attacks,|mean delta| top3 orig shared_key,0.16903785869303112,-0.04276987380435656,5
+exp11_sweep_mean_12_stage22_attacks,|paired dz| top3 orig shared_key,-0.09033437826541275,0.022405755164375856,2
+exp11_sweep_mean_12_stage22_attacks,|mean delta| dist_norm query shared_key,0.2901615625753557,-0.16534442568925328,5
+exp11_sweep_mean_12_stage22_attacks,|paired dz| dist_norm query shared_key,0.11706856362028775,-0.09358572462020738,1
+exp11_sweep_mean_12_stage22_attacks,|mean delta| dist_norm orig shared_key,0.13296760710553815,-0.2368177799212282,1
+exp11_sweep_mean_12_stage22_attacks,|paired dz| dist_norm orig shared_key,-0.0918937384454626,-0.17571738606221365,0
+exp11_sweep_mean_12_stage22_attacks,|mean delta| entropy_norm query full_visible,-0.1469053934571176,-0.15795354071216142,1
+exp11_sweep_mean_12_stage22_attacks,|paired dz| entropy_norm query full_visible,-0.2655011655011655,-0.16788441443613858,1
+exp11_sweep_mean_12_stage22_attacks,|mean delta| entropy_norm orig full_visible,-0.12128446266377302,0.05464190981432361,1
+exp11_sweep_mean_12_stage22_attacks,|paired dz| entropy_norm orig full_visible,-0.19938911663049594,0.03994453822040029,2
+exp11_sweep_mean_12_stage22_attacks,|mean delta| top3 query full_visible,-0.13584920826300137,-0.02312916968089382,2
+exp11_sweep_mean_12_stage22_attacks,|paired dz| top3 query full_visible,-0.25535326742223297,-0.12314122658950245,1
+exp11_sweep_mean_12_stage22_attacks,|mean delta| top3 orig full_visible,-0.17713206333895987,0.04336468129571578,1
+exp11_sweep_mean_12_stage22_attacks,|paired dz| top3 orig full_visible,-0.2814886263162125,-0.061518366690780486,1
+exp11_sweep_mean_12_stage22_attacks,|mean delta| dist_norm query full_visible,0.17442327787155376,-0.06392572944297083,3
+exp11_sweep_mean_12_stage22_attacks,|paired dz| dist_norm query full_visible,-0.008564424081665462,-0.06708865846796881,2
+exp11_sweep_mean_12_stage22_attacks,|mean delta| dist_norm orig full_visible,0.02295635399083675,-0.20058275058275057,1
+exp11_sweep_mean_12_stage22_attacks,|paired dz| dist_norm orig full_visible,-0.13297162607507437,-0.18463547946306566,0
+exp11_sweep_mean_12_stage22_attacks,mean norm mass query_to_ins,0.04378265412748172,0.1230849610159955,2
+exp11_sweep_mean_12_stage22_attacks,mean RAW mass query_to_ins (magnitude reference),0.006880475845993088,0.16048147255043807,2
+exp11_sweep_mean_12_stage22_attacks,mean norm mass ins_to_query,0.03917691503898401,0.23349007314524559,4
+exp11_sweep_mean_12_stage22_attacks,mean RAW mass ins_to_query (magnitude reference),0.027598263805160356,0.23313640382605902,5
+exp11_sweep_mean_12_stage22_attacks,mean norm mass orig_to_ins,0.08349007314524556,-0.026079093320472632,3
+exp11_sweep_mean_12_stage22_attacks,mean RAW mass orig_to_ins (magnitude reference),-0.08086970500763604,0.1234868579696166,1
+exp11_sweep_mean_12_stage22_attacks,mean norm mass ins_to_orig,0.14523350213005387,0.039972671007153765,5
+exp11_sweep_mean_12_stage22_attacks,mean RAW mass ins_to_orig (magnitude reference),0.1400610883369504,0.04522144522144522,5
+exp11_sweep_mean_12_stage22_attacks,|Cohen d| relevance entropy_norm doc,0.11135358893979583,0.08326099188168154,3
+exp11_sweep_mean_12_stage22_attacks,|Cohen d| relevance max_attn doc,0.23742866329073226,-0.032111566594325215,4
+exp11_sweep_mean_12_stage22_attacks,|Cohen d| relevance top3 doc,0.1489992765854835,-0.03779037054899124,4
+exp11_sweep_mean_12_stage22_attacks,|Cohen d| relevance neff_norm doc,-0.0010650269270958926,0.062077003456313805,4
+exp11_sweep_mean_12_stage22_attacks,|Cohen d| relevance dist_norm doc,-0.045659512900892214,0.11366047745358092,3
+exp11_sweep_mean_105_attacks,|mean delta| entropy_norm query shared_key,0.23885539747608714,-0.06802507836990596,4
+exp11_sweep_mean_105_attacks,|paired dz| entropy_norm query shared_key,0.04713849369021783,-0.10915521260348846,0
+exp11_sweep_mean_105_attacks,|mean delta| entropy_norm orig shared_key,0.18809179326420705,-0.06293706293706294,5
+exp11_sweep_mean_105_attacks,|paired dz| entropy_norm orig shared_key,-0.07700345631380114,0.019395546981753876,2
+exp11_sweep_mean_105_attacks,|mean delta| top3 query shared_key,0.16953219194598504,-0.02397315328349811,4
+exp11_sweep_mean_105_attacks,|paired dz| top3 query shared_key,-0.019090105297001853,-0.09516116067840205,1
+exp11_sweep_mean_105_attacks,|mean delta| top3 orig shared_key,0.19905152318945424,-0.05515231894542239,5
+exp11_sweep_mean_105_attacks,|paired dz| top3 orig shared_key,-0.07106341933928141,-0.0023671730568282294,2
+exp11_sweep_mean_105_attacks,|mean delta| dist_norm query shared_key,0.30814645124989953,-0.12377622377622378,5
+exp11_sweep_mean_105_attacks,|paired dz| dist_norm query shared_key,0.13054818744473917,-0.05859255686841894,1
+exp11_sweep_mean_105_attacks,|mean delta| dist_norm orig shared_key,0.15089623020657503,-0.20381802105940036,1
+exp11_sweep_mean_105_attacks,|paired dz| dist_norm orig shared_key,-0.08856201269994374,-0.1274616188409292,0
+exp11_sweep_mean_105_attacks,|mean delta| entropy_norm query full_visible,-0.12734506872437906,-0.13761353588939798,1
+exp11_sweep_mean_105_attacks,|paired dz| entropy_norm query full_visible,-0.22222088256571018,-0.187557270315891,1
+exp11_sweep_mean_105_attacks,|mean delta| entropy_norm orig full_visible,-0.10004420866489831,0.07709187364359778,1
+exp11_sweep_mean_105_attacks,|paired dz| entropy_norm orig full_visible,-0.18606623261795674,0.05370147094285026,2
+exp11_sweep_mean_105_attacks,|mean delta| top3 query full_visible,-0.12972831765935214,0.011373683787476892,2
+exp11_sweep_mean_105_attacks,|paired dz| top3 query full_visible,-0.24752833373523028,-0.0986375693272245,1
+exp11_sweep_mean_105_attacks,|mean delta| top3 orig full_visible,-0.16233823647616752,0.09272164616992204,1
+exp11_sweep_mean_105_attacks,|paired dz| top3 orig full_visible,-0.26061409854513307,-0.009930873723977173,1
+exp11_sweep_mean_105_attacks,|mean delta| dist_norm query full_visible,0.19397154569568362,-0.03970741901776385,3
+exp11_sweep_mean_105_attacks,|paired dz| dist_norm query full_visible,0.00697693111486215,-0.052748975162768275,2
+exp11_sweep_mean_105_attacks,|mean delta| dist_norm orig full_visible,0.05512820512820512,-0.25130214612973234,1
+exp11_sweep_mean_105_attacks,|paired dz| dist_norm orig full_visible,-0.12869142351900975,-0.2004742384052729,0
+exp11_sweep_mean_105_attacks,mean norm mass query_to_ins,0.041877662567317744,0.14667229322401737,2
+exp11_sweep_mean_105_attacks,mean RAW mass query_to_ins (magnitude reference),-0.002335021300538542,0.18785869303110683,2
+exp11_sweep_mean_105_attacks,mean norm mass ins_to_query,0.06080700908287115,0.2522144522144522,4
+exp11_sweep_mean_105_attacks,mean RAW mass ins_to_query (magnitude reference),0.04901937143316454,0.25189695362109155,5
+exp11_sweep_mean_105_attacks,mean norm mass orig_to_ins,0.1169278996865204,-0.05376175548589342,3
+exp11_sweep_mean_105_attacks,mean RAW mass orig_to_ins (magnitude reference),-0.06388553974760872,0.10250381802105941,1
+exp11_sweep_mean_105_attacks,mean norm mass ins_to_orig,0.17724861345551,0.05541757093481232,5
+exp11_sweep_mean_105_attacks,mean RAW mass ins_to_orig (magnitude reference),0.17297644883851782,0.06230206575034161,5
+exp11_sweep_mean_105_attacks,|Cohen d| relevance entropy_norm doc,0.14057953540712162,0.044063981995016474,3
+exp11_sweep_mean_105_attacks,|Cohen d| relevance max_attn doc,0.24632264287436703,-0.03757736516357206,4
+exp11_sweep_mean_105_attacks,|Cohen d| relevance top3 doc,0.15571899365002814,-0.043296358813600194,4
+exp11_sweep_mean_105_attacks,|Cohen d| relevance neff_norm doc,0.004786592717627201,0.02120408327304879,4
+exp11_sweep_mean_105_attacks,|Cohen d| relevance dist_norm doc,-0.06474559922835785,0.14748412507033196,3

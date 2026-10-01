@@ -1,0 +1,8 @@
+{
+  "status": "success",
+  "finished": "2026-09-30 17:03:34",
+  "seconds": 1937.4702582359314,
+  "device": "cuda",
+  "n_attacks": 105,
+  "n_instances": 422206
+}

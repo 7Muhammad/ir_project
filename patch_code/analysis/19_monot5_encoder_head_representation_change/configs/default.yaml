@@ -1,0 +1,32 @@
+# =============================================================================
+# Experiment 19 — Head-level control -> attack representation change (pre-o_proj head outputs, 144 heads)
+# =============================================================================
+# Population: EXACTLY Exp 18 (outputs/01_repr_change metadata + scores; read-only) + Exp 16 stage-17 texts.
+# All relative paths are relative to THIS config file's directory.
+
+exp16_config: "../../16_monot5_artificial_query_document_similarity/configs/default.yaml"   # model block (fp32, no TF32)
+exp16_outputs_dir: "../../16_monot5_artificial_query_document_similarity/outputs"
+exp18_outputs_dir: "../../18_monot5_encoder_representation_change/outputs"
+exp11_head_summary: "../../11_monot5_encoder_head_patching/outputs/head_summary_canonical.csv"  # continuous causal effect
+
+model:
+  device: "auto"
+
+run:
+  batch_pairs: 64                  # control/attack pairs per forward (= 128 sequences)
+  max_attacks: null                # smoke only
+  max_instances_per_attack: null   # smoke only
+  n_boot: 2000                     # query-level bootstrap replicates
+  boot_seed: 42
+
+storage:                           # STORAGE CHECKPOINT: set after the user's decision
+  per_instance_metrics: true       # Option 1 (user decision 2026-09-30): [n, 12, 12, 2, 4] float32 per attack (~2.0 GB),
+                                   #   needed by stage 02; DELETED after stage 02 (user decision: keep ~20 MB only)
+  pooled_vectors: false            # Option 2: [n, 2, 12, 12, 2, 64] float16 per attack (~31 GB total)
+
+validation:
+  score_atol: 5.0e-3               # fresh score vs Exp 18 / Exp 16 stage 18
+  head_crosscheck_atol: 1.0e-4     # per-head query/doc cosine vs Exp 16 stage 18 all_layers (cosine units)
+
+outputs:
+  base_dir: "../outputs"

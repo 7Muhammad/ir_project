@@ -1,0 +1,1099 @@
+{
+  "1_labels": {
+    "all_rows_grade_matches_nist_qrels": true,
+    "grades_present": [
+      0,
+      2,
+      3
+    ],
+    "relevance_group_consistent": true,
+    "pair_id_is_qid_docid": true,
+    "duplicate_attack_pair_rows": 0,
+    "pairs_in_both_groups": 0,
+    "base_manifest_grades_match_nist": true,
+    "grade1_or_unjudged_in_manifest": 0,
+    "relevant_all": {
+      "rows": 184751,
+      "unique_qid_docid": 1760,
+      "qids": 42,
+      "grade_counts": {
+        "2": 1233,
+        "3": 527
+      }
+    },
+    "relevant_successful": {
+      "rows": 55006,
+      "unique_qid_docid": 1752,
+      "qids": 42,
+      "grade_counts": {
+        "2": 1228,
+        "3": 524
+      }
+    },
+    "nonrelevant_all": {
+      "rows": 237455,
+      "unique_qid_docid": 2262,
+      "qids": 43,
+      "grade_counts": {
+        "0": 2262
+      }
+    },
+    "nonrelevant_successful": {
+      "rows": 76308,
+      "unique_qid_docid": 2260,
+      "qids": 43,
+      "grade_counts": {
+        "0": 2260
+      }
+    },
+    "duplicate_control_head_vectors_across_docs": 1
+  },
+  "2_clean_reproduction": {
+    "n_rows_overlap": 4512,
+    "n_heads_compared": 36,
+    "new_vs_stage13_max_abs_diff": 2.736447655804497e-06,
+    "new_vs_stage13_mean_abs_diff": 1.2190227583152774e-07,
+    "new_vs_stage13_corr": 0.9999999999998419,
+    "fullforward_vs_encoderonly_144_max_abs_diff": 3.317405065872414e-06,
+    "stage13_path_vs_cache_max_abs_diff": 1.1102230246251565e-16
+  },
+  "2b_clean_vs_mean_control_same_doc": {
+    "n_docs": 2568,
+    "mean_abs_diff": 0.0059197338915070435,
+    "max_abs_diff": 0.11753885412371845,
+    "corr": 0.9997455902074076
+  },
+  "4_examples": [
+    {
+      "group": "relevant",
+      "qid": "264014",
+      "docid": "6105572",
+      "qrel": 3,
+      "query": "how long is life cycle of flea",
+      "passage": "Life Cycle (Back to Top). The cat flea life cycle is one of complete metamorphosis, involv",
+      "score_control": 4.709,
+      "score_attack": 4.879,
+      "delta": 0.17,
+      "ctl_L9H4": 0.851,
+      "ctl_L10H0": 0.7548,
+      "ctl_L10H2": 0.868,
+      "ctl_L11H10": 0.2142,
+      "ctl_L11H11": 0.842,
+      "atk_L9H4": 0.8317,
+      "atk_L10H0": 0.7919,
+      "atk_L10H2": 0.8256,
+      "atk_L11H10": 0.3182,
+      "atk_L11H11": 0.8226
+    },
+    {
+      "group": "relevant",
+      "qid": "104861",
+      "docid": "5836442",
+      "qrel": 2,
+      "query": "cost of interior concrete flooring",
+      "passage": "Time: 02:53. Video on the cost of concrete floors. The cost of a concrete floor is economi",
+      "score_control": 2.278,
+      "score_attack": 2.626,
+      "delta": 0.348,
+      "ctl_L9H4": 0.7429,
+      "ctl_L10H0": 0.9553,
+      "ctl_L10H2": 0.6441,
+      "ctl_L11H10": 0.384,
+      "ctl_L11H11": 0.8902,
+      "atk_L9H4": 0.6594,
+      "atk_L10H0": 0.9532,
+      "atk_L10H2": 0.7158,
+      "atk_L11H10": 0.3744,
+      "atk_L11H11": 0.8622
+    },
+    {
+      "group": "relevant",
+      "qid": "1112341",
+      "docid": "4102529",
+      "qrel": 3,
+      "query": "what is the daily life of thai people",
+      "passage": "4 Muay Thai. The anceient art of the eight weapons, hands, elbows, knees and feet. Definit",
+      "score_control": -12.906,
+      "score_attack": -12.236,
+      "delta": 0.67,
+      "ctl_L9H4": 0.6095,
+      "ctl_L10H0": 0.5521,
+      "ctl_L10H2": 0.4442,
+      "ctl_L11H10": 0.1297,
+      "ctl_L11H11": 0.5175,
+      "atk_L9H4": 0.6851,
+      "atk_L10H0": 0.6017,
+      "atk_L10H2": 0.5169,
+      "atk_L11H10": 0.1454,
+      "atk_L11H11": 0.7054
+    },
+    {
+      "group": "relevant",
+      "qid": "1114819",
+      "docid": "785028",
+      "qrel": 2,
+      "query": "what is durable medical equipment consist of",
+      "passage": "Medicare Part B (Medical Insurance) covers medically necessary durable medical equipment (",
+      "score_control": -7.743,
+      "score_attack": -7.19,
+      "delta": 0.554,
+      "ctl_L9H4": 0.7927,
+      "ctl_L10H0": 0.7991,
+      "ctl_L10H2": 0.4609,
+      "ctl_L11H10": 0.2728,
+      "ctl_L11H11": 0.9032,
+      "atk_L9H4": 0.8587,
+      "atk_L10H0": 0.8233,
+      "atk_L10H2": 0.4717,
+      "atk_L11H10": 0.3065,
+      "atk_L11H11": 0.9242
+    },
+    {
+      "group": "nonrelevant",
+      "qid": "962179",
+      "docid": "8785374",
+      "qrel": 0,
+      "query": "when was the salvation army founded",
+      "passage": "The Salvation Army, founded by William and Catherine Booth, aimed to continue the traditio",
+      "score_control": 1.187,
+      "score_attack": 1.522,
+      "delta": 0.335,
+      "ctl_L9H4": 0.7904,
+      "ctl_L10H0": 0.2343,
+      "ctl_L10H2": 0.8306,
+      "ctl_L11H10": 0.0255,
+      "ctl_L11H11": 0.9117,
+      "atk_L9H4": 0.7538,
+      "atk_L10H0": 0.3698,
+      "atk_L10H2": 0.841,
+      "atk_L11H10": 0.1293,
+      "atk_L11H11": 0.9242
+    },
+    {
+      "group": "nonrelevant",
+      "qid": "156493",
+      "docid": "1939301",
+      "qrel": 0,
+      "query": "do goldfish grow",
+      "passage": "Common goldfish in a pond. It is a common practice to keep common goldfish in a small bowl",
+      "score_control": -11.243,
+      "score_attack": -10.434,
+      "delta": 0.81,
+      "ctl_L9H4": 0.6405,
+      "ctl_L10H0": 0.8375,
+      "ctl_L10H2": -0.1373,
+      "ctl_L11H10": -0.1512,
+      "ctl_L11H11": -0.1122,
+      "atk_L9H4": 0.6228,
+      "atk_L10H0": 0.8697,
+      "atk_L10H2": -0.0275,
+      "atk_L11H10": -0.0634,
+      "atk_L11H11": 0.0369
+    },
+    {
+      "group": "nonrelevant",
+      "qid": "104861",
+      "docid": "2058725",
+      "qrel": 0,
+      "query": "cost of interior concrete flooring",
+      "passage": "Concrete floors are common in basements and garages. Though concrete floors are durable, y",
+      "score_control": -12.022,
+      "score_attack": -12.003,
+      "delta": 0.019,
+      "ctl_L9H4": 0.3858,
+      "ctl_L10H0": 0.5669,
+      "ctl_L10H2": 0.6403,
+      "ctl_L11H10": -0.0743,
+      "ctl_L11H11": 0.3945,
+      "atk_L9H4": 0.3743,
+      "atk_L10H0": 0.5179,
+      "atk_L10H2": 0.7051,
+      "atk_L11H10": -0.0203,
+      "atk_L11H11": 0.3906
+    },
+    {
+      "group": "nonrelevant",
+      "qid": "451602",
+      "docid": "8019873",
+      "qrel": 0,
+      "query": "medicare's definition of mechanical ventilation",
+      "passage": "Mechanical ventilation is the movement of air through the workspace caused by an electrica",
+      "score_control": 2.482,
+      "score_attack": 2.686,
+      "delta": 0.204,
+      "ctl_L9H4": 0.717,
+      "ctl_L10H0": 0.8171,
+      "ctl_L10H2": 0.3924,
+      "ctl_L11H10": 0.2454,
+      "ctl_L11H11": 0.727,
+      "atk_L9H4": 0.8031,
+      "atk_L10H0": 0.7942,
+      "atk_L10H2": 0.5533,
+      "atk_L11H10": 0.2974,
+      "atk_L11H11": 0.8057
+    }
+  ],
+  "5_pools": [
+    {
+      "group": "relevant",
+      "pair_id": "264014_6105572",
+      "attack": "relevant_end_3",
+      "query_span": [
+        3,
+        11
+      ],
+      "doc_span": [
+        13,
+        82
+      ],
+      "inserted_positions": [
+        76,
+        77,
+        78,
+        79,
+        80,
+        81
+      ],
+      "n_query_tokens": 8,
+      "n_doc_tokens_control": 63,
+      "n_doc_tokens_attack": 69,
+      "n_doc_tokens_clean": 63,
+      "query_pool": [
+        "\u2581how",
+        "\u2581long",
+        "\u2581is",
+        "\u2581life",
+        "\u2581cycle",
+        "\u2581of",
+        "\u2581fle",
+        "a"
+      ],
+      "control_doc_pool_equals_clean_doc_pool": true,
+      "control_doc_pool_has_pad": false,
+      "inserted_slots_in_control_pool": false,
+      "control_doc_pool_first_last": [
+        "\u2581Life",
+        "\u2581Cycle",
+        "\u2581(",
+        "Back",
+        "\u2581to",
+        "\u2581Top",
+        "\u2026",
+        "\u2581temperature",
+        "\u2581and",
+        "\u2581humidity",
+        "."
+      ],
+      "attack_doc_pool_first": [
+        "\u2581Life",
+        "\u2581Cycle",
+        "\u2581(",
+        "Back",
+        "\u2581to",
+        "\u2581Top",
+        ").",
+        "\u2581The",
+        "\u2581cat",
+        "\u2581fle",
+        "a",
+        "\u2581life"
+      ],
+      "tokens_outside_pools": [
+        "\u2581",
+        "Query",
+        ":",
+        "\u2581Document",
+        ":",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "\u2581Relevan",
+        "t",
+        ":",
+        "</s>"
+      ]
+    },
+    {
+      "group": "relevant",
+      "pair_id": "104861_5836442",
+      "attack": "relevant_end_3",
+      "query_span": [
+        3,
+        8
+      ],
+      "doc_span": [
+        10,
+        54
+      ],
+      "inserted_positions": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ],
+      "n_query_tokens": 5,
+      "n_doc_tokens_control": 38,
+      "n_doc_tokens_attack": 44,
+      "n_doc_tokens_clean": 38,
+      "query_pool": [
+        "\u2581cost",
+        "\u2581of",
+        "\u2581interior",
+        "\u2581concrete",
+        "\u2581flooring"
+      ],
+      "control_doc_pool_equals_clean_doc_pool": true,
+      "control_doc_pool_has_pad": false,
+      "inserted_slots_in_control_pool": false,
+      "control_doc_pool_first_last": [
+        "\u2581Time",
+        ":",
+        "\u258102",
+        ":",
+        "53",
+        ".",
+        "\u2026",
+        "\u2581level",
+        "\u2581of",
+        "\u2581complexity",
+        "."
+      ],
+      "attack_doc_pool_first": [
+        "\u2581Time",
+        ":",
+        "\u258102",
+        ":",
+        "53",
+        ".",
+        "\u2581Video",
+        "\u2581on",
+        "\u2581the",
+        "\u2581cost",
+        "\u2581of",
+        "\u2581concrete"
+      ],
+      "tokens_outside_pools": [
+        "\u2581",
+        "Query",
+        ":",
+        "\u2581Document",
+        ":",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "\u2581Relevan",
+        "t",
+        ":",
+        "</s>"
+      ]
+    },
+    {
+      "group": "nonrelevant",
+      "pair_id": "962179_8785374",
+      "attack": "relevant_end_3",
+      "query_span": [
+        3,
+        9
+      ],
+      "doc_span": [
+        11,
+        69
+      ],
+      "inserted_positions": [
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ],
+      "n_query_tokens": 6,
+      "n_doc_tokens_control": 52,
+      "n_doc_tokens_attack": 58,
+      "n_doc_tokens_clean": 52,
+      "query_pool": [
+        "\u2581when",
+        "\u2581was",
+        "\u2581the",
+        "\u2581salvation",
+        "\u2581army",
+        "\u2581founded"
+      ],
+      "control_doc_pool_equals_clean_doc_pool": true,
+      "control_doc_pool_has_pad": false,
+      "inserted_slots_in_control_pool": false,
+      "control_doc_pool_first_last": [
+        "\u2581The",
+        "\u2581Sal",
+        "v",
+        "ation",
+        "\u2581Army",
+        ",",
+        "\u2026",
+        "\u2581Cau",
+        "g",
+        "hey",
+        "."
+      ],
+      "attack_doc_pool_first": [
+        "\u2581The",
+        "\u2581Sal",
+        "v",
+        "ation",
+        "\u2581Army",
+        ",",
+        "\u2581founded",
+        "\u2581by",
+        "\u2581William",
+        "\u2581and",
+        "\u2581Catherine",
+        "\u2581Booth"
+      ],
+      "tokens_outside_pools": [
+        "\u2581",
+        "Query",
+        ":",
+        "\u2581Document",
+        ":",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "\u2581Relevan",
+        "t",
+        ":",
+        "</s>"
+      ]
+    },
+    {
+      "group": "nonrelevant",
+      "pair_id": "156493_1939301",
+      "attack": "relevant_end_3",
+      "query_span": [
+        3,
+        7
+      ],
+      "doc_span": [
+        9,
+        101
+      ],
+      "inserted_positions": [
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ],
+      "n_query_tokens": 4,
+      "n_doc_tokens_control": 86,
+      "n_doc_tokens_attack": 92,
+      "n_doc_tokens_clean": 86,
+      "query_pool": [
+        "\u2581do",
+        "\u2581gold",
+        "fish",
+        "\u2581grow"
+      ],
+      "control_doc_pool_equals_clean_doc_pool": true,
+      "control_doc_pool_has_pad": false,
+      "inserted_slots_in_control_pool": false,
+      "control_doc_pool_first_last": [
+        "\u2581Common",
+        "\u2581gold",
+        "fish",
+        "\u2581in",
+        "\u2581",
+        "a",
+        "\u2026",
+        ")",
+        "\u2581of",
+        "\u2581water",
+        "."
+      ],
+      "attack_doc_pool_first": [
+        "\u2581Common",
+        "\u2581gold",
+        "fish",
+        "\u2581in",
+        "\u2581",
+        "a",
+        "\u2581",
+        "pond",
+        ".",
+        "\u2581It",
+        "\u2581is",
+        "\u2581"
+      ],
+      "tokens_outside_pools": [
+        "\u2581",
+        "Query",
+        ":",
+        "\u2581Document",
+        ":",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "<pad>",
+        "\u2581Relevan",
+        "t",
+        ":",
+        "</s>"
+      ]
+    }
+  ],
+  "6_head_indexing": {
+    "n_layers_captured": 12,
+    "n_prehooks_registered_per_layer": 1,
+    "capture_equals_o_input_all_layers": true,
+    "layers_distinct": true,
+    "slice_recompute_max_diff": 0.0,
+    "d_kv": 64,
+    "num_heads": 12,
+    "value_zeroing": [
+      {
+        "layer": 0,
+        "head": 0,
+        "slice_h_all_zero": true,
+        "other_slices_unchanged": true
+      },
+      {
+        "layer": 0,
+        "head": 11,
+        "slice_h_all_zero": true,
+        "other_slices_unchanged": true
+      },
+      {
+        "layer": 4,
+        "head": 7,
+        "slice_h_all_zero": true,
+        "other_slices_unchanged": true
+      },
+      {
+        "layer": 9,
+        "head": 4,
+        "slice_h_all_zero": true,
+        "other_slices_unchanged": true
+      },
+      {
+        "layer": 11,
+        "head": 11,
+        "slice_h_all_zero": true,
+        "other_slices_unchanged": true
+      }
+    ],
+    "no_stale_capture": true
+  },
+  "7_top_heads": {
+    "clean_all_judged": [
+      {
+        "head_label": "L11H11",
+        "mean_rel": 0.7545,
+        "mean_nonrel": 0.3812,
+        "difference": 0.3733,
+        "cohen_d": 1.1107,
+        "within_query_difference": 0.3741
+      },
+      {
+        "head_label": "L11H2",
+        "mean_rel": 0.1414,
+        "mean_nonrel": -0.2092,
+        "difference": 0.3506,
+        "cohen_d": 1.0851,
+        "within_query_difference": 0.4341
+      },
+      {
+        "head_label": "L11H3",
+        "mean_rel": 0.2543,
+        "mean_nonrel": -0.0592,
+        "difference": 0.3135,
+        "cohen_d": 1.0655,
+        "within_query_difference": 0.3551
+      },
+      {
+        "head_label": "L11H0",
+        "mean_rel": 0.5037,
+        "mean_nonrel": 0.1199,
+        "difference": 0.3838,
+        "cohen_d": 1.0401,
+        "within_query_difference": 0.4029
+      },
+      {
+        "head_label": "L10H6",
+        "mean_rel": 0.58,
+        "mean_nonrel": 0.7527,
+        "difference": -0.1726,
+        "cohen_d": -0.9885,
+        "within_query_difference": -0.2134
+      },
+      {
+        "head_label": "L9H6",
+        "mean_rel": 0.7575,
+        "mean_nonrel": 0.8618,
+        "difference": -0.1042,
+        "cohen_d": -0.9269,
+        "within_query_difference": -0.1314
+      },
+      {
+        "head_label": "L10H2",
+        "mean_rel": 0.5956,
+        "mean_nonrel": 0.3945,
+        "difference": 0.2011,
+        "cohen_d": 0.8134,
+        "within_query_difference": 0.2112
+      },
+      {
+        "head_label": "L11H9",
+        "mean_rel": 0.2136,
+        "mean_nonrel": 0.0501,
+        "difference": 0.1635,
+        "cohen_d": 0.7301,
+        "within_query_difference": 0.1791
+      },
+      {
+        "head_label": "L11H4",
+        "mean_rel": 0.2809,
+        "mean_nonrel": 0.0727,
+        "difference": 0.2082,
+        "cohen_d": 0.7131,
+        "within_query_difference": 0.1965
+      },
+      {
+        "head_label": "L8H4",
+        "mean_rel": 0.7108,
+        "mean_nonrel": 0.5775,
+        "difference": 0.1333,
+        "cohen_d": 0.6594,
+        "within_query_difference": 0.13
+      }
+    ],
+    "clean_bm25_subset": [
+      {
+        "head_label": "L11H2",
+        "mean_rel": 0.2296,
+        "mean_nonrel": -0.1629,
+        "difference": 0.3925,
+        "cohen_d": 1.1107,
+        "within_query_difference": 0.4662
+      },
+      {
+        "head_label": "L11H3",
+        "mean_rel": 0.3237,
+        "mean_nonrel": -0.0068,
+        "difference": 0.3305,
+        "cohen_d": 1.0311,
+        "within_query_difference": 0.3868
+      },
+      {
+        "head_label": "L11H11",
+        "mean_rel": 0.8044,
+        "mean_nonrel": 0.5178,
+        "difference": 0.2866,
+        "cohen_d": 1.0209,
+        "within_query_difference": 0.28
+      },
+      {
+        "head_label": "L9H6",
+        "mean_rel": 0.731,
+        "mean_nonrel": 0.8326,
+        "difference": -0.1016,
+        "cohen_d": -0.9426,
+        "within_query_difference": -0.1215
+      },
+      {
+        "head_label": "L10H2",
+        "mean_rel": 0.6217,
+        "mean_nonrel": 0.4199,
+        "difference": 0.2019,
+        "cohen_d": 0.8667,
+        "within_query_difference": 0.171
+      },
+      {
+        "head_label": "L10H6",
+        "mean_rel": 0.5508,
+        "mean_nonrel": 0.6971,
+        "difference": -0.1462,
+        "cohen_d": -0.8551,
+        "within_query_difference": -0.1862
+      },
+      {
+        "head_label": "L11H9",
+        "mean_rel": 0.2558,
+        "mean_nonrel": 0.07,
+        "difference": 0.1858,
+        "cohen_d": 0.8306,
+        "within_query_difference": 0.1732
+      },
+      {
+        "head_label": "L11H0",
+        "mean_rel": 0.5564,
+        "mean_nonrel": 0.3084,
+        "difference": 0.248,
+        "cohen_d": 0.7114,
+        "within_query_difference": 0.3027
+      },
+      {
+        "head_label": "L11H4",
+        "mean_rel": 0.3184,
+        "mean_nonrel": 0.1286,
+        "difference": 0.1898,
+        "cohen_d": 0.6983,
+        "within_query_difference": 0.1408
+      },
+      {
+        "head_label": "L11H5",
+        "mean_rel": 0.6336,
+        "mean_nonrel": 0.4146,
+        "difference": 0.219,
+        "cohen_d": 0.6948,
+        "within_query_difference": 0.2016
+      }
+    ],
+    "controls_all": [
+      {
+        "head_label": "L11H2",
+        "mean_rel": 0.1976,
+        "mean_nonrel": -0.171,
+        "difference": 0.3686,
+        "cohen_d": 1.124,
+        "within_query_difference": 0.4674
+      },
+      {
+        "head_label": "L11H3",
+        "mean_rel": 0.2964,
+        "mean_nonrel": 0.0124,
+        "difference": 0.284,
+        "cohen_d": 0.9336,
+        "within_query_difference": 0.3843
+      },
+      {
+        "head_label": "L9H6",
+        "mean_rel": 0.7259,
+        "mean_nonrel": 0.8267,
+        "difference": -0.1008,
+        "cohen_d": -0.9108,
+        "within_query_difference": -0.1252
+      },
+      {
+        "head_label": "L11H9",
+        "mean_rel": 0.2367,
+        "mean_nonrel": 0.0562,
+        "difference": 0.1805,
+        "cohen_d": 0.8341,
+        "within_query_difference": 0.1788
+      },
+      {
+        "head_label": "L11H11",
+        "mean_rel": 0.7963,
+        "mean_nonrel": 0.5573,
+        "difference": 0.239,
+        "cohen_d": 0.7823,
+        "within_query_difference": 0.2641
+      },
+      {
+        "head_label": "L10H6",
+        "mean_rel": 0.5583,
+        "mean_nonrel": 0.6898,
+        "difference": -0.1316,
+        "cohen_d": -0.7516,
+        "within_query_difference": -0.1821
+      },
+      {
+        "head_label": "L10H2",
+        "mean_rel": 0.599,
+        "mean_nonrel": 0.4316,
+        "difference": 0.1674,
+        "cohen_d": 0.6817,
+        "within_query_difference": 0.189
+      },
+      {
+        "head_label": "L11H5",
+        "mean_rel": 0.6156,
+        "mean_nonrel": 0.3943,
+        "difference": 0.2214,
+        "cohen_d": 0.681,
+        "within_query_difference": 0.2258
+      },
+      {
+        "head_label": "L11H0",
+        "mean_rel": 0.5593,
+        "mean_nonrel": 0.3161,
+        "difference": 0.2432,
+        "cohen_d": 0.6799,
+        "within_query_difference": 0.2825
+      },
+      {
+        "head_label": "L8H4",
+        "mean_rel": 0.7147,
+        "mean_nonrel": 0.6032,
+        "difference": 0.1115,
+        "cohen_d": 0.5577,
+        "within_query_difference": 0.0945
+      }
+    ],
+    "controls_successful": [
+      {
+        "head_label": "L11H2",
+        "mean_rel": 0.1915,
+        "mean_nonrel": -0.1734,
+        "difference": 0.3649,
+        "cohen_d": 1.1174,
+        "within_query_difference": 0.466
+      },
+      {
+        "head_label": "L11H3",
+        "mean_rel": 0.293,
+        "mean_nonrel": 0.0103,
+        "difference": 0.2828,
+        "cohen_d": 0.9324,
+        "within_query_difference": 0.3837
+      },
+      {
+        "head_label": "L9H6",
+        "mean_rel": 0.7251,
+        "mean_nonrel": 0.8265,
+        "difference": -0.1014,
+        "cohen_d": -0.9148,
+        "within_query_difference": -0.1258
+      },
+      {
+        "head_label": "L11H9",
+        "mean_rel": 0.2313,
+        "mean_nonrel": 0.0531,
+        "difference": 0.1781,
+        "cohen_d": 0.8258,
+        "within_query_difference": 0.1784
+      },
+      {
+        "head_label": "L11H11",
+        "mean_rel": 0.7954,
+        "mean_nonrel": 0.5567,
+        "difference": 0.2388,
+        "cohen_d": 0.7802,
+        "within_query_difference": 0.2644
+      },
+      {
+        "head_label": "L10H6",
+        "mean_rel": 0.5576,
+        "mean_nonrel": 0.6897,
+        "difference": -0.1321,
+        "cohen_d": -0.754,
+        "within_query_difference": -0.1824
+      },
+      {
+        "head_label": "L10H2",
+        "mean_rel": 0.5954,
+        "mean_nonrel": 0.4274,
+        "difference": 0.168,
+        "cohen_d": 0.6834,
+        "within_query_difference": 0.1899
+      },
+      {
+        "head_label": "L11H0",
+        "mean_rel": 0.5604,
+        "mean_nonrel": 0.317,
+        "difference": 0.2434,
+        "cohen_d": 0.6799,
+        "within_query_difference": 0.2827
+      },
+      {
+        "head_label": "L11H5",
+        "mean_rel": 0.6136,
+        "mean_nonrel": 0.393,
+        "difference": 0.2206,
+        "cohen_d": 0.6773,
+        "within_query_difference": 0.2256
+      },
+      {
+        "head_label": "L8H4",
+        "mean_rel": 0.7142,
+        "mean_nonrel": 0.6019,
+        "difference": 0.1123,
+        "cohen_d": 0.5609,
+        "within_query_difference": 0.0952
+      }
+    ]
+  },
+  "7_layer_summary": {
+    "clean_all_judged/mean_abs_d": {
+      "0": 0.202,
+      "1": 0.157,
+      "2": 0.193,
+      "3": 0.158,
+      "4": 0.228,
+      "5": 0.234,
+      "6": 0.27,
+      "7": 0.304,
+      "8": 0.196,
+      "9": 0.279,
+      "10": 0.355,
+      "11": 0.685
+    },
+    "clean_all_judged/max_abs_d": {
+      "0": 0.341,
+      "1": 0.357,
+      "2": 0.388,
+      "3": 0.31,
+      "4": 0.497,
+      "5": 0.485,
+      "6": 0.592,
+      "7": 0.583,
+      "8": 0.659,
+      "9": 0.927,
+      "10": 0.989,
+      "11": 1.111
+    },
+    "clean_all_judged/mean_diff": {
+      "0": 0.015,
+      "1": 0.012,
+      "2": 0.008,
+      "3": 0.014,
+      "4": 0.018,
+      "5": 0.021,
+      "6": 0.034,
+      "7": 0.017,
+      "8": 0.021,
+      "9": -0.002,
+      "10": 0.02,
+      "11": 0.189
+    },
+    "clean_bm25_subset/mean_abs_d": {
+      "0": 0.162,
+      "1": 0.128,
+      "2": 0.166,
+      "3": 0.123,
+      "4": 0.199,
+      "5": 0.198,
+      "6": 0.232,
+      "7": 0.265,
+      "8": 0.197,
+      "9": 0.252,
+      "10": 0.393,
+      "11": 0.68
+    },
+    "clean_bm25_subset/max_abs_d": {
+      "0": 0.31,
+      "1": 0.237,
+      "2": 0.399,
+      "3": 0.194,
+      "4": 0.516,
+      "5": 0.397,
+      "6": 0.539,
+      "7": 0.645,
+      "8": 0.634,
+      "9": 0.943,
+      "10": 0.867,
+      "11": 1.111
+    },
+    "clean_bm25_subset/mean_diff": {
+      "0": 0.011,
+      "1": 0.007,
+      "2": 0.004,
+      "3": 0.004,
+      "4": 0.013,
+      "5": 0.015,
+      "6": 0.025,
+      "7": 0.019,
+      "8": 0.019,
+      "9": 0.002,
+      "10": 0.026,
+      "11": 0.184
+    },
+    "controls_all/mean_abs_d": {
+      "0": 0.166,
+      "1": 0.095,
+      "2": 0.156,
+      "3": 0.1,
+      "4": 0.179,
+      "5": 0.195,
+      "6": 0.203,
+      "7": 0.263,
+      "8": 0.157,
+      "9": 0.237,
+      "10": 0.325,
+      "11": 0.613
+    },
+    "controls_all/max_abs_d": {
+      "0": 0.277,
+      "1": 0.242,
+      "2": 0.333,
+      "3": 0.208,
+      "4": 0.491,
+      "5": 0.421,
+      "6": 0.407,
+      "7": 0.525,
+      "8": 0.558,
+      "9": 0.911,
+      "10": 0.752,
+      "11": 1.124
+    },
+    "controls_all/mean_diff": {
+      "0": 0.011,
+      "1": 0.002,
+      "2": 0.001,
+      "3": 0.001,
+      "4": 0.01,
+      "5": 0.014,
+      "6": 0.013,
+      "7": 0.015,
+      "8": 0.016,
+      "9": 0.001,
+      "10": 0.022,
+      "11": 0.167
+    },
+    "controls_successful/mean_abs_d": {
+      "0": 0.167,
+      "1": 0.095,
+      "2": 0.157,
+      "3": 0.099,
+      "4": 0.179,
+      "5": 0.198,
+      "6": 0.203,
+      "7": 0.262,
+      "8": 0.157,
+      "9": 0.238,
+      "10": 0.328,
+      "11": 0.61
+    },
+    "controls_successful/max_abs_d": {
+      "0": 0.274,
+      "1": 0.24,
+      "2": 0.338,
+      "3": 0.207,
+      "4": 0.491,
+      "5": 0.423,
+      "6": 0.41,
+      "7": 0.526,
+      "8": 0.561,
+      "9": 0.915,
+      "10": 0.754,
+      "11": 1.117
+    },
+    "controls_successful/mean_diff": {
+      "0": 0.011,
+      "1": 0.002,
+      "2": 0.002,
+      "3": 0.001,
+      "4": 0.011,
+      "5": 0.014,
+      "6": 0.013,
+      "7": 0.015,
+      "8": 0.016,
+      "9": 0.002,
+      "10": 0.022,
+      "11": 0.166
+    }
+  }
+}

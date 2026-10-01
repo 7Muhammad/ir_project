@@ -1,0 +1,106 @@
+{
+  "token_sample_dir": "/home/ghoummaid/IR/patch_code/analysis/16_monot5_artificial_query_document_similarity/outputs/22_token_sample",
+  "counts": {
+    "n_sequences": 6325,
+    "by_kind": {
+      "control": 3036,
+      "attack": 3036,
+      "clean": 253
+    },
+    "n_pairs": 253,
+    "n_queries": 43,
+    "clean_by_group": {
+      "nonrelevant": 127,
+      "relevant": 126
+    },
+    "qrel_grades": [
+      0,
+      2,
+      3
+    ],
+    "n_successful_attacks": 1026,
+    "n_successful_by_group": {
+      "nonrelevant": 521,
+      "relevant": 505
+    }
+  },
+  "pairing": {
+    "one_control_per_attack": true,
+    "n_bad_pairs": 0
+  },
+  "counts_ok": true,
+  "attn_implementation": "eager",
+  "masks": {
+    "query_doc_overlap": 0,
+    "region_not_visible": 0,
+    "control_slot_in_region_or_visible": 0,
+    "control_slot_not_pad": 0,
+    "clean_has_inserted": 0,
+    "attack_inserted_outside_doc_or_invisible": 0,
+    "non_template_outside_regions": 0,
+    "attack_word_count_ne_repetitions": 0,
+    "attack_inserted_other_tokens": 0,
+    "attack_orig_partition_broken": 0,
+    "inserted_string_identical_within_attack": {
+      "relevant_start_1": true,
+      "true_start_1": true,
+      "information_start_5": true,
+      "false_start_5": true,
+      "bar_end_1": true,
+      "important_end_1": true,
+      "relevance_end_5": true,
+      "relevant_end_5": true,
+      "information_random_1": true,
+      "true_random_1": true,
+      "false_random_5": true,
+      "bar_random_5": true
+    },
+    "inserted_strings": {
+      "relevant_start_1": "relevant:",
+      "true_start_1": "true",
+      "information_start_5": "information: information: information: information: information:",
+      "false_start_5": "false false false false false",
+      "bar_end_1": "bar",
+      "important_end_1": "important",
+      "relevance_end_5": "relevance relevance relevance relevance relevance",
+      "relevant_end_5": "relevant: relevant: relevant: relevant: relevant:",
+      "information_random_1": "information:",
+      "true_random_1": "true",
+      "false_random_5": "false false false false false",
+      "bar_random_5": "bar bar bar bar bar"
+    }
+  },
+  "masks_ok": true,
+  "forward": {
+    "attention_shape_ok": true,
+    "n_layers": 12,
+    "heads_per_layer": 12,
+    "score_max_abs_diff_vs_stage22": 3.6240053710834275e-05,
+    "masked_key_max_attention": 0.0,
+    "n_sequences_with_masked_keys_in_own_length": 3036,
+    "visible_row_sum_max_abs_dev": 5.364418029785156e-07,
+    "pre_o_vs_stage22_max_rel_diff": 0.0005055630463175476,
+    "pre_o_n_layer_sequence_checks": 1536,
+    "direct_numpy_max_rel_diff": 3.439374785918684e-07,
+    "direct_numpy_n_values": 1574
+  },
+  "ranges": {
+    "entropy_norm_min": 0.0001824636128731072,
+    "entropy_norm_max": 0.9553946852684021,
+    "top_order_violations": 0,
+    "neff_below_1": 0,
+    "neff_norm_out_of_(0,1]": 0,
+    "dist_norm_out_of_[0,1]": 0,
+    "nan_in_defined_cells": 0,
+    "shared_equals_full_for_clean_control": true,
+    "orig_equals_doc_for_clean_control": true,
+    "ins_nan_for_clean_control": true,
+    "mass_nan_in_attack": 0
+  },
+  "synthetic": {
+    "uniform_entropy_norm_max_abs_dev_from_1": 0.0,
+    "one_hot_entropy_norm_max_abs": 0.0,
+    "uniform_region_mass_norm": 0.9999997615814209
+  },
+  "all_ok": true
+}

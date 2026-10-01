@@ -1,0 +1,8 @@
+| metric | strongest rel/nonrel head | Cohen d | AUROC | strongest paired attack head (shared-key) | mean delta [dz] | corr(delta, dscore) | note |
+|---|---|---|---|---|---|---|---|
+| entropy_norm | L11H3 (query) | +1.12 | 0.78 | L2H11 (orig, relevant) | +0.00361 [+1.07] | +0.35 | len-resid d +1.22; full-visible dz +1.03; unsuccessful dz +0.96 |
+| max_attn | L11H3 (query) | -0.99 | 0.24 | L2H11 (orig, relevant) | -0.00471 [-1.07] | -0.34 | len-resid d -0.96; full-visible dz -1.11; unsuccessful dz -0.92 |
+| top3 | L11H3 (query) | -1.26 | 0.19 | L2H11 (orig, relevant) | -0.00525 [-1.12] | -0.37 | len-resid d -1.23; full-visible dz -1.11; unsuccessful dz -0.98 |
+| neff_norm | L11H6 (query) | -1.12 | 0.22 | L2H11 (orig, relevant) | +0.00566 [+1.12] | +0.33 | len-resid d -1.08; full-visible dz +0.99; unsuccessful dz +0.97 |
+| dist_norm | L9H3 (query) | -0.92 | 0.26 | L2H8 (orig, relevant) | -0.00265 [-1.08] | -0.47 | len-resid d -0.89; full-visible dz -1.05; unsuccessful dz -0.94 |
+| local_mass | L11H5 (query) | +0.93 | 0.76 | L2H8 (orig, relevant) | +0.00561 [+1.09] | +0.44 | len-resid d +0.99; full-visible dz +1.16; unsuccessful dz +0.97 |

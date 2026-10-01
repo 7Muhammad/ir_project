@@ -1,0 +1,71 @@
+{
+  "created": "2026-09-29 17:35:22",
+  "n_sequences": 6325,
+  "n_clean_docs": 253,
+  "n_rel_docs": 126,
+  "n_successful_attacks": 1026,
+  "n_successful_by_group": {
+    "nonrelevant": 521,
+    "relevant": 505
+  },
+  "validation": {
+    "query_doc_disjoint": true,
+    "pools_attention_1": true,
+    "pad_in_pools": 0,
+    "control_inserted_in_doc_pool": 0,
+    "control_inserted_slots_are_masked_pads": true,
+    "clean_has_inserted": 0,
+    "attack_inserted_outside_doc_field": 0,
+    "non_template_tokens_outside_pools": 0,
+    "attack_inserted_region_not_attack_token": 0,
+    "baseline_vs_stage22_capture_max_abs_diff": 0.00010404710284428464,
+    "baseline_vs_pooled_cosine_max_abs_diff": 0.0,
+    "orig_equals_full_for_control": true,
+    "ins_defined_only_for_attack": true
+  },
+  "cv_best_head": [
+    {
+      "metric": "cos",
+      "cv_best_head_auroc": 0.809023872015998,
+      "heads_chosen_per_fold": "L11H2,L11H2,L11H2,L11H2,L11H2"
+    },
+    {
+      "metric": "ccos",
+      "cv_best_head_auroc": 0.7595300587426572,
+      "heads_chosen_per_fold": "L11H7,L11H7,L11H7,L11H2,L11H7"
+    },
+    {
+      "metric": "dot",
+      "cv_best_head_auroc": 0.8230221222347207,
+      "heads_chosen_per_fold": "L11H2,L11H2,L11H2,L11H2,L11H2"
+    },
+    {
+      "metric": "qnorm",
+      "cv_best_head_auroc": 0.7992125984251969,
+      "heads_chosen_per_fold": "L11H2,L11H2,L11H2,L11H2,L11H2"
+    },
+    {
+      "metric": "dnorm",
+      "cv_best_head_auroc": 0.6564804399450068,
+      "heads_chosen_per_fold": "L11H8,L11H8,L11H4,L11H9,L11H8"
+    },
+    {
+      "metric": "ms_mean",
+      "cv_best_head_auroc": 0.625421822272216,
+      "heads_chosen_per_fold": "L11H11,L9H6,L9H6,L11H11,L11H11"
+    },
+    {
+      "metric": "ms_median",
+      "cv_best_head_auroc": 0.584989376327959,
+      "heads_chosen_per_fold": "L9H6,L9H6,L11H0,L11H0,L11H10"
+    },
+    {
+      "metric": "ms_top3",
+      "cv_best_head_auroc": 0.7560929883764529,
+      "heads_chosen_per_fold": "L9H6,L9H6,L9H6,L9H6,L9H6"
+    }
+  ],
+  "seconds": 69.525803565979,
+  "centering": "mu_f = mean of all query-text + document token vectors of CLEAN sequences of queries not in fold f (label-free, per head); ccos = cos(qbar - mu_f, dbar - mu_f)",
+  "maxsim_top_k": "mean of the min(3, n_query_tokens) largest per-query-token maxima"
+}
